@@ -1,10 +1,11 @@
 using UnityEngine;
 
-public class playerController : MonoBehaviour
+public class playerController : MonoBehaviour, IDamage
 {
     [SerializeField] CharacterController controller;
     [SerializeField] LayerMask ignoreLayer;
 
+    [SerializeField] int HP;
     [SerializeField] int speed;
     [SerializeField] int sprintMod;
     [SerializeField] int jumpVel;
@@ -107,5 +108,15 @@ public class playerController : MonoBehaviour
             }
         }
 
+    }
+
+    public void takeDamage(int amount)
+    {
+        HP -= amount;
+        if(HP <= 0)
+        {
+            //oh no im dead
+            gameManager.instance.youLose();
+        }
     }
 }
