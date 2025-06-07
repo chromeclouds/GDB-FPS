@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11242e694f104fa4583c043ba33a36c8, type: 3}
+  m_Name: vectorWeaponData
+  m_EditorClassIdentifier: 
+  weaponName: Vector 45
+  fireRate: 0.05
+  damage: 1
+  maxAmmo: 30
+  bulletSpeed: 100
+  bulletPrefab: {fileID: 6255843267276114019, guid: eb4250e6b764fd845b889fe3cc6ea8ab, type: 3}
+  spreadAngle: 2
+  bulletsPerShot: 1
+  muzzleFlash: {fileID: 0}
