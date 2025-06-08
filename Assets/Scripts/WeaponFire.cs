@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class WeaponFire : MonoBehaviour
@@ -8,6 +10,8 @@ public class WeaponFire : MonoBehaviour
 
     private float fireTimer;
     private int currentAmmo;
+    private bool isFiringBurst;
+    private int shotsFiredInBurst;
 
     void Start()
     {
@@ -18,13 +22,25 @@ public class WeaponFire : MonoBehaviour
     void Update()
     {
         fireTimer += Time.deltaTime;
-        if (Input.GetButton("Fire1") && fireTimer >= weaponData.fireRate && currentAmmo > 0)
+        switch (weaponData.fireMode)
         {
-            Fire();
-            fireTimer = 0f;
+            case FireMode.FullAuto:
+                if (Input.GetButton("Fire1") && fireTimer >= weaponData.fireRate && currentAmmo > 0)
+                {
+                    Fire();
+                    fireTimer = 0f;
+                }
+                break;
+            case FireMode.SemiAuto:
+                if (Input.GetButtonDown("Fire1") && fireTimer >= weaponData.fireRate && currentAmmo > 0)
+                {
+                    Fire();
+                    fireTimer = 0f;
+                }
+                break;
         }
 
-        if (Input.GetKey(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R))
         {
             Reload();
         }
@@ -65,6 +81,22 @@ public class WeaponFire : MonoBehaviour
         {
             recoilScript.Applyrecoil(weaponData.recoilKickback, weaponData.recoilRecoverySpeed);
         }
+    }
+
+   private IEnumerator BurstFire()
+    {
+        isFiringBurst = true;
+        shotsFiredInBurst = 0;
+
+        while (shotsFiredInBurst < weaponData.burstCount && currentAmmo > 0)
+        {
+            Fire();
+            shotsFiredInBurst++;
+            fireTimer = 0f;
+            yield return new WaitForSeconds(weaponData.fireRate);
+        }
+
+        isFiringBurst = false;
     }
     
     void Reload()

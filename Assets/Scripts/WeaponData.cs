@@ -22,4 +22,7 @@ public class WeaponData : ScriptableObject
     public Vector3 adsPositionOffset;
     public float adsSpeed = 10f;
     public bool hasADS = true;
+
+    public FireMode fireMode = FireMode.FullAuto;
+    public int burstCount = 3; //burst guns
 }
