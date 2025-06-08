@@ -10,6 +10,8 @@ public class staticObjLogic : MonoBehaviour, IDamage
     void Start()
     {
         colorOrig = model.material.color;
+
+        changeTransparency();
     }
 
     // Update is called once per frame
@@ -35,5 +37,11 @@ public class staticObjLogic : MonoBehaviour, IDamage
         model.material.color = Color.red;
         yield return new WaitForSeconds(0.1f);
         model.material.color = colorOrig;
+    }
+    void changeTransparency()
+    {
+        Color temp = colorOrig;
+        temp.a = 0.5f;
+        model.material.color = temp;
     }
 }
