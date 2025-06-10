@@ -17,6 +17,7 @@ public class playerController : MonoBehaviour, IDamage
     [SerializeField] float shootRate;
 
 
+
     bool isSprinting;
     int jumpCount;
 
