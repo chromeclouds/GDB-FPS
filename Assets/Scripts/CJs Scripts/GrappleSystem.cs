@@ -47,13 +47,13 @@ public class GrappleSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Q"))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
             StartGrapple();
         }
        
 
-        if (Input.GetButtonUp("Q"))
+        if (Input.GetKeyUp(KeyCode.Q))
         {
             StopGrapple();
         }
