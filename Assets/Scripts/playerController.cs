@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using TMPro;
 public class playerController : MonoBehaviour, IDamage
 {
     [SerializeField] CharacterController controller;
@@ -11,21 +11,29 @@ public class playerController : MonoBehaviour, IDamage
     [SerializeField] int jumpVel;
     [SerializeField] int jumpMax;
     [SerializeField] int gravity;
-
+    [SerializeField] int ammoLight;
+    [SerializeField] int ammoMed;
+    [SerializeField] int ammoHeavy;
     [SerializeField] int shootDamage;
     [SerializeField] int shootDistance;
     [SerializeField] float shootRate;
-
+    [SerializeField] GameObject ammoPickup;
+    [SerializeField] GameObject light;
+    [SerializeField] GameObject med;
+    [SerializeField] GameObject heavy;
+    [SerializeField] TMP_Text ammoCount;
+     
 
     bool isSprinting;
     int jumpCount;
 
     float shootTimer;
+ 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
 
     Vector3 moveDir;
@@ -35,6 +43,10 @@ public class playerController : MonoBehaviour, IDamage
     // Update is called once per frame
     void Update()
     {
+        if (ammoCount != null)
+        {
+            ammoCount.text = "Ammo: " + ammo.ToString();
+        }
         Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * shootDistance, Color.red);
 
         movement();
@@ -45,7 +57,8 @@ public class playerController : MonoBehaviour, IDamage
     {
         shootTimer += Time.deltaTime;
 
-        if (controller.isGrounded) {
+        if (controller.isGrounded)
+        {
             jumpCount = 0;
             playerVel.y = 0;
         }
@@ -86,7 +99,7 @@ public class playerController : MonoBehaviour, IDamage
 
     void jump()
     {
-        if (Input.GetButtonDown("Jump")&& jumpCount < jumpMax)
+        if (Input.GetButtonDown("Jump") && jumpCount < jumpMax)
         {
             playerVel.y = jumpVel;
             jumpCount++;
@@ -95,6 +108,10 @@ public class playerController : MonoBehaviour, IDamage
 
     void shoot()
     {
+        if (ammo > 0)
+        {
+            ammo--;
+        }
         shootTimer = 0;
         RaycastHit hit;
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, shootDistance, ~ignoreLayer))
@@ -113,10 +130,34 @@ public class playerController : MonoBehaviour, IDamage
     public void takeDamage(int amount)
     {
         HP -= amount;
-        if(HP <= 0)
+        if (HP <= 0)
         {
             //oh no im dead
             gameManager.instance.youLose();
+        }
+    }
+
+    public void lowerAmmo()
+    {
+        ammo = 30;
+        if (ammo > 0)
+        {
+            ammo--;
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Ammo Light"))
+        {
+            ammo++;
+        }
+        if (other.CompareTag("Ammo Med"))
+        {
+            ammo++;
+        }
+        if (other.CompareTag("Ammo Heavy"))
+        {
+            ammo++;
         }
     }
 }
