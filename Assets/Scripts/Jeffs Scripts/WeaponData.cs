@@ -25,4 +25,8 @@ public class WeaponData : ScriptableObject
 
     public FireMode fireMode = FireMode.FullAuto;
     public int burstCount = 3; //burst guns
+
+    [Header("ADS Zoom Settings")]
+    public float adsFOV = 40f;
+    public float adsFOVSpeed = 10f;
 }

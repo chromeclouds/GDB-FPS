@@ -9,10 +9,10 @@ public class WeaponPickup : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            PlayerWeaponSwap weaponSwap = other.GetComponent<PlayerWeaponSwap>();
-            if (weaponSwap != null)
+            WeaponManager weaponManager = other.GetComponent<WeaponManager>();
+            if (weaponManager != null)
             {
-                weaponSwap.PickupWeapon(weaponPrefab, weaponData); //give held prefab
+                weaponManager.PickupWeapon(weaponPrefab, weaponData); 
                 Destroy(transform.parent.gameObject); //destroy world prefab
             }
         }
