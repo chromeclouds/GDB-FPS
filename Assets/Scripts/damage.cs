@@ -59,6 +59,10 @@ public class damage : MonoBehaviour
         }
     }
 
+
+
+
+
     private void OnTriggerStay(Collider other)
     {
         if(other.isTrigger) return;
