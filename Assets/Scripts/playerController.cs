@@ -14,6 +14,8 @@ public class playerController : MonoBehaviour, IDamage
     [SerializeField] int ammoLight;
     [SerializeField] int ammoMed;
     [SerializeField] int ammoHeavy;
+    //this int is for testing
+    [SerializeField] int ammo;
     [SerializeField] int shootDamage;
     [SerializeField] int shootDistance;
     [SerializeField] float shootRate;
