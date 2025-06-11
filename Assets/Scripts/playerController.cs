@@ -196,7 +196,9 @@ public class playerController : MonoBehaviour, IDamage
             {
                 cost.buy();
             }
-    public void lowerAmmo()
+        }
+    }
+        public void lowerAmmo()
     {
         ammo = 30;
         if (ammo > 0)
