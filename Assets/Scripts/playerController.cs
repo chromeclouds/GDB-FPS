@@ -16,6 +16,8 @@ public class playerController : MonoBehaviour, IDamage
     [SerializeField] int shootDistance;
     [SerializeField] float shootRate;
 
+    [SerializeField] float lookDistance;
+
 
     bool isSprinting;
     int jumpCount;
@@ -65,6 +67,11 @@ public class playerController : MonoBehaviour, IDamage
 
         if (Input.GetButton("Fire1") && shootTimer > shootRate)
             shoot();
+
+        look();
+
+        if (Input.GetButton("Interact"))
+            interact();
 
         //transform.position += moveDir * speed * Time.deltaTime;
 
@@ -133,5 +140,39 @@ public class playerController : MonoBehaviour, IDamage
         gameManager.instance.playerDamageScreen.SetActive(true);
         yield return new WaitForSeconds(0.1f);
         gameManager.instance.playerDamageScreen.SetActive(false);
+    }
+
+    void look()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, lookDistance, ~ignoreLayer))
+        {
+            ICost cost = hit.collider.GetComponent<ICost>();
+            if (cost != null && !hit.collider.CompareTag("Bought"))
+            {
+                gameManager.instance.interactPrompt.SetActive(true);
+            }
+            else
+            {
+                gameManager.instance.interactPrompt.SetActive(false);
+            }
+        }
+        else
+        {
+            gameManager.instance.interactPrompt.SetActive(false);
+        }
+    }
+    void interact()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, lookDistance, ~ignoreLayer))
+        {
+
+            ICost cost = hit.collider.GetComponent<ICost>();
+            if (cost != null)
+            {
+                cost.buy();
+            }
+        }
     }
 }

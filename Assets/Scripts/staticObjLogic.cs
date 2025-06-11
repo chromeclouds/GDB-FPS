@@ -1,19 +1,21 @@
 using UnityEngine;
 using System.Collections;
 
-public class staticObjLogic : MonoBehaviour, IDamage
+public class staticObjLogic : MonoBehaviour, IDamage, ICost
 {
     [SerializeField] Renderer model;
     [SerializeField] int layer;
     [SerializeField] int HP;
+    [SerializeField] int price;
+    int layerOrig;
     Color colorOrig;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         colorOrig = model.material.color;
-
-        changeTransparency();
+        layerOrig = gameObject.layer;
         changeLayer();
+        changeTransparency();
     }
 
     // Update is called once per frame
@@ -50,6 +52,18 @@ public class staticObjLogic : MonoBehaviour, IDamage
     }
     void changeLayer()
     {
+        // Changes the objects layer to the layer chosen by the designer
+        // Can make the object solid or walk through so long as the layer settings are set to not interact
         gameObject.layer = layer;
+    }
+    public void buy()
+    {
+        if (gameManager.instance.walletAmount() - price >= 0)
+        {
+            gameObject.layer = layerOrig;
+            model.material.color = colorOrig;
+            gameManager.instance.reduceWallet(price);
+            model.tag = "Bought";
+        }
     }
 }

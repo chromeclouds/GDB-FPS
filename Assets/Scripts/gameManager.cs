@@ -11,17 +11,20 @@ public class gameManager : MonoBehaviour
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
     [SerializeField] TMP_Text gameGoalCountText;
+    [SerializeField] int wallet;
 
     public Image playerHPBar;
     public GameObject playerDamageScreen;
     public GameObject player;
     public playerController playerScript;
+    public GameObject interactPrompt;
 
     public bool isPaused;
 
     float timescaleOrig;
 
     int gameGoalCount;
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -89,5 +92,14 @@ public class gameManager : MonoBehaviour
         statePause();
         menuActive = menuLose;
         menuActive.SetActive(true);
+    }
+
+    public int walletAmount()
+    {
+        return wallet;
+    }
+    public void reduceWallet(int amount)
+    {
+        wallet -= amount;
     }
 }
