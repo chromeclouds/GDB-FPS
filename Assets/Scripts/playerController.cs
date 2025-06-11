@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using System.Collections;
 public class playerController : MonoBehaviour, IDamage
 {
     [SerializeField] CharacterController controller;
@@ -19,13 +19,14 @@ public class playerController : MonoBehaviour, IDamage
 
     bool isSprinting;
     int jumpCount;
-
+    int HPOrig;
     float shootTimer;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        HPOrig = HP;
+        updatePlayerUI();
     }
 
     Vector3 moveDir;
@@ -113,10 +114,24 @@ public class playerController : MonoBehaviour, IDamage
     public void takeDamage(int amount)
     {
         HP -= amount;
+        updatePlayerUI();
+        StartCoroutine(damageFlash());
         if(HP <= 0)
         {
             //oh no im dead
             gameManager.instance.youLose();
         }
+    }
+
+    void updatePlayerUI()
+    {
+        gameManager.instance.playerHPBar.fillAmount = (float)HP/HPOrig;
+    }
+
+    IEnumerator damageFlash()
+    {
+        gameManager.instance.playerDamageScreen.SetActive(true);
+        yield return new WaitForSeconds(0.1f);
+        gameManager.instance.playerDamageScreen.SetActive(false);
     }
 }

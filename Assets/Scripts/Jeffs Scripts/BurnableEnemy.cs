@@ -10,9 +10,11 @@ public class BurnableEnemy : MonoBehaviour, IBurnable, IDamage
 
     private bool isBurning = false;
     private float burnTimeLeft = 0f;
-    private int burnDamagePerSecond = 0;
+    private float burnDamagePerSecond = 0;
 
-    public void ApplyBurn(float duration, int damagePerSecond)
+    private int health = 100;
+
+    public void ApplyBurn(float duration, float damagePerSecond)
     {
         if (!isBurning)
         {
@@ -27,7 +29,7 @@ public class BurnableEnemy : MonoBehaviour, IBurnable, IDamage
     {
         while (burnTimeLeft > 0)
         {
-            takeDamage(burnDamagePerSecond);
+            takeDamage(Mathf.RoundToInt(burnDamagePerSecond));
             burnTimeLeft -= 1f;
             yield return new WaitForSeconds(1f);
 
@@ -54,9 +56,19 @@ public class BurnableEnemy : MonoBehaviour, IBurnable, IDamage
 
     public void takeDamage(int amount)
     {
-        throw new System.NotImplementedException();
+        health -= amount;
+        Debug.Log($"{gameObject.name} took {amount} burn damage. Health = {health}");
+        if (health <= 0)
+        {
+            Die();
+        }
     }
 
+    private void Die()
+    {
+        Debug.Log($"{gameObject.name} has died.");
+        Destroy(gameObject);
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

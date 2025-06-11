@@ -16,7 +16,10 @@ public class ADSZoom : MonoBehaviour
     {
         playerCamera = Camera.main;
         weaponFire = GetComponent<WeaponFire>();
-        weaponData = GetComponent<WeaponData>();
+        if (weaponFire != null )
+        {
+            weaponData = weaponFire.weaponData;
+        }
 
         originalFOV = playerCamera.fieldOfView;
     }
@@ -24,18 +27,18 @@ public class ADSZoom : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (weaponData != null && weaponData.hasADS)
+        if (weaponData != null && weaponData.HasADS)
         {
             if (Input.GetButton("Fire2"))
             {
-                targetFOV = weaponData.adsFOV;
+                targetFOV = weaponData.ADSFOV;
             }
             else
             {
                 targetFOV = originalFOV;
             }
 
-            playerCamera.fieldOfView  = Mathf.Lerp(playerCamera.fieldOfView, targetFOV, Time.deltaTime * weaponData.adsFOVSpeed);
+            playerCamera.fieldOfView  = Mathf.Lerp(playerCamera.fieldOfView, targetFOV, Time.deltaTime * weaponData.ADSFOVSpeed);
         }
     
     }
