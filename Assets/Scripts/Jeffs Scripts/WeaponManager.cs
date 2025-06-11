@@ -40,8 +40,8 @@ public class WeaponManager : MonoBehaviour
     public void PickupWeapon(GameObject weaponPrefab, WeaponData weaponData)
     {
         GameObject newWeapon = Instantiate(weaponPrefab, weaponHolder);
-        newWeapon.transform.localPosition = weaponData.weaponPositionOffset;
-        newWeapon.transform.localRotation = Quaternion.Euler(weaponData.weaponRotationOffset);
+        newWeapon.transform.localPosition = weaponData.WeaponPositionOffset;
+        newWeapon.transform.localRotation = Quaternion.Euler(weaponData.WeaponRotationOffset);
 
         WeaponFire weaponFire = newWeapon.GetComponent<WeaponFire>();
         if(weaponFire != null )

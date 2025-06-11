@@ -12,37 +12,72 @@ public class WeaponFire : MonoBehaviour
     private int currentAmmo;
     private bool isFiringBurst;
     private int shotsFiredInBurst;
+    private bool isReloading = false;
+    private bool isOverheated = false;
+    private float flamethrowerTimer = 0f;
+    private AmmoManager ammoManager;
 
     void Start()
     {
-        currentAmmo = weaponData.maxAmmo;
+        ammoManager = GetComponentInParent<AmmoManager>();
+        currentAmmo = weaponData.MaxAmmo;
 
     }
 
     void Update()
     {
-        fireTimer += Time.deltaTime;
-        switch (weaponData.fireMode)
-        {
-            case FireMode.FullAuto:
-                if (Input.GetButton("Fire1") && fireTimer >= weaponData.fireRate && currentAmmo > 0)
-                {
-                    Fire();
-                    fireTimer = 0f;
-                }
-                break;
-            case FireMode.SemiAuto:
-                if (Input.GetButtonDown("Fire1") && fireTimer >= weaponData.fireRate && currentAmmo > 0)
-                {
-                    Fire();
-                    fireTimer = 0f;
-                }
-                break;
-        }
+        if (isReloading || isOverheated) return;
 
-        if (Input.GetKeyDown(KeyCode.R))
+        fireTimer += Time.deltaTime;
+
+        if (weaponData.IsFlamethrower)
         {
-            Reload();
+            if (Input.GetButton("Fire1"))
+            {
+                Fire();
+                flamethrowerTimer += Time.deltaTime;
+
+                if (flamethrowerTimer >= weaponData.OverheatTime)
+                {
+                    StartCoroutine(Overheat());
+                }
+            }
+            else
+            {
+                //if player lets go of fire, cool down
+                flamethrowerTimer = Mathf.Max(0f, flamethrowerTimer - Time.deltaTime);
+            }
+        }
+        else
+        {
+            switch (weaponData.FireMode)
+            {
+                case FireMode.FullAuto:
+                    if (Input.GetButton("Fire1") && fireTimer >= weaponData.FireRate && currentAmmo > 0)
+                    {
+                        Fire();
+                        fireTimer = 0f;
+                    }
+                    break;
+                case FireMode.SemiAuto:
+                    if (Input.GetButtonDown("Fire1") && fireTimer >= weaponData.FireRate && currentAmmo > 0)
+                    {
+                        Fire();
+                        fireTimer = 0f;
+                    }
+                    break;
+                case FireMode.Burst:
+                    if (Input.GetButton("Fire1") && !isFiringBurst && currentAmmo > 0)
+                    {
+                        StartCoroutine(BurstFire());
+                    }
+                    break;
+            }
+
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                StartCoroutine(Reload());
+            }
         }
     }
 
@@ -52,26 +87,26 @@ public class WeaponFire : MonoBehaviour
         
         currentAmmo--;
         
-        if (weaponData.muzzleFlash != null)
+        if (weaponData.MuzzleFlash != null)
         {
-            weaponData.muzzleFlash.Play();
+            weaponData.MuzzleFlash.Play();
         }
 
 
         //fire bullet
-        for (int i = 0; i < weaponData.bulletsPerShot; i++)
+        for (int i = 0; i < weaponData.BulletsPerShot; i++)
         {
             Quaternion spread = Quaternion.Euler(
-                Random.Range(-weaponData.spreadAngle, weaponData.spreadAngle),
-                Random.Range(-weaponData.spreadAngle, weaponData.spreadAngle),
+                Random.Range(-weaponData.SpreadAngle, weaponData.SpreadAngle),
+                Random.Range(-weaponData.SpreadAngle, weaponData.SpreadAngle),
                 0
                 );
 
-            GameObject bullet = Instantiate(weaponData.bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation * spread);
+            GameObject bullet = Instantiate(weaponData.BulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation * spread);
             Rigidbody rb = bullet.GetComponent<Rigidbody>();
             if (rb != null)
             {
-                rb.linearVelocity = bullet.transform.forward * weaponData.bulletSpeed;
+                rb.linearVelocity = bullet.transform.forward * weaponData.BulletSpeed;
             }
         }
 
@@ -79,8 +114,17 @@ public class WeaponFire : MonoBehaviour
         WeaponRecoil recoilScript = GetComponent<WeaponRecoil>();
         if (recoilScript != null)
         {
-            recoilScript.Applyrecoil(weaponData.recoilKickback, weaponData.recoilRecoverySpeed);
+            recoilScript.Applyrecoil(weaponData.RecoilKickback, weaponData.RecoilRecoverySpeed);
         }
+    }
+
+    private IEnumerator Overheat()
+    {
+        isOverheated = true;
+        Debug.Log("Overheated!");
+        yield return new WaitForSeconds(weaponData.CooldownTime);
+        flamethrowerTimer = 0f;
+        isOverheated = false;
     }
 
    private IEnumerator BurstFire()
@@ -88,20 +132,34 @@ public class WeaponFire : MonoBehaviour
         isFiringBurst = true;
         shotsFiredInBurst = 0;
 
-        while (shotsFiredInBurst < weaponData.burstCount && currentAmmo > 0)
+        while (shotsFiredInBurst < weaponData.BurstCount && currentAmmo > 0)
         {
             Fire();
             shotsFiredInBurst++;
             fireTimer = 0f;
-            yield return new WaitForSeconds(weaponData.fireRate);
+            yield return new WaitForSeconds(weaponData.FireRate);
         }
 
         isFiringBurst = false;
     }
     
-    void Reload()
+    private IEnumerator Reload()
     {
-        currentAmmo = weaponData.maxAmmo;
+        isReloading = true;
+        Debug.Log("Reloading..");
+        yield return new WaitForSeconds(weaponData.ReloadTime);
+
+        int ammoNeeded = weaponData.MaxAmmo - currentAmmo;
+        int availableAmmo = ammoManager.GetAmmoCount(weaponData.AmmotType);
+        int ammoToLoad = Mathf.Min(ammoNeeded, availableAmmo);
+
+        if (ammoToLoad > 0)
+        {
+            ammoManager.ConsumeAmmo(weaponData.AmmotType, ammoToLoad);
+            currentAmmo += ammoToLoad;
+        }
+
+        isReloading = false;
     }
 
 }

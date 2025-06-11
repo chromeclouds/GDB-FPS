@@ -2,45 +2,32 @@ using UnityEngine;
 
 public class FireBullet : MonoBehaviour
 {
-    public float burnDuration = 5f;
-    public int burnDamagePerSecond = 5;
-    public GameObject fireEffectPrefab;
-    public GameObject burnDecalPrefab;
+    public float stickDuration = 3f;
+    public float burnDuration = 2f;
+    public float burnDamage = 5f;
 
+    private bool hasStuck = false;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Start()
     {
-        Destroy(gameObject, 3f); //flame lifespan    
+        Destroy(gameObject, stickDuration + burnDuration);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        IBurnable burnable = other.GetComponent<IBurnable>();
+        if (hasStuck) return;
+        hasStuck = true;
 
+        //stick to surfaces
+        transform.SetParent(other.transform);
+        GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
+        GetComponent<Rigidbody>().isKinematic = true;
+
+        //damage over time
+        IBurnable burnable = other.GetComponent<IBurnable>();
         if (burnable != null)
         {
-            burnable.ApplyBurn(burnDuration, burnDamagePerSecond);
-
-            if(fireEffectPrefab)
-            {
-                Instantiate(fireEffectPrefab, other.transform.position, Quaternion.identity, other.transform);
-            }
+            burnable.ApplyBurn(burnDuration, burnDamage);
         }
-
-        //add burn decal to surface
-        if (burnDecalPrefab != null)
-        {
-            Vector3 contactPoint = other.ClosestPointOnBounds(transform.position);
-            Instantiate(burnDecalPrefab, contactPoint, Quaternion.identity);
-        }
-
-        Destroy(gameObject); 
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
