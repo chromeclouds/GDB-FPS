@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 using TMPro;
 public class playerController : MonoBehaviour, IDamage
 {
@@ -19,6 +20,9 @@ public class playerController : MonoBehaviour, IDamage
     [SerializeField] int shootDamage;
     [SerializeField] int shootDistance;
     [SerializeField] float shootRate;
+
+    [SerializeField] float lookDistance;
+
     [SerializeField] GameObject ammoPickup;
     [SerializeField] GameObject light;
     [SerializeField] GameObject med;
@@ -28,13 +32,15 @@ public class playerController : MonoBehaviour, IDamage
 
     bool isSprinting;
     int jumpCount;
-
+    int HPOrig;
     float shootTimer;
  
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        HPOrig = HP;
+        updatePlayerUI();
 
     }
 
@@ -79,6 +85,11 @@ public class playerController : MonoBehaviour, IDamage
 
         if (Input.GetButton("Fire1") && shootTimer > shootRate)
             shoot();
+
+        look();
+
+        if (Input.GetButton("Interact"))
+            interact();
 
         //transform.position += moveDir * speed * Time.deltaTime;
 
@@ -132,6 +143,9 @@ public class playerController : MonoBehaviour, IDamage
     public void takeDamage(int amount)
     {
         HP -= amount;
+        updatePlayerUI();
+        StartCoroutine(damageFlash());
+       
         if (HP <= 0)
         {
             //oh no im dead
@@ -139,7 +153,52 @@ public class playerController : MonoBehaviour, IDamage
         }
     }
 
-    public void lowerAmmo()
+    void updatePlayerUI()
+    {
+        gameManager.instance.playerHPBar.fillAmount = (float)HP/HPOrig;
+    }
+
+    IEnumerator damageFlash()
+    {
+        gameManager.instance.playerDamageScreen.SetActive(true);
+        yield return new WaitForSeconds(0.1f);
+        gameManager.instance.playerDamageScreen.SetActive(false);
+    }
+
+    void look()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, lookDistance, ~ignoreLayer))
+        {
+            ICost cost = hit.collider.GetComponent<ICost>();
+            if (cost != null && !hit.collider.CompareTag("Bought"))
+            {
+                gameManager.instance.interactPrompt.SetActive(true);
+            }
+            else
+            {
+                gameManager.instance.interactPrompt.SetActive(false);
+            }
+        }
+        else
+        {
+            gameManager.instance.interactPrompt.SetActive(false);
+        }
+    }
+    void interact()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, lookDistance, ~ignoreLayer))
+        {
+
+            ICost cost = hit.collider.GetComponent<ICost>();
+            if (cost != null)
+            {
+                cost.buy();
+            }
+        }
+    }
+        public void lowerAmmo()
     {
         ammo = 30;
         if (ammo > 0)
