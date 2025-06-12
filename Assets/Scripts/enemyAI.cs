@@ -7,10 +7,10 @@ public class enemyAI : MonoBehaviour, IDamage
 {
     [SerializeField] Renderer model;
     [SerializeField] NavMeshAgent agent;
+
     [SerializeField] Transform headPos;
     [SerializeField] int HP;
     [SerializeField] int faceTargetSpeed;
-
     [SerializeField] int FOV;
 
     [SerializeField] Transform shootPos;
@@ -53,7 +53,6 @@ public class enemyAI : MonoBehaviour, IDamage
         RaycastHit hit;
         if (Physics.Raycast(headPos.position, playerDir, out hit))
         {
-
             if (angleToPlayer < FOV && hit.collider.CompareTag("Player"))
             {
                 shootTimer += Time.deltaTime;
