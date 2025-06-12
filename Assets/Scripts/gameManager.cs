@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+ 
 public class gameManager : MonoBehaviour
 {
     public static gameManager instance;
@@ -15,6 +16,7 @@ public class gameManager : MonoBehaviour
 
     public Image playerHPBar;
     public GameObject playerDamageScreen;
+ 
     public GameObject player;
     public playerController playerScript;
     public GameObject interactPrompt;
@@ -25,6 +27,8 @@ public class gameManager : MonoBehaviour
 
     int gameGoalCount;
     
+
+    public int ammo;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -40,6 +44,7 @@ public class gameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+ 
         if (Input.GetButtonDown("Cancel"))
         {
             if (menuActive == null) 
@@ -102,4 +107,5 @@ public class gameManager : MonoBehaviour
     {
         wallet -= amount;
     }
+ 
 }
