@@ -13,8 +13,8 @@ public class PlayerWeaponSwap : MonoBehaviour
         }
         currentWeapon = Instantiate(weaponPrefab, weaponHolder);
 
-        currentWeapon.transform.localPosition = weaponData.weaponPositionOffset;
-        currentWeapon.transform.localRotation = Quaternion.Euler(weaponData.weaponRotationOffset);
+        currentWeapon.transform.localPosition = weaponData.WeaponPositionOffset;
+        currentWeapon.transform.localRotation = Quaternion.Euler(weaponData.WeaponRotationOffset);
 
         WeaponFire weaponFire = currentWeapon.GetComponent<WeaponFire>();
         if(weaponFire != null)

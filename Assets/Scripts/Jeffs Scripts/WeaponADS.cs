@@ -16,14 +16,14 @@ public class WeaponADS : MonoBehaviour
     {
         weaponData = GetComponent<WeaponFire>().weaponData;
         hipPosition = transform.localPosition;
-        adsPosition = weaponData.adsPositionOffset;
-        adsSpeed = weaponData.adsSpeed;
+        adsPosition = weaponData.ADSPositionOffset;
+        adsSpeed = weaponData.ADSSpeed;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (weaponData.hasADS)
+        if (weaponData.HasADS)
         {
             if (Input.GetButton("Fire2")) //right click
             {

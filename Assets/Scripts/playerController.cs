@@ -1,5 +1,6 @@
 using UnityEngine;
-
+using System.Collections;
+using TMPro;
 public class playerController : MonoBehaviour, IDamage
 {
     [SerializeField] CharacterController controller;
@@ -11,22 +12,37 @@ public class playerController : MonoBehaviour, IDamage
     [SerializeField] int jumpVel;
     [SerializeField] int jumpMax;
     [SerializeField] int gravity;
-
+    [SerializeField] int ammoLight;
+    [SerializeField] int ammoMed;
+    [SerializeField] int ammoHeavy;
+    //this int is for testing
+    [SerializeField] int ammo;
     [SerializeField] int shootDamage;
     [SerializeField] int shootDistance;
     [SerializeField] float shootRate;
 
+    [SerializeField] float lookDistance;
+
+    [SerializeField] GameObject ammoPickup;
+    [SerializeField] GameObject light;
+    [SerializeField] GameObject med;
+    [SerializeField] GameObject heavy;
+    [SerializeField] TMP_Text ammoCount;
+     
 
 
     bool isSprinting;
     int jumpCount;
-
+    int HPOrig;
     float shootTimer;
+ 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        HPOrig = HP;
+        updatePlayerUI();
+
     }
 
     Vector3 moveDir;
@@ -36,6 +52,10 @@ public class playerController : MonoBehaviour, IDamage
     // Update is called once per frame
     void Update()
     {
+        if (ammoCount != null)
+        {
+            ammoCount.text = "Ammo: " + ammo.ToString();
+        }
         Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * shootDistance, Color.red);
 
         movement();
@@ -46,7 +66,8 @@ public class playerController : MonoBehaviour, IDamage
     {
         shootTimer += Time.deltaTime;
 
-        if (controller.isGrounded) {
+        if (controller.isGrounded)
+        {
             jumpCount = 0;
             playerVel.y = 0;
         }
@@ -65,6 +86,11 @@ public class playerController : MonoBehaviour, IDamage
 
         if (Input.GetButton("Fire1") && shootTimer > shootRate)
             shoot();
+
+        look();
+
+        if (Input.GetButton("Interact"))
+            interact();
 
         //transform.position += moveDir * speed * Time.deltaTime;
 
@@ -87,7 +113,7 @@ public class playerController : MonoBehaviour, IDamage
 
     void jump()
     {
-        if (Input.GetButtonDown("Jump")&& jumpCount < jumpMax)
+        if (Input.GetButtonDown("Jump") && jumpCount < jumpMax)
         {
             playerVel.y = jumpVel;
             jumpCount++;
@@ -96,6 +122,10 @@ public class playerController : MonoBehaviour, IDamage
 
     void shoot()
     {
+        if (ammo > 0)
+        {
+            ammo--;
+        }
         shootTimer = 0;
         RaycastHit hit;
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, shootDistance, ~ignoreLayer))
@@ -114,10 +144,82 @@ public class playerController : MonoBehaviour, IDamage
     public void takeDamage(int amount)
     {
         HP -= amount;
-        if(HP <= 0)
+        updatePlayerUI();
+        StartCoroutine(damageFlash());
+       
+        if (HP <= 0)
         {
             //oh no im dead
             gameManager.instance.youLose();
+        }
+    }
+
+    void updatePlayerUI()
+    {
+        gameManager.instance.playerHPBar.fillAmount = (float)HP/HPOrig;
+    }
+
+    IEnumerator damageFlash()
+    {
+        gameManager.instance.playerDamageScreen.SetActive(true);
+        yield return new WaitForSeconds(0.1f);
+        gameManager.instance.playerDamageScreen.SetActive(false);
+    }
+
+    void look()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, lookDistance, ~ignoreLayer))
+        {
+            ICost cost = hit.collider.GetComponent<ICost>();
+            if (cost != null && !hit.collider.CompareTag("Bought"))
+            {
+                gameManager.instance.interactPrompt.SetActive(true);
+            }
+            else
+            {
+                gameManager.instance.interactPrompt.SetActive(false);
+            }
+        }
+        else
+        {
+            gameManager.instance.interactPrompt.SetActive(false);
+        }
+    }
+    void interact()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, lookDistance, ~ignoreLayer))
+        {
+
+            ICost cost = hit.collider.GetComponent<ICost>();
+            if (cost != null)
+            {
+                cost.buy();
+            }
+        }
+    }
+        public void lowerAmmo()
+    {
+        ammo = 30;
+        if (ammo > 0)
+        {
+            ammo--;
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Ammo Light"))
+        {
+            ammo++;
+        }
+        if (other.CompareTag("Ammo Med"))
+        {
+            ammo++;
+        }
+        if (other.CompareTag("Ammo Heavy"))
+        {
+            ammo++;
         }
     }
 }

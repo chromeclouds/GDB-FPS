@@ -8,8 +8,10 @@ public class enemyAI : MonoBehaviour, IDamage
     [SerializeField] Renderer model;
     [SerializeField] NavMeshAgent agent;
 
+    [SerializeField] Transform headPos;
     [SerializeField] int HP;
     [SerializeField] int faceTargetSpeed;
+    [SerializeField] int FOV;
 
     [SerializeField] Transform shootPos;
     [SerializeField] GameObject bullet;
@@ -18,6 +20,7 @@ public class enemyAI : MonoBehaviour, IDamage
     Color colorOrig;
 
     float shootTimer;
+    float angleToPlayer;
 
     bool playerInRange;
 
@@ -34,26 +37,41 @@ public class enemyAI : MonoBehaviour, IDamage
     // Update is called once per frame
     void Update()
     {
-        playerDir = gameManager.instance.player.transform.position - transform.position;
-
-        shootTimer += Time.deltaTime;
-
-        if (playerInRange)
+        if (playerInRange && canSeePlayer())
         {
-            agent.SetDestination(gameManager.instance.player.transform.position);
 
-
-            if (shootTimer > shootRate)
-            {
-                shoot();
-            }
-
-            if(agent.remainingDistance <= agent.stoppingDistance)
-            {
-                faceTarget();
-            }
         }
         
+    }
+
+    bool canSeePlayer()
+    {
+        playerDir = gameManager.instance.player.transform.position - headPos.position;
+        angleToPlayer = Vector3.Angle(playerDir, transform.forward);
+        Debug.DrawRay(headPos.position, playerDir);
+
+        RaycastHit hit;
+        if (Physics.Raycast(headPos.position, playerDir, out hit))
+        {
+            if (angleToPlayer < FOV && hit.collider.CompareTag("Player"))
+            {
+                shootTimer += Time.deltaTime;
+                agent.SetDestination(gameManager.instance.player.transform.position);
+
+
+                if (shootTimer > shootRate)
+                {
+                    shoot();
+                }
+
+                if (agent.remainingDistance <= agent.stoppingDistance)
+                {
+                    faceTarget();
+                }
+                return true;
+            }
+        }
+        return false;
     }
 
     void faceTarget()
@@ -81,6 +99,7 @@ public class enemyAI : MonoBehaviour, IDamage
     public void takeDamage(int amount)
     {
         HP -= amount;
+        agent.SetDestination(gameManager.instance.player.transform.position);
 
         if (HP <= 0)
         {
