@@ -25,15 +25,18 @@ public class staticObjLogic : MonoBehaviour, IDamage, ICost
     }
     public void takeDamage(int amount)
     {
-        HP -= amount;
+        if(model.tag == "Bought")
+        {
+            HP -= amount;
 
-        if (HP <= 0)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            StartCoroutine(flashRed());
+            if (HP <= 0)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                StartCoroutine(flashRed());
+            }
         }
     }
     IEnumerator flashRed()
