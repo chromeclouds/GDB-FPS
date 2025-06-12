@@ -1,4 +1,7 @@
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+
  
 public class gameManager : MonoBehaviour
 {
@@ -8,15 +11,22 @@ public class gameManager : MonoBehaviour
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
+    [SerializeField] TMP_Text gameGoalCountText;
+    [SerializeField] int wallet;
+
+    public Image playerHPBar;
+    public GameObject playerDamageScreen;
  
     public GameObject player;
     public playerController playerScript;
+    public GameObject interactPrompt;
 
     public bool isPaused;
 
     float timescaleOrig;
 
     int gameGoalCount;
+    
 
     public int ammo;
 
@@ -71,6 +81,7 @@ public class gameManager : MonoBehaviour
     public void updateGameGoal(int amount)
     {
         gameGoalCount += amount;
+        gameGoalCountText.text = gameGoalCount.ToString("f0");
 
         if(gameGoalCount <= 0)
         {
@@ -88,5 +99,13 @@ public class gameManager : MonoBehaviour
         menuActive.SetActive(true);
     }
 
+    public int walletAmount()
+    {
+        return wallet;
+    }
+    public void reduceWallet(int amount)
+    {
+        wallet -= amount;
+    }
  
 }

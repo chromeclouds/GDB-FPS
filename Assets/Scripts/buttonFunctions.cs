@@ -22,4 +22,10 @@ public class buttonFunctions : MonoBehaviour
             UnityEditor.EditorApplication.isPlaying = false;
     #endif
     }
+
+    public void loadLevel(int lvl)
+    {
+        SceneManager.LoadScene(lvl);
+        gameManager.instance.stateUnpause();
+    }
 }
