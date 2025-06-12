@@ -3004,7 +3004,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3031821807383312664, guid: 1268d62ced763214e865783c0c80488e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -17.88
+      value: -18.75
       objectReference: {fileID: 0}
     - target: {fileID: 3031821807383312664, guid: 1268d62ced763214e865783c0c80488e, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3012,7 +3012,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3031821807383312664, guid: 1268d62ced763214e865783c0c80488e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 50.89
+      value: 44.75
       objectReference: {fileID: 0}
     - target: {fileID: 3031821807383312664, guid: 1268d62ced763214e865783c0c80488e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -9887,6 +9887,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: gunBox Easy
       objectReference: {fileID: 0}
+    - target: {fileID: 7701200244001910145, guid: d5f3980fa7b5a1a40b80e3de6649e203, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: c04537fb6b9df0948ba4b019e226c0e0, type: 2}
     - target: {fileID: 8022843479529886074, guid: d5f3980fa7b5a1a40b80e3de6649e203, type: 3}
       propertyPath: m_LocalPosition.x
       value: -22.5
@@ -9897,7 +9901,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8022843479529886074, guid: d5f3980fa7b5a1a40b80e3de6649e203, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 45.46684
+      value: 45.75
       objectReference: {fileID: 0}
     - target: {fileID: 8022843479529886074, guid: d5f3980fa7b5a1a40b80e3de6649e203, type: 3}
       propertyPath: m_LocalRotation.w
@@ -9932,6 +9936,63 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d5f3980fa7b5a1a40b80e3de6649e203, type: 3}
+--- !u!1001 &8871454319389114353
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 55798973921820225, guid: 57ca31f9a5c6de54690609889f9d726a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -17.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 55798973921820225, guid: 57ca31f9a5c6de54690609889f9d726a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 7.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 55798973921820225, guid: 57ca31f9a5c6de54690609889f9d726a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 45.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 55798973921820225, guid: 57ca31f9a5c6de54690609889f9d726a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 55798973921820225, guid: 57ca31f9a5c6de54690609889f9d726a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 55798973921820225, guid: 57ca31f9a5c6de54690609889f9d726a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 55798973921820225, guid: 57ca31f9a5c6de54690609889f9d726a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 55798973921820225, guid: 57ca31f9a5c6de54690609889f9d726a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 55798973921820225, guid: 57ca31f9a5c6de54690609889f9d726a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 55798973921820225, guid: 57ca31f9a5c6de54690609889f9d726a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1535359907864834717, guid: 57ca31f9a5c6de54690609889f9d726a, type: 3}
+      propertyPath: m_Name
+      value: gunBox Hard
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 57ca31f9a5c6de54690609889f9d726a, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -9959,3 +10020,4 @@ SceneRoots:
   - {fileID: 1977039782}
   - {fileID: 608392797}
   - {fileID: 4689922915450731902}
+  - {fileID: 8871454319389114353}
