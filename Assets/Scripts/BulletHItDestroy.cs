@@ -11,7 +11,8 @@ public class BulletHitDestroy : MonoBehaviour
            // Apply damage to the object
            dmg.takeDamage(10); // Assuming a fixed damage value of 10
        }
-       // Destroy the bullet after it hits something
-       Destroy(gameObject);
+        // Destroy After the object has beent it
+        // This will destroy the bullet itself
+        Destroy(gameObject);
     }
 }
