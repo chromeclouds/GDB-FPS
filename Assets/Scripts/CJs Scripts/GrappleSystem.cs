@@ -11,6 +11,9 @@ public class GrappleSystem : MonoBehaviour
     public LayerMask grappleLayer;
     public Transform grappleStart;
     public Transform Camera;
+    public float grappleSpeed;
+
+    //private SpringJoint spring;
 
 
 
@@ -28,6 +31,23 @@ public class GrappleSystem : MonoBehaviour
             isGrappling = true;
             grappleRope.positionCount = 2;
             rb.useGravity = false;
+
+            // testing springjoint
+            //spring = gameObject.AddComponent<SpringJoint>();
+            //spring.autoConfigureConnectedAnchor = false;
+            //spring.connectedAnchor = anchorPoint;
+
+            //float distanceFromPoint = Vector3.Distance(transform.position, anchorPoint);
+
+            //spring.maxDistance = distanceFromPoint * 0.8f;
+            //spring.minDistance = distanceFromPoint * 0.25f;
+
+            //spring.spring = 100f;
+            //spring.damper = 5f;
+            //spring.massScale = 1f;
+
+            grappleRope.positionCount = 2;
+            //rb.useGravity = false;
         }
     }
 
@@ -35,13 +55,20 @@ public class GrappleSystem : MonoBehaviour
     {
         isGrappling = false;
         grappleRope.positionCount = 0;
+
+        // destroy springjoint
+        //Destroy(spring);
+
         rb.useGravity = true;
     }
 
     void UpdateGrapple()
     {
         Vector3 dir = (anchorPoint - transform.position).normalized;
-        rb.AddForce(dir * grappleAccel, ForceMode.Acceleration);
+        //rb.AddForce(dir * grappleAccel, ForceMode.Acceleration);
+
+        //attempt at fixing using "MoveTowards"
+        transform.position = Vector3.MoveTowards(transform.position, anchorPoint, grappleSpeed * Time.deltaTime);
     }
 
     // Update is called once per frame
@@ -62,6 +89,7 @@ public class GrappleSystem : MonoBehaviour
         if (isGrappling)
         {
             grappleRope.SetPositions(new Vector3[] { grappleStart.position, anchorPoint });
+            UpdateGrapple();
         }
       
     }
