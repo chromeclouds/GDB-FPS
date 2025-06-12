@@ -30,6 +30,7 @@ public class playerController : MonoBehaviour, IDamage
     [SerializeField] TMP_Text ammoCount;
      
 
+
     bool isSprinting;
     int jumpCount;
     int HPOrig;
