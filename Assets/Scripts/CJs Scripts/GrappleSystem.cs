@@ -6,12 +6,14 @@ public class GrappleSystem : MonoBehaviour
     private Vector3 anchorPoint;
     public LineRenderer grappleRope;
     public float grappleAccel;
-    public Rigidbody rb;
+    //public Rigidbody rb;
     private bool isGrappling;
     public LayerMask grappleLayer;
     public Transform grappleStart;
     public Transform Camera;
     public float grappleSpeed;
+    public float speed;
+    public CharacterController controller;
 
 
 
@@ -29,10 +31,11 @@ public class GrappleSystem : MonoBehaviour
             anchorPoint = hit.point;
             isGrappling = true;
             grappleRope.positionCount = 2;
-            rb.useGravity = false;
+            
 
             grappleRope.positionCount = 2;
 
+            
             
         }
     }
@@ -41,29 +44,36 @@ public class GrappleSystem : MonoBehaviour
     {
         isGrappling = false;
         grappleRope.positionCount = 0;
-        rb.useGravity = true;
+        
+        
+        
     }
 
     void UpdateGrapple()
     {
-        Vector3 dir = (anchorPoint - transform.position).normalized;
+        Vector3 dir = anchorPoint - transform.position;
         //rb.AddForce(dir * grappleAccel, ForceMode.Acceleration);
 
         //attempt at overriding playerController during grapple
         float dist = dir.magnitude;
+        Vector3 direction = dir.normalized;
         if (dist < 1f)
         {
             StopGrapple();
             return;
         }
 
-        Vector3 move = dir * grappleSpeed * Time.deltaTime;
-        rb.MovePosition(transform.position + move);
+
+        Vector3 move = dir.normalized * grappleSpeed * Time.deltaTime;
+        controller.Move(move);
     }
 
     // Update is called once per frame
     void Update()
     {
+        
+        
+
         if (Input.GetKeyDown(KeyCode.Q))
         {
             StartGrapple();
@@ -82,5 +92,6 @@ public class GrappleSystem : MonoBehaviour
             UpdateGrapple();
         }
       
+        
     }
 }
