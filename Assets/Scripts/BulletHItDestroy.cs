@@ -1,18 +1,20 @@
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class BulletHitDestroy : MonoBehaviour
 {
-   public void OnTriggerEnter(Collider other)
-   {
-       // Check if the collided object has an IDamage component
-       IDamage dmg = other.GetComponent<IDamage>();
-       if (dmg != null)
-       {
-           // Apply damage to the object
-           dmg.takeDamage(10); // Assuming a fixed damage value of 10
-       }
-        // Destroy After the object has beent it
-        // This will destroy the bullet itself
+    [SerializeField] int damageAmount = 10; // Default damage per bullet
+    [SerializeField] int damageRate = 1;    // Multiplier for rapid-fire weapons
+
+    private void OnTriggerEnter(Collider other)
+    {
+        IDamage dmg = other.GetComponent<IDamage>();
+        if (dmg != null)
+        {
+            int totalDamage = damageAmount * damageRate; // Scaled damage
+            dmg.takeDamage(totalDamage);
+        }
+
         Destroy(gameObject);
     }
 }
