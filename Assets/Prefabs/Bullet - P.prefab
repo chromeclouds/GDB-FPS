@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5724955344714258929}
   - component: {fileID: 297480800142477562}
-  - component: {fileID: 1434004376837052781}
   - component: {fileID: 6456868151763425484}
   - component: {fileID: 7277524844379552394}
   - component: {fileID: 4283366764792909562}
@@ -48,26 +47,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 657b9bee1c62a404090205a6e0ff6dbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
+  damage: 1
   lifetime: 3
---- !u!114 &1434004376837052781
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6255843267276114019}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc749d5350239a642bb978551dd8f1c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 0
-  rb: {fileID: 7277524844379552394}
-  damageAmount: 1
-  damageRate: 0
-  speed: 50
-  destroyTime: 3
 --- !u!135 &6456868151763425484
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -83,7 +64,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
