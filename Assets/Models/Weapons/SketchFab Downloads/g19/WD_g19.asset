@@ -14,26 +14,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Glock 19
   fireRate: 0.2
-  damage: 15
+  damage: 1
   bulletSpeed: 60
   bulletPrefab: {fileID: 6255843267276114019, guid: eb4250e6b764fd845b889fe3cc6ea8ab, type: 3}
   spreadAngle: 2
   bulletsPerShot: 1
   muzzleFlash: {fileID: 0}
-  weaponPositionOffset: {x: 0, y: 0, z: 0}
-  weaponRotationOffset: {x: 0, y: 0, z: 0}
   recoilKickback: 0.2
   recoilRecoverySpeed: 8
+  hasADS: 1
   adsPositionOffset: {x: 0, y: 0, z: 0}
   adsSpeed: 12
-  hasADS: 1
-  fireMode: 0
-  burstCount: 0
   adsFOV: 45
   adsFOVSpeed: 10
+  fireMode: 0
+  burstCount: 0
+  ammoType: 0
   reloadTime: 1.2
   maxAmmo: 17
   isFlamethrower: 0
   overheatTime: 0
   cooldownTime: 0
-  ammoType: 0
+  weaponPositionOffset: {x: 0, y: 0, z: 0}
+  weaponRotationOffset: {x: 0, y: 0, z: 0}
