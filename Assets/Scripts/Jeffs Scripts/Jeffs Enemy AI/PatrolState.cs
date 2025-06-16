@@ -7,10 +7,12 @@ public class PatrolState : EnemyState
 
     public override void Enter()
     {
+        ai.animator.SetBool("isPatrolling", true);
         ai.animator.SetBool("isWalking", true);
 
-        if (ai.waypoints.Length > 0)
+        if (!ai.agent.pathPending && ai.agent.remainingDistance < 0.5f)
         {
+            currentWaypoint = (currentWaypoint + 1) % ai.waypoints.Length;
             ai.agent.SetDestination(ai.waypoints[currentWaypoint].position);
         }
     }
@@ -20,10 +22,9 @@ public class PatrolState : EnemyState
         if (ai.CanSeePlayer())
         {
             ai.SwitchState(new ChaseState(ai));
-            return;
         }
 
-        if (!ai.agent.pathPending && ai.agent.remainingDistance < 0.5f)
+        else if (!ai.agent.pathPending && ai.agent.remainingDistance < 0.5f)
         {
             currentWaypoint = (currentWaypoint + 1) % ai.waypoints.Length;
             ai.agent.SetDestination(ai.waypoints[currentWaypoint].position);
@@ -32,6 +33,7 @@ public class PatrolState : EnemyState
 
     public override void Exit()
     {
+        ai.animator.SetBool("isPatrolling", false);
         ai.animator.SetBool("isWalking", false);
     }
 }

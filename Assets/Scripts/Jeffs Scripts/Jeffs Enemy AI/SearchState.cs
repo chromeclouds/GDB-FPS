@@ -2,17 +2,19 @@ using UnityEngine;
 
 public class SearchState : EnemyState
 {
-    private float searchDuration = 3f;
+    private float searchDuration = 5f;
     private float searchTimer = 0f;
-    private int randomIdleIndex;
+    private int idleIndex;
 
     public SearchState(enemyAI1 ai) : base(ai) { }
 
     public override void Enter()
     {
         ai.agent.SetDestination(ai.lastKnownPosition);
-        randomIdleIndex = Random.Range(1, 3); //idle1 or idle2
-        ai.animator.SetTrigger($"Idle{randomIdleIndex}");
+
+        idleIndex = Random.Range(1, 3); //idle1 or idle2
+        ai.animator.SetInteger("IdleIndex", idleIndex);
+        ai.animator.SetTrigger("RandomIndex");
     }
 
     public override void Update()
@@ -31,7 +33,7 @@ public class SearchState : EnemyState
     
     public override void Exit()
     {
-        ai.animator.ResetTrigger($"Idle{randomIdleIndex}");
+        ai.animator.ResetTrigger("RandomIndex");
     }
 
 

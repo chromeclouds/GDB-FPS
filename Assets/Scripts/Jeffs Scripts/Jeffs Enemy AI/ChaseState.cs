@@ -2,10 +2,13 @@ using UnityEngine;
 
 public class ChaseState : EnemyState
 {
+    private const float attackBuffer = 0.5f; 
+
     public ChaseState(enemyAI1 ai) : base(ai) { }
     
     public override void Enter()
     {
+        ai.animator.SetBool("isChasing", true);
         ai.animator.SetBool("isRunning", true);
     }
 
@@ -19,9 +22,8 @@ public class ChaseState : EnemyState
             ai.lastKnownPosition = ai.player.position;
 
             
-            if (ai.agent.remainingDistance <= ai.attackRange)
+            if (!ai.agent.pathPending && ai.agent.remainingDistance <= ai.attackRange - attackBuffer)
             {
-                ai.FacePlayer();
                 ai.SwitchState(new AttackState(ai));
             }
         }
@@ -33,6 +35,7 @@ public class ChaseState : EnemyState
 
     public override void Exit()
     {
+        ai.animator.SetBool("isChasing", false);
         ai.animator.SetBool("isRunning", false);
     }
 }
