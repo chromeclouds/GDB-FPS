@@ -103,6 +103,12 @@ public class WeaponFire : MonoBehaviour
                 );
 
             GameObject bullet = Instantiate(weaponData.BulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation * spread);
+            Bullet bulletScript = bullet.GetComponent<Bullet>();
+            if (bulletScript != null)
+            {
+                bulletScript.damage = weaponData.Damage; //pass in weapon damage. 
+            }
+
             Rigidbody rb = bullet.GetComponent<Rigidbody>();
             if (rb != null)
             {

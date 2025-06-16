@@ -10,9 +10,9 @@ public class Bullet : MonoBehaviour
         Destroy(gameObject, lifetime);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        IDamage dmg = other.GetComponent<IDamage>();
+        IDamage dmg = collision.collider.GetComponent<IDamage>();
         if(dmg != null)
         {
             dmg.takeDamage(damage);
