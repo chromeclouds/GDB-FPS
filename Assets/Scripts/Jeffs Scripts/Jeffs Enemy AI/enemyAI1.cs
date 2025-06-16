@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.AI;
 using Unity.VisualScripting;
 using System.ComponentModel;
+using UnityEditor.PackageManager.Requests;
 
 public class enemyAI1 : MonoBehaviour, IDamage
 {
@@ -96,18 +97,26 @@ public class enemyAI1 : MonoBehaviour, IDamage
         HP -= amount;
         if (HP <= 0)
         {
-            animator.SetTrigger("isDead");
-            Destroy(gameObject, 2f);
+            animator.SetBool("isDead", true);
+            Destroy(gameObject, 3f);
             gameManager.instance.updateGameGoal(-1);
-            return;
         }
-        animator.SetInteger("TakingDamageType", amount > 20 ? 2 : 1);
-        animator.SetTrigger("TakingDamage");
+        else
+        {
+            animator.SetBool("isDamaged", true);
 
-        StartCoroutine(FlashRed());
-        lastKnownPosition = player.position;
-        SwitchState(new ChaseState(this));
-        
+            animator.SetInteger("TakingDamageType", amount >= 5 ? 2 : 1);
+            StartCoroutine(ResetDamageAnimation());
+
+            lastKnownPosition = player.position;
+            SwitchState(new ChaseState(this));
+        }
+    }
+
+    IEnumerator ResetDamageAnimation()
+    {
+        yield return new WaitForSeconds(0.5f);
+        animator.SetBool("isDamaged", false);
     }
 
     IEnumerator FlashRed()
@@ -122,21 +131,19 @@ public class enemyAI1 : MonoBehaviour, IDamage
     
     public void Attack()
     {
-        if (attackTimer < attackCooldown) return;
-
-        attackTimer = 0f;
-        attackCount++;
-        if (attackCount % 5 == 0)
+        if (attackTimer >= attackCooldown)
         {
-            animator.SetInteger("AttackIndex", 2); //attack 3 big hit
-            //add knockback eventually??
+            attackTimer = 0f;
+            animator.SetBool("isAttacking", true);
+            animator.SetInteger("AttackIndex", Random.Range(1, 5) == 1 ? 2 : 1); //20% chance of heavy attack
+            StartCoroutine(ResetAttack());
+        }
+    }
 
-        }
-        else
-        {
-            animator.SetInteger("AttackIndex", attackCount % 2);
-        }
-        animator.SetTrigger("isAttacking");
+    IEnumerator ResetAttack()
+    {
+        yield return new WaitForSeconds(1.2f); //adjust this to match animation lengths
+        animator.SetBool("isAttacking", false);
     }
 
     public void SetMovementAnimation(bool isWalking, bool isRunning)
