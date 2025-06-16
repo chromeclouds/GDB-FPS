@@ -6,7 +6,7 @@ using TMPro;
 public class gameManager : MonoBehaviour
 {
     public static gameManager instance;
-
+    public playerController playerController;
     [SerializeField] GameObject menuActive;
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuWin;
@@ -28,7 +28,7 @@ public class gameManager : MonoBehaviour
     int gameGoalCount;
     
 
-    public int ammo;
+   [SerializeField] TMP_Text ammo;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -44,7 +44,9 @@ public class gameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
- 
+        updateAmmoCount();
+
+
         if (Input.GetButtonDown("Cancel"))
         {
             if (menuActive == null) 
@@ -91,7 +93,35 @@ public class gameManager : MonoBehaviour
             menuActive.SetActive(true);
         }
     }
+    public void updateAmmoCount(int amount=1)
+    {
+ 
+ 
+        //|| Input.GetButton("Fire1")
+        //the code above will subtract 1 from the ammo every frame of the game if put into the if statement below
 
+        //Checking to see if the Fire1 button is pressed
+        if (Input.GetButtonDown("Fire1"))
+        {
+ 
+            //if so, turn ammo.text into an int named ammoBase
+            if (int.TryParse(ammo.text, out int ammoBase) )
+            {
+                //checking to see if ammoBase is not equal to 0, if so, continue with the method.
+                if (ammoBase != 0)
+                {
+                    //create a new int called newAmmo and have it equal ammoBase - amount (1)
+                    int newAmmo = ammoBase - amount;
+                    //update the string
+                    ammo.text = newAmmo.ToString();
+                    //debug
+                    //Debug.Log("Ammo updated to: " + newAmmo);
+                }
+
+            }
+        }
+ 
+    }
     public void youLose()
     {
         statePause();
