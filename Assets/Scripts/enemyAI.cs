@@ -17,12 +17,15 @@ public class enemyAI : MonoBehaviour, IDamage
     [SerializeField] GameObject bullet;
     [SerializeField] float shootRate;
 
+
+
     Color colorOrig;
 
     float shootTimer;
     float angleToPlayer;
 
     bool playerInRange;
+          
 
     Vector3 playerDir;
 
@@ -31,12 +34,13 @@ public class enemyAI : MonoBehaviour, IDamage
     {
         colorOrig = model.material.color;
         gameManager.instance.updateGameGoal(1);
-
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+        
         if (playerInRange && canSeePlayer())
         {
 
@@ -44,8 +48,25 @@ public class enemyAI : MonoBehaviour, IDamage
 
     }
 
+    void SetFleeDestination()
+    {
+        Vector3 direction = (transform.position - gameManager.instance.player.transform.position).normalized;
+        Vector3 desiredPos = transform.position + direction * 10f;
+
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(desiredPos, out hit, 5f, NavMesh.AllAreas))
+        {
+            agent.SetDestination(hit.position);
+            Debug.Log("Fleeing to: " + hit.position);
+        }
+        else
+        {
+            Debug.LogWarning("No valid flee path found.");
+        }
+    }
     bool canSeePlayer()
     {
+
         playerDir = gameManager.instance.player.transform.position - headPos.position;
         angleToPlayer = Vector3.Angle(playerDir, transform.forward);
         Debug.DrawRay(headPos.position, playerDir);
