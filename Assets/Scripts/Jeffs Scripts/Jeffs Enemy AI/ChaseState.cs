@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ChaseState : EnemyState
 {
-    private const float attackBuffer = 0.5f; 
+     
 
     public ChaseState(enemyAI1 ai) : base(ai) { }
     
@@ -22,8 +22,9 @@ public class ChaseState : EnemyState
             ai.lastKnownPosition = ai.player.position;
 
             
-            if (!ai.agent.pathPending && ai.agent.remainingDistance <= ai.attackRange - attackBuffer)
+            if (ai.agent.remainingDistance <= ai.attackRange)
             {
+                ai.FacePlayer();
                 ai.SwitchState(new AttackState(ai));
             }
         }

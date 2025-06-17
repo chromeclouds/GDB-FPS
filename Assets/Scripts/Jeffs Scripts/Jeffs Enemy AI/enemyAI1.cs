@@ -3,7 +3,6 @@ using System.Collections;
 using UnityEngine.AI;
 using Unity.VisualScripting;
 using System.ComponentModel;
-using UnityEditor.PackageManager.Requests;
 
 public class enemyAI1 : MonoBehaviour, IDamage
 {
@@ -134,10 +133,75 @@ public class enemyAI1 : MonoBehaviour, IDamage
         if (attackTimer >= attackCooldown)
         {
             attackTimer = 0f;
+            int attackIndex = (Random.Range(1, 6) == 5) ? 2 : 1; //5th attack is heavy
+            
+            animator.SetInteger("AttackIndex", attackIndex);
             animator.SetBool("isAttacking", true);
-            animator.SetInteger("AttackIndex", Random.Range(1, 5) == 1 ? 2 : 1); //20% chance of heavy attack
-            StartCoroutine(ResetAttack());
+            
         }
+    }
+
+    public void EndAttack()
+    {
+        animator.SetBool("isAttacking", false);
+    }
+
+    public void PlayDamageReaction(bool isShotgun)
+    {
+        if (isShotgun)
+        {
+            animator.SetInteger("TakingDamageType", 2);
+            animator.SetBool("isShotgunHit", true);
+
+        }
+        else
+        {
+            animator.SetInteger("TakingDamageType", 1);
+            animator.SetBool("isDamaged", true);
+        }
+    }
+
+    public void PerformMeleeAttack()
+    {
+        if (attackTimer >= attackCooldown)
+        {
+            attackTimer = 0f;
+            animator.SetBool("isAttacking", true);
+            int attackType = Random.Range(1, 6);
+            animator.SetInteger("Attackindex", attackType == 5 ? 2 : 1);
+
+            StartCoroutine(HandleMeleeDamage(attackType == 5));
+        }
+    }
+
+    private IEnumerator HandleMeleeDamage(bool isPowerHit)
+    {
+        //wait for hit frame, adjust to match anim here
+        yield return new WaitForSeconds(0.5f);
+
+        Collider[] hits = Physics.OverlapSphere(transform.position + transform.forward * 1.5f, 2f);
+        foreach (var hit in hits)
+        {
+            if (hit.CompareTag("Player"))
+            {
+                int damage = isPowerHit ? meleeDamage * 2 : meleeDamage;
+                hit.GetComponent<IDamage>()?.takeDamage(damage);
+                if (isPowerHit)
+                {
+                    Rigidbody rb = hit.GetComponent<Rigidbody>();
+                    if (rb != null)
+                        rb.AddForce((hit.transform.position - transform.position).normalized *500f);
+                }
+            }
+        }
+        //wait for attack to finish
+        yield return new WaitForSeconds(0.5f);
+        animator.SetBool("isAttacking", false);
+    }
+    public void EndDamageReaction()
+    {
+        animator.SetBool("isShotgunHit", false);
+        animator.SetBool("isDamaged", false);
     }
 
     IEnumerator ResetAttack()

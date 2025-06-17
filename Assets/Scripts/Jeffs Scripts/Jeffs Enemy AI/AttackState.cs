@@ -11,45 +11,25 @@ public class AttackState : EnemyState
 
     public override void Enter()
     {
-        timer = 0f;
-        ai.agent.ResetPath(); //stop moving for attack
-        attackCounter++;
-        chosenAttack = (attackCounter % 5 == 0) ? 2 : 1; //attack 2 every 5 hits
         ai.animator.SetBool("isAttacking", true);
-        ai.animator.SetInteger("AttackIndex", chosenAttack);
-
-        
-        ai.FacePlayer();
-        ai.Attack(); 
+        ai.PerformMeleeAttack();
     }
 
     public override void Update()
     {
-        timer += Time.deltaTime;
-
-        ai.FacePlayer();
-
-        if (timer >= attackDuration)
+        if (!ai.CanSeePlayer())
         {
-            if (ai.CanSeePlayer() && ai.agent.remainingDistance > ai.attackRange + 0.5f)
-            {
-                ai.SwitchState(new ChaseState(ai));
-            }
-            else if (!ai.CanSeePlayer())
-            {
-                ai.SwitchState(new SearchState(ai));
-            }
-            else
-            {
-                //reset attack if in range still
-                ai.SwitchState(new AttackState(ai));
-            }
+            ai.SwitchState(new SearchState(ai));
+        }
+        else if (ai.agent.remainingDistance > ai.attackRange)
+        {
+            ai.SwitchState(new ChaseState(ai));
         }
     }
 
     public override void Exit()
     {
         ai.animator.SetBool("isAttacking", false);
-        ai.animator.SetInteger("AttackIndex", 0);
+        
     }
 }
