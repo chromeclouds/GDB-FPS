@@ -45,7 +45,7 @@ public class enemyAI : MonoBehaviour, IDamage
         {
 
         }
-        
+
     }
 
     void SetFleeDestination()
@@ -147,5 +147,4 @@ public class enemyAI : MonoBehaviour, IDamage
 
         Instantiate(bullet, shootPos.position, transform.rotation);
     }
-
 }

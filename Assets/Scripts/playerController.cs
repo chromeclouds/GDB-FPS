@@ -84,8 +84,10 @@ public class playerController : MonoBehaviour, IDamage
 
         playerVel.y -= gravity * Time.deltaTime;
 
-        if (Input.GetButton("Fire1") && shootTimer > shootRate)
-            shoot();
+        //commented out because shoot is handled by the guns, you cant shoot if you dont have one
+        //you are not a wizard
+        //if (Input.GetButton("Fire1") && shootTimer > shootRate)
+        //    shoot();
 
         look();
 
