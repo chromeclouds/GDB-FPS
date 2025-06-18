@@ -23,7 +23,8 @@ public class WeaponCratePrompt : MonoBehaviour
         if (dist < displayRange)
         {
             promptUI.SetActive(true);
-            promptUI.transform.LookAt(Camera.main.transform);
+            Vector3 direction = promptUI.transform.position - Camera.main.transform.position;
+            promptUI.transform.rotation = Quaternion.LookRotation(direction);
         }
         else
         {
