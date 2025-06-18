@@ -43,15 +43,20 @@ public class PlayerWeaponSwap : MonoBehaviour
 
     void DropWeaponToNearbyCrate()
     {
-        if (currentWeapon == null || currentWorldPrefab == null) return;
+        Debug.Log("drop weapon to nearby crate triggered");
 
-        WeaponData weaponData = currentWeapon.GetComponent<WeaponFire>()?.weaponData;
-        if (weaponData == null) return;
+        if (currentWeapon == null || currentWorldPrefab == null)
+        {
+            Debug.LogWarning("no weapon to drop or missing prefab ref");
+            return;
+        }
 
         WeaponCrate nearestCrate = FindClosestCrate();
+        Debug.Log("nearest crate: " + (nearestCrate != null ? nearestCrate.name : "none"));
 
         if (nearestCrate != null && nearestCrate.GetCurrentItem() == null)
         {
+            Debug.Log("placing item on crate");
             nearestCrate.PlaceItem(currentWorldPrefab);
             Destroy(currentWeapon);
             currentWeapon = null;
@@ -69,7 +74,7 @@ public class PlayerWeaponSwap : MonoBehaviour
         foreach ( var crate in crates )
         {
             float dist = Vector3.Distance(pos, crate.transform.position);
-            if (dist < minDist && dist <= 3f)
+            if (dist < minDist && dist <= 5f)
             {
                 minDist = dist;
                 nearest = crate;

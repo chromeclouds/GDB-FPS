@@ -16,17 +16,29 @@ public class WeaponPickup : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            WeaponManager weaponManager = other.GetComponent<WeaponManager>();
-            if (weaponManager != null)
+            PlayerWeaponSwap weaponSwap = other.GetComponent<PlayerWeaponSwap>();
+            if (weaponSwap != null )
             {
-                weaponManager.PickupWeapon(weaponPrefab, weaponData); 
-                
-                if (crateOrigin != null && crateOrigin.originCrate != null)
-                {
-                    crateOrigin.originCrate.ClearItem();
-                }
-                Destroy(gameObject);
+                weaponSwap.currentWorldPrefab = weaponPrefab;
+                weaponSwap.PickupWeapon(weaponPrefab, weaponData);
             }
+            else
+            {
+                WeaponManager weaponManager = other.GetComponent<WeaponManager>();
+                if (weaponManager != null)
+                {
+                    weaponManager.PickupWeapon(weaponPrefab, weaponData);
+                }
+            }
+
+            if (crateOrigin != null && crateOrigin.originCrate != null)
+            {
+                crateOrigin.originCrate.ClearItem();
+            }
+
+            Destroy(gameObject);
+            
+        
         }
     }
 }

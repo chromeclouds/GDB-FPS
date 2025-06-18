@@ -27,6 +27,7 @@ public class WeaponFire : MonoBehaviour
     void Update()
     {
         if (isReloading || isOverheated) return;
+        if (transform.root.CompareTag("Player") == false) return;
 
         fireTimer += Time.deltaTime;
 

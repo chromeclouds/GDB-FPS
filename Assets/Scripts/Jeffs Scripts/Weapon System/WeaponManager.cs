@@ -56,6 +56,15 @@ public class WeaponManager : MonoBehaviour
             ownedWeapons[i].SetActive(i == currentWeaponIndex);
         }
     }
+    
+    public void ClearWeapons()
+    {
+        foreach (var weapon in ownedWeapons)
+        {
+            if (weapon != null) Destroy(weapon);
+        }
+        ownedWeapons.Clear();
+    }
 
     private void SwitchWeapon(int index)
     {
