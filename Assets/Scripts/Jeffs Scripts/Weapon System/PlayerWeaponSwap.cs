@@ -4,6 +4,7 @@ public class PlayerWeaponSwap : MonoBehaviour
 {
     public GameObject currentWeapon;
     public Transform weaponHolder; //empty gameobject as attachment point "hands"
+    public GameObject currentWorldPrefab;
 
     public void PickupWeapon(GameObject weaponPrefab, WeaponData weaponData)
     {
@@ -12,6 +13,7 @@ public class PlayerWeaponSwap : MonoBehaviour
             Destroy(currentWeapon);
         }
         currentWeapon = Instantiate(weaponPrefab, weaponHolder);
+        currentWorldPrefab = weaponPrefab;
 
         currentWeapon.transform.localPosition = weaponData.WeaponPositionOffset;
         currentWeapon.transform.localRotation = Quaternion.Euler(weaponData.WeaponRotationOffset);
@@ -41,7 +43,7 @@ public class PlayerWeaponSwap : MonoBehaviour
 
     void DropWeaponToNearbyCrate()
     {
-        if (currentWeapon == null) return;
+        if (currentWeapon == null || currentWorldPrefab == null) return;
 
         WeaponData weaponData = currentWeapon.GetComponent<WeaponFire>()?.weaponData;
         if (weaponData == null) return;
@@ -50,9 +52,10 @@ public class PlayerWeaponSwap : MonoBehaviour
 
         if (nearestCrate != null && nearestCrate.GetCurrentItem() == null)
         {
-            nearestCrate.PlaceItem(currentWeapon.GetComponent<WeaponPickup>().weaponPrefab);
+            nearestCrate.PlaceItem(currentWorldPrefab);
             Destroy(currentWeapon);
             currentWeapon = null;
+            currentWorldPrefab = null;
         }
     }
 
