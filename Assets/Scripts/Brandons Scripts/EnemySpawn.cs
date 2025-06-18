@@ -1,13 +1,12 @@
+using UnityEngine;
 using System.Collections;
 using Unity.VisualScripting;
-using UnityEngine;
 
 public class EnemySpawn : MonoBehaviour
 {
     [SerializeField] GameObject enemyPrefab;        // This is the enemy we're going to spawn
     [SerializeField] int spawnAmount;               // How many enemies we want to spawn total
     [SerializeField] float spawnIntreval;           // How long to wait between each spawn (in seconds)
-
     [SerializeField] Transform spawnPoint;          // Where to spawn the enemies from (can leave empty and it'll just use the spawner's position
 
     int spawnCount;                                 // Keeps track of how many enemies we've spawned so far
