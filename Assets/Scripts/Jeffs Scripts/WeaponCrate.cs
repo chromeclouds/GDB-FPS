@@ -1,9 +1,21 @@
 using UnityEngine;
 
+
 public class WeaponCrate : MonoBehaviour
 {
+    [SerializeField] private GameObject defaultItemToSpawn;
+
     public Transform itemHolder;
     private GameObject currentItem;
+
+
+    private void Start()
+    {
+        if (defaultItemToSpawn != null)
+        {
+            PlaceItem(defaultItemToSpawn);
+        }
+    }
 
     private void OnDrawGizmos()
     {
