@@ -261,8 +261,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   model: {fileID: 445507902}
   layer: 9
+  transparency: 0.5
   HP: 3
   price: 0
+  isDamageable: 1
 --- !u!1 &877742314
 GameObject:
   m_ObjectHideFlags: 0
@@ -383,9 +385,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   model: {fileID: 1033961755}
-  layer: 9
+  layer: 0
+  transparency: 0.5
   HP: 100
   price: 0
+  isDamageable: 0
 --- !u!1001 &1128884251
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -458,6 +462,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 89448241500856001, guid: 983787debb9c8d24e9833f6deec82d34, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 89448241500856001, guid: 983787debb9c8d24e9833f6deec82d34, type: 3}
+      propertyPath: m_ProvidesContacts
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 89448241500856001, guid: 983787debb9c8d24e9833f6deec82d34, type: 3}
+      propertyPath: m_IncludeLayers.m_Bits
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2655080590585031453, guid: 983787debb9c8d24e9833f6deec82d34, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2655080590585031453, guid: 983787debb9c8d24e9833f6deec82d34, type: 3}
+      propertyPath: damageRate
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2655080590585031453, guid: 983787debb9c8d24e9833f6deec82d34, type: 3}
+      propertyPath: damageAmount
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3193079401705449219, guid: 983787debb9c8d24e9833f6deec82d34, type: 3}
       propertyPath: m_Name
       value: Lava

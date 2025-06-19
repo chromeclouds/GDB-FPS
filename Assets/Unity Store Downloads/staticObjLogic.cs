@@ -5,8 +5,10 @@ public class staticObjLogic : MonoBehaviour, IDamage, ICost
 {
     [SerializeField] Renderer model;
     [SerializeField] int layer;
+    [SerializeField] float transparency;
     [SerializeField] int HP;
     [SerializeField] int price;
+    [SerializeField] bool isDamageable;
     int layerOrig;
     Color colorOrig;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -25,7 +27,7 @@ public class staticObjLogic : MonoBehaviour, IDamage, ICost
     }
     public void takeDamage(int amount)
     {
-        if(model.tag == "Bought")
+        if(model.tag == "Bought" && isDamageable)
         {
             HP -= amount;
 
@@ -50,7 +52,7 @@ public class staticObjLogic : MonoBehaviour, IDamage, ICost
         // Stores wall color and sets the transparency to half
         // The material color must use transparent renduring
         Color temp = colorOrig;
-        temp.a = 0.5f;
+        temp.a = transparency;
         model.material.color = temp;
     }
     void changeLayer()
