@@ -36,7 +36,7 @@ public class EnemySpawn : MonoBehaviour
     // Create call method if gameManager is using trigger
     void TriggerSpawn()
     {
-        if (isSpawning)
+        if (!isSpawning)
         {
             StartCoroutine(SpawnEnemies());
         }
@@ -61,5 +61,6 @@ public class EnemySpawn : MonoBehaviour
 
         // Turn off the spawning flag so this can restart next time
         isSpawning = false;
+        spawnCount = 0;
     }
 }
