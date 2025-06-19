@@ -16,6 +16,7 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
     [SerializeField] int animSpeedTrans;
     [SerializeField] int FOV;
     [SerializeField] Animator anim;
+    [SerializeField] Collider swordCol;
 
     Color colorOrig;
 
@@ -31,7 +32,7 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
     void Start()
     {
         colorOrig = model.material.color;
-        gameManager.instance.updateGameGoal(1);
+        //gameManager.instance.updateGameGoal(1);
         startingPos = transform.position;
         stoppingDistOrig = agent.stoppingDistance;
 
@@ -181,8 +182,23 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
     {
         shootTimer = 0;
         anim.SetTrigger("Shoot");
-        Instantiate(bullet, shootPos.position, transform.rotation);
     }
 
+    public void createBullet()
+    {
+        Instantiate(bullet, shootPos.position, transform.rotation);
 
+    }
+
+    public void swordColOn()
+    {
+        if (swordCol)
+            swordCol.enabled = true;
+    }
+
+    public void swordColOff()
+    {
+        if (swordCol)
+            swordCol.enabled = false;
+    }
 }

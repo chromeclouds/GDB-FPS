@@ -1,65 +1,77 @@
 using UnityEngine;
 using System.Collections;
 using TMPro;
-public class playerController : MonoBehaviour, IDamage
+using NUnit.Framework;
+using System.Collections.Generic;
+public class playerController : MonoBehaviour, IDamage, IPickup, IOpen
 {
     [SerializeField] CharacterController controller;
     [SerializeField] LayerMask ignoreLayer;
 
+    [Header("Player Stats")]
     [SerializeField] int HP;
     [SerializeField] int speed;
     [SerializeField] int sprintMod;
     [SerializeField] int jumpVel;
     [SerializeField] int jumpMax;
     [SerializeField] int gravity;
+
+    [Header("Weapon & Shooting")]
+    [SerializeField] int shootDamage;
+    [SerializeField] int shootDistance;
+    [SerializeField] float shootRate;
+    //from lecture 5 change this to work with weapondata system
+    [SerializeField] List<WeaponStats> weaponList = new List<WeaponStats>();
+    [SerializeField] GameObject weaponModel;
+
+    [Header("Ammo & UI")]
     [SerializeField] int ammoLight;
     [SerializeField] int ammoMed;
     [SerializeField] int ammoHeavy;
     //this int is for testing
     [SerializeField] int ammo;
-    [SerializeField] int shootDamage;
-    [SerializeField] int shootDistance;
-    [SerializeField] float shootRate;
+    [SerializeField] TMP_Text ammoCount;
 
+    [Header("Raycasting")]
     [SerializeField] float lookDistance;
 
+    [Header("Pickup Prefabs")]
     [SerializeField] GameObject ammoPickup;
     [SerializeField] GameObject light;
     [SerializeField] GameObject med;
     [SerializeField] GameObject heavy;
-    [SerializeField] TMP_Text ammoCount;
-     
-
-
+    
     bool isSprinting;
     int jumpCount;
     int HPOrig;
+    int weaponListPOS;
     float shootTimer;
- 
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        HPOrig = HP;
-        updatePlayerUI();
-
-    }
 
     Vector3 moveDir;
     Vector3 playerVel;
 
+    void Start()
+    {
+        HPOrig = HP;
+        spawnPlayer();
+        updatePlayerUI();
 
-    // Update is called once per frame
+    }
+
     void Update()
     {
+        Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * shootDistance, Color.red);
+        if (!gameManager.instance.isPaused)
+        {
+            movement();
+            sprint();
+        }
+
         if (ammoCount != null)
         {
             ammoCount.text = "Ammo: " + ammo.ToString();
         }
-        Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * shootDistance, Color.red);
 
-        movement();
-        sprint();
     }
 
     void movement()
@@ -84,17 +96,15 @@ public class playerController : MonoBehaviour, IDamage
 
         playerVel.y -= gravity * Time.deltaTime;
 
-        //commented out because shoot is handled by the guns, you cant shoot if you dont have one
-        //you are not a wizard
-        //if (Input.GetButton("Fire1") && shootTimer > shootRate)
-        //    shoot();
-
-        look();
+        if (Input.GetButton("Fire1") && shootTimer > shootRate)
+            shoot();
 
         if (Input.GetButton("Interact"))
             interact();
 
-        //transform.position += moveDir * speed * Time.deltaTime;
+        look();
+        selectWeapon();
+        reload();
 
     }
 
@@ -124,15 +134,13 @@ public class playerController : MonoBehaviour, IDamage
 
     void shoot()
     {
-        if (ammo > 0)
-        {
-            ammo--;
-        }
         shootTimer = 0;
+        weaponList[weaponListPOS].ammoCur--;
+     
         RaycastHit hit;
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, shootDistance, ~ignoreLayer))
         {
-            Debug.Log(hit.collider.name);
+            Instantiate(weaponList[weaponListPOS].hitEffect, hit.point, Quaternion.identity);
 
             IDamage dmg = hit.collider.GetComponent<IDamage>();
             if (dmg != null)
@@ -141,6 +149,52 @@ public class playerController : MonoBehaviour, IDamage
             }
         }
 
+    }
+
+    void reload()
+    {
+        if (Input.GetButtonDown("Reload") && weaponList.Count > 0)
+        {
+            weaponList[weaponListPOS].ammoCur = weaponList[weaponListPOS].ammoMax;
+        }
+    }
+
+    void selectWeapon()
+    {
+        if (Input.GetAxis("Mouse ScrollWheel") > 0 && weaponListPOS < weaponList.Count - 1)
+        {
+            weaponListPOS++;
+            changeWeapon();
+        }
+        else if (Input.GetAxis("Mouse ScrollWheel") < 0 && weaponListPOS > 0)
+        {
+            weaponListPOS--;
+            changeWeapon();
+        }
+    }
+
+    void changeWeapon()
+    {
+        shootDamage = weaponList[weaponListPOS].shootDamage;
+        shootDistance = weaponList[weaponListPOS].shootDist;
+        shootRate = weaponList[weaponListPOS].shootRate;
+
+        weaponModel.GetComponent<MeshFilter>().sharedMesh = weaponList[weaponListPOS].model.GetComponent<MeshFilter>().sharedMesh;
+        weaponModel.GetComponent<MeshRenderer>().sharedMaterial = weaponList[weaponListPOS].model.GetComponent<MeshRenderer>().sharedMaterial;
+    }
+
+    public void spawnPlayer()
+    {
+        controller.transform.position = gameManager.instance.playerSpawnPos.transform.position;
+        HP = HPOrig;
+        updatePlayerUI();
+    }
+
+    public void getWeaponStats(WeaponStats weapon)
+    {
+        weaponList.Add(weapon);
+        weaponListPOS = weaponList.Count - 1;
+        changeWeapon();
     }
 
     public void takeDamage(int amount)
@@ -188,6 +242,8 @@ public class playerController : MonoBehaviour, IDamage
             gameManager.instance.interactPrompt.SetActive(false);
         }
     }
+
+
     void interact()
     {
         RaycastHit hit;
@@ -201,7 +257,9 @@ public class playerController : MonoBehaviour, IDamage
             }
         }
     }
-        public void lowerAmmo()
+
+
+    public void lowerAmmo()
     {
         ammo = 30;
         if (ammo > 0)
@@ -209,6 +267,8 @@ public class playerController : MonoBehaviour, IDamage
             ammo--;
         }
     }
+
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Ammo Light"))
