@@ -3,7 +3,7 @@ using System.Collections;
 using Unity.VisualScripting;
 using System.Collections.Generic;
 
-public class lecutrePlayerController : MonoBehaviour, IDamage, IPickup
+public class lecutrePlayerController : MonoBehaviour, IDamage, IPickup, IOpen
 {
     [SerializeField] CharacterController controller;
     [SerializeField] LayerMask ignoreLayer;
@@ -29,7 +29,7 @@ public class lecutrePlayerController : MonoBehaviour, IDamage, IPickup
     void Start()
     {
         HPOrig = HP;
-        updatePlayerUI();
+        spawnPlayer();
     }
 
     Vector3 moveDir;
@@ -174,5 +174,13 @@ public class lecutrePlayerController : MonoBehaviour, IDamage, IPickup
             weaponListPOS--;
             changeWeapon();
         }
+    }
+
+    public void spawnPlayer()
+    {
+        controller.transform.position = gameManager.instance.playerSpawnPos.transform.position;
+
+        HP = HPOrig;
+        updatePlayerUI();
     }
 }

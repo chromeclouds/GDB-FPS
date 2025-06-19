@@ -23,6 +23,12 @@ public class buttonFunctions : MonoBehaviour
     #endif
     }
 
+    public void respawnPlayer()
+    {
+       // gameManager.instance.playerScript.spawnPlayer();
+        gameManager.instance.stateUnpause();
+    }
+
     public void loadLevel(int lvl)
     {
         SceneManager.LoadScene(lvl);

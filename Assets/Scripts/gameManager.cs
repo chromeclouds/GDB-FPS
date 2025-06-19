@@ -19,7 +19,9 @@ public class gameManager : MonoBehaviour
  
     public GameObject player;
     public playerController playerScript;
+    public GameObject playerSpawnPos;
     public GameObject interactPrompt;
+    public GameObject checkpointPopup;
 
     public bool isPaused;
 
@@ -38,6 +40,7 @@ public class gameManager : MonoBehaviour
         playerScript = player.GetComponent<playerController>();
 
         timescaleOrig = Time.timeScale;
+        playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");
         
     }
 

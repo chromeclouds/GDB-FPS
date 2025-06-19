@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.AI;
-public class LectureEnemyAI : MonoBehaviour, IDamage
+public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
 {
     [SerializeField] Renderer model;
     [SerializeField] NavMeshAgent agent;
