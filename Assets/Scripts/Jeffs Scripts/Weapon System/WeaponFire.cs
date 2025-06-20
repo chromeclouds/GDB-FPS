@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Threading;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class WeaponFire : MonoBehaviour
@@ -16,17 +14,16 @@ public class WeaponFire : MonoBehaviour
     private bool isOverheated = false;
     private float flamethrowerTimer = 0f;
     private AmmoManager ammoManager;
+
     [HideInInspector] public GameObject weaponWorldPrefab;
     [HideInInspector] public GameObject weaponHeldPrefab;
 
-
-    void Start()
+    void OnEnable()
     {
         if (weaponData == null)
         {
             Debug.LogWarning("WeaponData is not set on: " + gameObject.name);
             return;
-
         }
 
         ammoManager = GetComponentInParent<AmmoManager>();
@@ -37,7 +34,7 @@ public class WeaponFire : MonoBehaviour
     void Update()
     {
         if (isReloading || isOverheated) return;
-        if (transform.root.CompareTag("Player") == false) return;
+        if (GetComponentInParent<unifiedPlayerController>() == null) return;
 
         fireTimer += Time.deltaTime;
 
@@ -55,7 +52,6 @@ public class WeaponFire : MonoBehaviour
             }
             else
             {
-                //if player lets go of fire, cool down
                 flamethrowerTimer = Mathf.Max(0f, flamethrowerTimer - Time.deltaTime);
             }
         }
@@ -70,6 +66,7 @@ public class WeaponFire : MonoBehaviour
                         fireTimer = 0f;
                     }
                     break;
+
                 case FireMode.SemiAuto:
                     if (Input.GetButtonDown("Fire1") && fireTimer >= weaponData.FireRate && currentAmmo > 0)
                     {
@@ -77,6 +74,7 @@ public class WeaponFire : MonoBehaviour
                         fireTimer = 0f;
                     }
                     break;
+
                 case FireMode.Burst:
                     if (Input.GetButton("Fire1") && !isFiringBurst && currentAmmo > 0)
                     {
@@ -95,29 +93,25 @@ public class WeaponFire : MonoBehaviour
     void Fire()
     {
         if (currentAmmo <= 0) return;
-        
         currentAmmo--;
-        
+
         if (weaponData.MuzzleFlash != null)
         {
             weaponData.MuzzleFlash.Play();
         }
 
-
-        //fire bullet
         for (int i = 0; i < weaponData.BulletsPerShot; i++)
         {
             Quaternion spread = Quaternion.Euler(
                 Random.Range(-weaponData.SpreadAngle, weaponData.SpreadAngle),
                 Random.Range(-weaponData.SpreadAngle, weaponData.SpreadAngle),
-                0
-                );
+                0);
 
             GameObject bullet = Instantiate(weaponData.BulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation * spread);
             Bullet bulletScript = bullet.GetComponent<Bullet>();
             if (bulletScript != null)
             {
-                bulletScript.damage = weaponData.Damage; //pass in weapon damage. 
+                bulletScript.damage = weaponData.Damage;
             }
 
             Rigidbody rb = bullet.GetComponent<Rigidbody>();
@@ -127,7 +121,6 @@ public class WeaponFire : MonoBehaviour
             }
         }
 
-        //recoil
         WeaponRecoil recoilScript = GetComponent<WeaponRecoil>();
         if (recoilScript != null)
         {
@@ -144,7 +137,7 @@ public class WeaponFire : MonoBehaviour
         isOverheated = false;
     }
 
-   private IEnumerator BurstFire()
+    private IEnumerator BurstFire()
     {
         isFiringBurst = true;
         shotsFiredInBurst = 0;
@@ -159,11 +152,11 @@ public class WeaponFire : MonoBehaviour
 
         isFiringBurst = false;
     }
-    
+
     private IEnumerator Reload()
     {
         isReloading = true;
-        Debug.Log("Reloading..");
+        Debug.Log("Reloading...");
         yield return new WaitForSeconds(weaponData.ReloadTime);
 
         int ammoNeeded = weaponData.MaxAmmo - currentAmmo;
@@ -178,5 +171,4 @@ public class WeaponFire : MonoBehaviour
 
         isReloading = false;
     }
-
 }

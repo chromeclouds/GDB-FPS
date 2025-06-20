@@ -155,34 +155,43 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         spawned.transform.localRotation = Quaternion.identity;
 
         WeaponFire fire = spawned.GetComponent<WeaponFire>();
-        fire.weaponData = data;
-        fire.weaponHeldPrefab = heldPrefab;
-        fire.weaponWorldPrefab = data.WeaponWorldPrefab;
-
-        if (fire.bulletSpawnPoint == null)
+        if (fire != null)
         {
-            fire.bulletSpawnPoint = spawned.transform.Find("bulletSpawnPoint");
+            fire.weaponData = data;
+            fire.weaponHeldPrefab = heldPrefab;
+            fire.weaponWorldPrefab = data.WeaponWorldPrefab;
+
+            // Auto-assign bulletSpawnPoint
             if (fire.bulletSpawnPoint == null)
-                Debug.LogError("BulletSpawnPoint not found on weapon: " + spawned.name);
+            {
+                fire.bulletSpawnPoint = spawned.transform.Find("bulletSpawnPoint");
+                if (fire.bulletSpawnPoint == null)
+                    Debug.LogError("BulletSpawnPoint not found on: " + spawned.name);
+            }
+
+            // Manually re-run OnEnable logic if needed
+            fire.enabled = false;
+            fire.enabled = true;
         }
 
-        // Disable pickup while held
         var pickup = spawned.GetComponent<unifiedWeaponPickup>();
         if (pickup != null)
+        {
             pickup.enabled = false;
+        }
 
-        // Remove colliders while held
         foreach (Collider col in spawned.GetComponentsInChildren<Collider>())
             col.enabled = false;
 
         ownedWeapons.Add(spawned);
         currentWeaponIndex = ownedWeapons.Count - 1;
+
         for (int i = 0; i < ownedWeapons.Count; i++)
         {
             ownedWeapons[i].SetActive(i == currentWeaponIndex);
         }
-
     }
+
 
 
     void weaponSwap()

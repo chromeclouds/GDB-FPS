@@ -263,10 +263,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd5b7f8b4b0d0a64ab82bd3d2cef4569, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 2880245249455828103, guid: 71614c1b47d328244b74f5fcac2aef1f, type: 3}
-  spawnAmount: 3
-  spawnIntreval: 5
+  enemyPrefab: {fileID: 757836016541850199, guid: 8673f8b593fcc2d47a1dc04eb4bdcaf3, type: 3}
+  spawnAmount: 1
+  spawnIntreval: 0
   spawnPoint: {fileID: 2428193687250551706}
+  triggerMode: 0
 --- !u!1 &6877902757256764328
 GameObject:
   m_ObjectHideFlags: 0
@@ -325,7 +326,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.01999998, y: -0.33, z: -0.07999992}
-  m_LocalScale: {x: 40, y: 40, z: 40}
+  m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4320905839435089827}
