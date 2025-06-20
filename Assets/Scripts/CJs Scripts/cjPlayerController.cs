@@ -21,6 +21,10 @@ public class cjPlayerController : MonoBehaviour, IDamage
     [SerializeField] int shootDistance;
     [SerializeField] float shootRate;
 
+    [SerializeField] int meleeDist;
+    [SerializeField] int meleeDmg;
+    [SerializeField] float meleeCD;
+
     [SerializeField] float lookDistance;
 
     [SerializeField] GameObject ammoPickup;
@@ -35,7 +39,7 @@ public class cjPlayerController : MonoBehaviour, IDamage
     int jumpCount;
     int HPOrig;
     float shootTimer;
-    float meleeCD;
+    float meleeCDTimer;
  
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -98,6 +102,7 @@ public class cjPlayerController : MonoBehaviour, IDamage
 
         //transform.position += moveDir * speed * Time.deltaTime;
 
+        if (Input.GetButton("Melee") && meleeCDTimer > meleeCD) melee();
     }
 
     void sprint()
@@ -147,8 +152,19 @@ public class cjPlayerController : MonoBehaviour, IDamage
 
     void melee()
     {
-        meleeCD = 0;
+        meleeCDTimer = 0;
 
+        // work on cooldown and timer later
+
+        RaycastHit hit;
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, meleeDist, ~ignoreLayer))
+        {
+            IDamage dmg = hit.collider.GetComponent<IDamage>();
+            if (dmg != null)
+            {
+                dmg.takeDamage(meleeDmg);
+            }
+        }
     }
 
     public void takeDamage(int amount)
