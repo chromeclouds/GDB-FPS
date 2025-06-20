@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: -904196060230707326}
   - component: {fileID: 2725793944705963209}
   - component: {fileID: 8449705066227348011}
-  - component: {fileID: 3940583847551139057}
   m_Layer: 0
   m_Name: Vector_World
   m_TagString: Untagged
@@ -29,14 +28,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2130731919652982550}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.75310457, z: -0, w: -0.6579008}
+  m_LocalRotation: {x: 0, y: 0.7531043, z: 0, w: 0.65790117}
   m_LocalPosition: {x: -0, y: -0.03302228, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7564142720470483300}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 97.72, z: 0}
 --- !u!114 &-2575123120009765137
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,19 +111,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &3940583847551139057
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2130731919652982550}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b622066426a45448ae701fff3717af7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  originCrate: {fileID: 0}
 --- !u!1 &8870991629853130261
 GameObject:
   m_ObjectHideFlags: 0

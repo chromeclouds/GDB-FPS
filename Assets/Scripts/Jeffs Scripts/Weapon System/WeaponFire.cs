@@ -22,6 +22,13 @@ public class WeaponFire : MonoBehaviour
 
     void Start()
     {
+        if (weaponData == null)
+        {
+            Debug.LogWarning("WeaponData is not set on: " + gameObject.name);
+            return;
+
+        }
+
         ammoManager = GetComponentInParent<AmmoManager>();
         currentAmmo = weaponData.MaxAmmo;
 

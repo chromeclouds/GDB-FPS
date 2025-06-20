@@ -159,6 +159,13 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         fire.weaponHeldPrefab = heldPrefab;
         fire.weaponWorldPrefab = data.WeaponWorldPrefab;
 
+        if (fire.bulletSpawnPoint == null)
+        {
+            fire.bulletSpawnPoint = spawned.transform.Find("bulletSpawnPoint");
+            if (fire.bulletSpawnPoint == null)
+                Debug.LogError("BulletSpawnPoint not found on weapon: " + spawned.name);
+        }
+
         // Disable pickup while held
         var pickup = spawned.GetComponent<unifiedWeaponPickup>();
         if (pickup != null)

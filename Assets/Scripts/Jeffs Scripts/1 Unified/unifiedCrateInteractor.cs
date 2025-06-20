@@ -59,24 +59,34 @@ public class unifiedCrateInteractor : MonoBehaviour
 
     void PickupWeapon(GameObject crateItem, WeaponCrate crate)
     {
+        crate.ClearItemWithoutDestroy();
+
         crateItem.transform.SetParent(player.weaponHolder);
         crateItem.transform.localPosition = Vector3.zero;
         crateItem.transform.localRotation = Quaternion.identity;
 
         //disable pickup script and colliders
         var pickup = crateItem.GetComponent<unifiedWeaponPickup>();
-        var fire = crateItem.GetComponent<WeaponFire>();
-        if (fire != null && pickup != null)
-        {
-            fire.weaponData = pickup.weaponData;
-            fire.weaponHeldPrefab = pickup.weaponPrefab;
-            fire.weaponWorldPrefab = pickup.weaponData.WeaponWorldPrefab;
-            pickup.enabled = false;
-        }
-
         foreach (Collider col in crateItem.GetComponentsInChildren<Collider>())
             col.enabled = false;
 
+        if (pickup != null)
+        {
+            pickup.enabled = true;
+
+            var fire = crateItem.GetComponent<WeaponFire>();
+            if (fire != null && pickup != null)
+            {
+                fire.weaponData = pickup.weaponData;
+                fire.weaponHeldPrefab = pickup.weaponPrefab;
+                fire.weaponWorldPrefab = pickup.weaponData.WeaponWorldPrefab;
+
+                fire.enabled = false;
+                fire.enabled = true;
+                
+            }
+        }
+        
         crate.ClearItemWithoutDestroy();
         player.AddExistingWeapon(crateItem);
     }
