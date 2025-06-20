@@ -294,6 +294,7 @@ GameObject:
   - component: {fileID: 8341655852827473190}
   - component: {fileID: 2720882240863038602}
   - component: {fileID: 2124947943599340969}
+  - component: {fileID: 2820058608941412556}
   - component: {fileID: 4684857438281792146}
   - component: {fileID: 4579110854876063074}
   - component: {fileID: 7669785418501595013}
@@ -373,6 +374,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactRange: 3
   interactKey: 103
+--- !u!114 &2820058608941412556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6809065501853641927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86a684d35bb123c41ad2207d2ca80e87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxGrappleDist: 50
+  grappleRope: {fileID: 394443030691241669}
+  grappleAccel: 10
+  grappleLayer:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  grappleStart: {fileID: 6780272037169705823}
+  Camera: {fileID: 4782477987863639068}
+  grappleSpeed: 50
+  speed: 10
+  controller: {fileID: 4684857438281792146}
 --- !u!143 &4684857438281792146
 CharacterController:
   m_ObjectHideFlags: 0
@@ -623,7 +647,7 @@ GameObject:
   - component: {fileID: 5889967924459319362}
   m_Layer: 3
   m_Name: WeaponHolder
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

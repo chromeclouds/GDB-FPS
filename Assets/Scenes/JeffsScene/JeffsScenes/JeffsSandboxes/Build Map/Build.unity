@@ -8524,10 +8524,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Spawner Portal (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 7596503519060697509, guid: 16cb79f5c04a9ea41bd347680a24e20c, type: 3}
-      propertyPath: enemyPrefab
-      value: 
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -15039,25 +15035,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3220532360932961828, guid: 16cb79f5c04a9ea41bd347680a24e20c, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 3220532360932961828, guid: 16cb79f5c04a9ea41bd347680a24e20c, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 3220532360932961828, guid: 16cb79f5c04a9ea41bd347680a24e20c, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 100
-      objectReference: {fileID: 0}
     - target: {fileID: 5108826793260105827, guid: 16cb79f5c04a9ea41bd347680a24e20c, type: 3}
       propertyPath: m_Name
       value: Spawner Portal
-      objectReference: {fileID: 0}
-    - target: {fileID: 7596503519060697509, guid: 16cb79f5c04a9ea41bd347680a24e20c, type: 3}
-      propertyPath: enemyPrefab
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -20675,6 +20655,10 @@ PrefabInstance:
       propertyPath: ammoCount
       value: 
       objectReference: {fileID: 2080810846}
+    - target: {fileID: 9051164571796202660, guid: 6e1bba338f8eb494ba7cc0e8b6d07eb1, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -20682,6 +20666,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6809065501853641927, guid: 6e1bba338f8eb494ba7cc0e8b6d07eb1, type: 3}
       insertIndex: 4
       addedObject: {fileID: 8609733333673382021}
+    - targetCorrespondingSourceObject: {fileID: 6809065501853641927, guid: 6e1bba338f8eb494ba7cc0e8b6d07eb1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8609733333673382028}
   m_SourcePrefab: {fileID: 100100000, guid: 6e1bba338f8eb494ba7cc0e8b6d07eb1, type: 3}
 --- !u!120 &6464797899180426603 stripped
 LineRenderer:
@@ -20715,12 +20702,39 @@ MonoBehaviour:
   grappleAccel: 10
   grappleLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   grappleStart: {fileID: 9041917158649613660}
   Camera: {fileID: 1713741962694170690}
   grappleSpeed: 50
   speed: 10
   controller: {fileID: 6917025149928966118}
+--- !u!54 &8609733333673382028
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2188997688303112972}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!4 &9041917158649613660 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6780272037169705823, guid: 6e1bba338f8eb494ba7cc0e8b6d07eb1, type: 3}
