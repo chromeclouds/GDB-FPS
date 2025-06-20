@@ -477,22 +477,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy Spawner (Trigger)
       objectReference: {fileID: 0}
-    - target: {fileID: 4774274745383006385, guid: 66f4198ebaf6f104d938f4f1797282c1, type: 3}
-      propertyPath: spawnPoint
-      value: 
-      objectReference: {fileID: 866593753}
-    - target: {fileID: 4774274745383006385, guid: 66f4198ebaf6f104d938f4f1797282c1, type: 3}
-      propertyPath: enemyPrefab
-      value: 
-      objectReference: {fileID: 5271235655081213004, guid: 3a0f8e0eda402fc498abf03961f27dfc, type: 3}
-    - target: {fileID: 4774274745383006385, guid: 66f4198ebaf6f104d938f4f1797282c1, type: 3}
-      propertyPath: spawnAmount
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4774274745383006385, guid: 66f4198ebaf6f104d938f4f1797282c1, type: 3}
-      propertyPath: spawnIntreval
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8472054158254385930, guid: 66f4198ebaf6f104d938f4f1797282c1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 20.75
@@ -692,11 +676,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5a157d28ce6c7d4392a247955bd6865, type: 3}
---- !u!4 &866593753 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8472054158254385930, guid: 66f4198ebaf6f104d938f4f1797282c1, type: 3}
-  m_PrefabInstance: {fileID: 439169503}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &877742314
 GameObject:
   m_ObjectHideFlags: 0
@@ -1168,10 +1147,6 @@ PrefabInstance:
     - target: {fileID: 3218029719388128896, guid: 39e532d4a7029a04786e3727b6b06060, type: 3}
       propertyPath: m_Name
       value: BUILD UI
-      objectReference: {fileID: 0}
-    - target: {fileID: 6710278384344583512, guid: 39e532d4a7029a04786e3727b6b06060, type: 3}
-      propertyPath: rounds
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7058423639425485947, guid: 39e532d4a7029a04786e3727b6b06060, type: 3}
       propertyPath: m_Pivot.x

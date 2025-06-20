@@ -11,8 +11,11 @@ public class gameManager : MonoBehaviour
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
     [SerializeField] TMP_Text gameGoalCountText;
+    [SerializeField] TMP_Text scoreText;
+    [SerializeField] TMP_Text scoreRound;
     [SerializeField] int wallet;
     [SerializeField] int rounds;
+    [SerializeField] int roundValue;
 
     public Image playerHPBar;
     public GameObject playerDamageScreen;
@@ -35,9 +38,11 @@ public class gameManager : MonoBehaviour
     void Awake()
     {
         instance = this;
+        currRound = 1;
         player = GameObject.FindWithTag("Player");
+        scoreText.text = wallet.ToString("f0");
+        scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
         playerScript = player.GetComponent<playerController>();
-
         timescaleOrig = Time.timeScale;
         activateSpawners();
     }
@@ -93,7 +98,10 @@ public class gameManager : MonoBehaviour
         }
         else if(gameGoalCount <= 0)
         {
+            wallet += roundValue;
             currRound++;
+            scoreText.text = wallet.ToString("f0");
+            scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
             activateSpawners();
         }
     }
