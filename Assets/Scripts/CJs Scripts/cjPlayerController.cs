@@ -43,7 +43,10 @@ public class cjPlayerController : MonoBehaviour, IDamage
     int HPOrig;
     float shootTimer;
     float meleeCDTimer;
- 
+
+    
+    Vector3 lastPos;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -61,6 +64,8 @@ public class cjPlayerController : MonoBehaviour, IDamage
     void Update()
     {
         setAnims();
+        
+        lastPos = transform.position;
 
         if (ammoCount != null)
         {
@@ -75,9 +80,11 @@ public class cjPlayerController : MonoBehaviour, IDamage
     void setAnims()
     {
         // Run
-        if (controller.isGrounded) // setting up for jump
+        if (controller.isGrounded) // setting up for jump anim
         {
-            anim.SetFloat("Speed", controller.velocity.normalized.magnitude);
+            float rawSpeed = ((transform.position - lastPos) / Time.deltaTime).magnitude;
+            float normalizedSpeed = Mathf.Clamp01(rawSpeed / speed);
+            anim.SetFloat("Speed", normalizedSpeed, 0.1f, Time.deltaTime);
         }
     }
 
