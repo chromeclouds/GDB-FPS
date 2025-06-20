@@ -65,8 +65,14 @@ public class unifiedCrateInteractor : MonoBehaviour
 
         //disable pickup script and colliders
         var pickup = crateItem.GetComponent<unifiedWeaponPickup>();
-        if (pickup != null)
+        var fire = crateItem.GetComponent<WeaponFire>();
+        if (fire != null && pickup != null)
+        {
+            fire.weaponData = pickup.weaponData;
+            fire.weaponHeldPrefab = pickup.weaponPrefab;
+            fire.weaponWorldPrefab = pickup.weaponData.WeaponWorldPrefab;
             pickup.enabled = false;
+        }
 
         foreach (Collider col in crateItem.GetComponentsInChildren<Collider>())
             col.enabled = false;
