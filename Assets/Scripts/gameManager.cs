@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
- 
 public class gameManager : MonoBehaviour
 {
     public static gameManager instance;
@@ -12,7 +11,11 @@ public class gameManager : MonoBehaviour
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
     [SerializeField] TMP_Text gameGoalCountText;
+    [SerializeField] TMP_Text scoreText;
+    [SerializeField] TMP_Text scoreRound;
     [SerializeField] int wallet;
+    [SerializeField] int rounds;
+    [SerializeField] int roundValue;
 
     public Image playerHPBar;
     public GameObject playerDamageScreen;
@@ -28,6 +31,7 @@ public class gameManager : MonoBehaviour
     float timescaleOrig;
 
     int gameGoalCount;
+    int currRound;
     
 
    [SerializeField] TMP_Text ammo;
@@ -36,12 +40,13 @@ public class gameManager : MonoBehaviour
     void Awake()
     {
         instance = this;
+        currRound = 1;
         player = GameObject.FindWithTag("Player");
+        scoreText.text = wallet.ToString("f0");
+        scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
         playerScript = player.GetComponent<playerController>();
-
         timescaleOrig = Time.timeScale;
-        playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");
-        
+        activateSpawners();
     }
 
     // Update is called once per frame
@@ -88,43 +93,35 @@ public class gameManager : MonoBehaviour
         gameGoalCount += amount;
         gameGoalCountText.text = gameGoalCount.ToString("f0");
 
-        if(gameGoalCount <= 0)
+        if(gameGoalCount <= 0 && currRound == rounds)
         {
             //you win
             statePause();
             menuActive = menuWin;
             menuActive.SetActive(true);
         }
-    }
-    public void updateAmmoCount(int amount=1)
-    {
- 
- 
-        //|| Input.GetButton("Fire1")
-        //the code above will subtract 1 from the ammo every frame of the game if put into the if statement below
-
-        //Checking to see if the Fire1 button is pressed
-        if (Input.GetButtonDown("Fire1"))
+        else if(gameGoalCount <= 0)
         {
- 
-            //if so, turn ammo.text into an int named ammoBase
-            if (int.TryParse(ammo.text, out int ammoBase) )
-            {
-                //checking to see if ammoBase is not equal to 0, if so, continue with the method.
-                if (ammoBase != 0)
-                {
-                    //create a new int called newAmmo and have it equal ammoBase - amount (1)
-                    int newAmmo = ammoBase - amount;
-                    //update the string
-                    ammo.text = newAmmo.ToString();
-                    //debug
-                    //Debug.Log("Ammo updated to: " + newAmmo);
-                }
-
-            }
+            wallet += roundValue;
+            currRound++;
+            scoreText.text = wallet.ToString("f0");
+            scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
+            activateSpawners();
         }
- 
     }
+    
+    void activateSpawners()
+    {
+        EnemySpawn[] spawners = FindObjectsByType<EnemySpawn>(FindObjectsSortMode.None);
+
+        foreach(var spawner in spawners)
+        {
+            spawner.TriggerSpawn();
+        }
+
+    }
+
+
     public void youLose()
     {
         statePause();
