@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
- 
 public class gameManager : MonoBehaviour
 {
     public static gameManager instance;
@@ -13,6 +12,7 @@ public class gameManager : MonoBehaviour
     [SerializeField] GameObject menuLose;
     [SerializeField] TMP_Text gameGoalCountText;
     [SerializeField] int wallet;
+    [SerializeField] int rounds;
 
     public Image playerHPBar;
     public GameObject playerDamageScreen;
@@ -26,6 +26,7 @@ public class gameManager : MonoBehaviour
     float timescaleOrig;
 
     int gameGoalCount;
+    int currRound;
     
 
     public int ammo;
@@ -38,7 +39,7 @@ public class gameManager : MonoBehaviour
         playerScript = player.GetComponent<playerController>();
 
         timescaleOrig = Time.timeScale;
-        
+        activateSpawners();
     }
 
     // Update is called once per frame
@@ -83,14 +84,31 @@ public class gameManager : MonoBehaviour
         gameGoalCount += amount;
         gameGoalCountText.text = gameGoalCount.ToString("f0");
 
-        if(gameGoalCount <= 0)
+        if(gameGoalCount <= 0 && currRound == rounds)
         {
             //you win
             statePause();
             menuActive = menuWin;
             menuActive.SetActive(true);
         }
+        else if(gameGoalCount <= 0)
+        {
+            currRound++;
+            activateSpawners();
+        }
     }
+    
+    void activateSpawners()
+    {
+        EnemySpawn[] spawners = FindObjectsByType<EnemySpawn>(FindObjectsSortMode.None);
+
+        foreach(var spawner in spawners)
+        {
+            spawner.TriggerSpawn();
+        }
+
+    }
+
 
     public void youLose()
     {
