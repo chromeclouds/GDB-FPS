@@ -2,49 +2,59 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
- 
 public class gameManager : MonoBehaviour
 {
     public static gameManager instance;
-
+    public playerController playerController;
     [SerializeField] GameObject menuActive;
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
     [SerializeField] TMP_Text gameGoalCountText;
+    [SerializeField] TMP_Text scoreText;
+    [SerializeField] TMP_Text scoreRound;
     [SerializeField] int wallet;
+    [SerializeField] int rounds;
+    [SerializeField] int roundValue;
 
     public Image playerHPBar;
     public GameObject playerDamageScreen;
  
     public GameObject player;
     public playerController playerScript;
+    public GameObject playerSpawnPos;
     public GameObject interactPrompt;
+    public GameObject checkpointPopup;
 
     public bool isPaused;
 
     float timescaleOrig;
 
     int gameGoalCount;
+    int currRound;
     
 
-    public int ammo;
+   [SerializeField] TMP_Text ammo;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
         instance = this;
+        currRound = 1;
         player = GameObject.FindWithTag("Player");
+        scoreText.text = wallet.ToString("f0");
+        scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
         playerScript = player.GetComponent<playerController>();
-
         timescaleOrig = Time.timeScale;
-        
+        activateSpawners();
     }
 
     // Update is called once per frame
     void Update()
     {
- 
+        //updateAmmoCount();
+
+
         if (Input.GetButtonDown("Cancel"))
         {
             if (menuActive == null) 
@@ -83,14 +93,34 @@ public class gameManager : MonoBehaviour
         gameGoalCount += amount;
         gameGoalCountText.text = gameGoalCount.ToString("f0");
 
-        if(gameGoalCount <= 0)
+        if(gameGoalCount <= 0 && currRound == rounds)
         {
             //you win
             statePause();
             menuActive = menuWin;
             menuActive.SetActive(true);
         }
+        else if(gameGoalCount <= 0)
+        {
+            wallet += roundValue;
+            currRound++;
+            scoreText.text = wallet.ToString("f0");
+            scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
+            activateSpawners();
+        }
     }
+    
+    void activateSpawners()
+    {
+        EnemySpawn[] spawners = FindObjectsByType<EnemySpawn>(FindObjectsSortMode.None);
+
+        foreach(var spawner in spawners)
+        {
+            spawner.TriggerSpawn();
+        }
+
+    }
+
 
     public void youLose()
     {

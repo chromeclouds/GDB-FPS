@@ -17,8 +17,6 @@ public class enemyAI : MonoBehaviour, IDamage
     [SerializeField] GameObject bullet;
     [SerializeField] float shootRate;
 
-
-
     Color colorOrig;
 
     float shootTimer;
@@ -48,22 +46,6 @@ public class enemyAI : MonoBehaviour, IDamage
 
     }
 
-    void SetFleeDestination()
-    {
-        Vector3 direction = (transform.position - gameManager.instance.player.transform.position).normalized;
-        Vector3 desiredPos = transform.position + direction * 10f;
-
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(desiredPos, out hit, 5f, NavMesh.AllAreas))
-        {
-            agent.SetDestination(hit.position);
-            Debug.Log("Fleeing to: " + hit.position);
-        }
-        else
-        {
-            Debug.LogWarning("No valid flee path found.");
-        }
-    }
     bool canSeePlayer()
     {
 
