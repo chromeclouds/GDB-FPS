@@ -194,7 +194,7 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
                 currentWeaponIndex = ownedWeapons.Count - 1;
         }
 
-        // Manually activate only the current weapon
+        //manually activate only the current weapon
         for (int i = 0; i < ownedWeapons.Count; i++)
         {
             ownedWeapons[i].SetActive(i == currentWeaponIndex);
@@ -202,20 +202,18 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
     }
     public void AddExistingWeapon(GameObject weapon)
     {
-        foreach (var w in ownedWeapons)
-        {
-            if (w.name.Contains(weapon.name))
-                return;
-        }
+        weapon.transform.SetParent(weaponHolder);
+        weapon.transform.localPosition = Vector3.zero;
+        weapon.transform.localRotation = Quaternion.identity;
 
         ownedWeapons.Add(weapon);
-        currentWeaponIndex = ownedWeapons.Count - 1;
-
-        for (int i = 0; i < ownedWeapons.Count; i++)
+        currentWeaponIndex = ownedWeapons.Count -1;
+        for (int i = 0; i < ownedWeapons.Count; i++ )
         {
             ownedWeapons[i].SetActive(i == currentWeaponIndex);
         }
     }
+
 
     void switchTo(int index)
     {
@@ -238,7 +236,7 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         GameObject weaponToDrop = ownedWeapons[currentWeaponIndex];
         ownedWeapons.RemoveAt(currentWeaponIndex);
 
-        if (ownedWeapons.Count == 0) 
+        if (ownedWeapons.Count == 0)
         {
             currentWeaponIndex = 0;
         }
@@ -250,6 +248,8 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
                 ownedWeapons[i].SetActive(i == currentWeaponIndex);
             }
         }
+
         return weaponToDrop;
     }
+
 }

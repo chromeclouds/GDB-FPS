@@ -13,7 +13,8 @@ public class WeaponCrate : MonoBehaviour
     {
         if (defaultItemToSpawn != null)
         {
-            PlaceItem(defaultItemToSpawn);
+            GameObject spawned = Instantiate(defaultItemToSpawn);
+            PlaceItem(spawned);
         }
     }
 
@@ -39,34 +40,33 @@ public class WeaponCrate : MonoBehaviour
     public void PlaceItem(GameObject item)
     {
         if (currentItem != null)
+        {
             Destroy(currentItem);
-
-        if (item.scene.IsValid()) // Placing a scene object (e.g. from player drop)
-        {
-            currentItem = item;
-            currentItem.transform.SetParent(itemHolder);
-            currentItem.transform.localPosition = Vector3.zero;
-        }
-        else // item is a prefab asset, must instantiate
-        {
-            currentItem = Instantiate(item, itemHolder);
-            currentItem.transform.localPosition = Vector3.zero;
         }
 
-        // Safe rigidbody/collider handling
+        currentItem = item;
+
+        //reparent to crates itemHolder
+        currentItem.transform.SetParent(itemHolder);
+        currentItem.transform.localPosition = Vector3.zero;
+        currentItem.transform.localRotation = Quaternion.identity;
+
+        //disable physics while hovering
         Rigidbody rb = currentItem.GetComponent<Rigidbody>();
-        if (rb) rb.isKinematic = true;
+        if (rb != null) rb.isKinematic = true;
 
-        foreach (Collider col in currentItem.GetComponentsInChildren<Collider>())
-            col.isTrigger = true;
+        Collider col = currentItem.GetComponent<Collider>();
+        if (col != null) col.isTrigger = true;
 
-        // Attach crate marker if missing
+        //ensure CrateItem script exists and is linked
         CrateItem crateItem = currentItem.GetComponent<CrateItem>();
         if (crateItem == null)
+        {
             crateItem = currentItem.AddComponent<CrateItem>();
-
+        }
         crateItem.originCrate = this;
     }
+
 
     public void ClearItemWithoutDestroy()
     {
@@ -78,7 +78,7 @@ public class WeaponCrate : MonoBehaviour
     {
         if (currentItem != null)
         {
-            Destroy(currentItem);
+            currentItem.transform.SetParent(null);
             currentItem = null;
         }
     }

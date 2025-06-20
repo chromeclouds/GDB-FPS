@@ -36,18 +36,19 @@ public class unifiedCrateInteractor : MonoBehaviour
 
     void PlaceWeapon(GameObject heldWeapon, WeaponCrate crate)
     {
+        if (heldWeapon == null || crate == null || player == null) return;
+
         GameObject dropped = player.RemoveCurrentHeldWeapon();
         if (dropped == null) return;
 
+        //reposition and renable the dropped weapon
         dropped.transform.SetParent(null);
         dropped.transform.position = crate.itemHolder.position;
         dropped.transform.rotation = Quaternion.identity;
 
         var pickup = dropped.GetComponent<unifiedWeaponPickup>();
         if (pickup != null)
-        {
             pickup.enabled = true;
-        }
 
         foreach (Collider col in dropped.GetComponentsInChildren<Collider>())
             col.enabled = true;
@@ -55,15 +56,14 @@ public class unifiedCrateInteractor : MonoBehaviour
         crate.PlaceItem(dropped);
     }
 
+
     void PickupWeapon(GameObject crateItem, WeaponCrate crate)
     {
-        // Remove reference from crate BEFORE modifying the object
-        crate.ClearItemWithoutDestroy(); // You’ll define this method below
-
         crateItem.transform.SetParent(player.weaponHolder);
         crateItem.transform.localPosition = Vector3.zero;
         crateItem.transform.localRotation = Quaternion.identity;
 
+        //disable pickup script and colliders
         var pickup = crateItem.GetComponent<unifiedWeaponPickup>();
         if (pickup != null)
             pickup.enabled = false;
@@ -71,8 +71,10 @@ public class unifiedCrateInteractor : MonoBehaviour
         foreach (Collider col in crateItem.GetComponentsInChildren<Collider>())
             col.enabled = false;
 
+        crate.ClearItemWithoutDestroy();
         player.AddExistingWeapon(crateItem);
     }
+
 
 
 
