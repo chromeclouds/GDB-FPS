@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9149508724463106301}
-  - component: {fileID: 340714556572845365}
+  - component: {fileID: 244056764787028080}
   - component: {fileID: 3472905296119138332}
   - component: {fileID: 2782330593860470500}
   - component: {fileID: 2825189970905234013}
@@ -73,7 +73,7 @@ Transform:
   - {fileID: 4002493505107401795}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &340714556572845365
+--- !u!114 &244056764787028080
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -82,32 +82,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 5158211538551778172}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7b79933e93c6cc4d9f280f268b68a13, type: 3}
+  m_Script: {fileID: 11500000, guid: 209013a9b19538b47ae9581edb1d26a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 3472905296119138332}
   ignoreLayer:
     serializedVersion: 2
-    m_Bits: 8
-  HP: 10
-  speed: 5
-  sprintMod: 3
-  jumpVel: 12
+    m_Bits: 0
+  speed: 8
+  sprintMod: 30
+  jumpVel: 5
   jumpMax: 2
   gravity: 35
-  ammoLight: 0
-  ammoMed: 0
-  ammoHeavy: 0
-  ammo: 0
-  shootDamage: 1
-  shootDistance: 100
-  shootRate: 0.5
-  lookDistance: 0
-  ammoPickup: {fileID: 0}
-  light: {fileID: 0}
-  med: {fileID: 0}
-  heavy: {fileID: 0}
+  HP: 10
   ammoCount: {fileID: 0}
+  lookDistance: 15
+  weaponHolder: {fileID: 0}
 --- !u!143 &3472905296119138332
 CharacterController:
   m_ObjectHideFlags: 0
@@ -195,6 +185,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentWeapon: {fileID: 0}
   weaponHolder: {fileID: 950109119407033463}
+  currentWorldPrefab: {fileID: 0}
 --- !u!33 &71620606632544600
 MeshFilter:
   m_ObjectHideFlags: 0

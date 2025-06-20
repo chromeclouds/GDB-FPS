@@ -121,6 +121,8 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, lookDistance, ~ignoreLayer))
         {
             ICost cost = hit.collider.GetComponent<ICost>();
+            if (cost != null)
+            gameManager.instance.interactPromptPrice.text = cost.checkPrice().ToString("f0");
             gameManager.instance.interactPrompt.SetActive(cost != null && !hit.collider.CompareTag("Bought"));
         }
         else
