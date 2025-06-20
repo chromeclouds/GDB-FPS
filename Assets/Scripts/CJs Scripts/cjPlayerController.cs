@@ -3,6 +3,7 @@ using System.Collections;
 using TMPro;
 public class cjPlayerController : MonoBehaviour, IDamage
 {
+    [SerializeField] Renderer model;
     [SerializeField] CharacterController controller;
     [SerializeField] LayerMask ignoreLayer;
 
@@ -21,6 +22,7 @@ public class cjPlayerController : MonoBehaviour, IDamage
     [SerializeField] int shootDistance;
     [SerializeField] float shootRate;
 
+    [SerializeField] GameObject knifeModel;
     [SerializeField] int meleeDist;
     [SerializeField] int meleeDmg;
     [SerializeField] float meleeCD;
@@ -70,7 +72,7 @@ public class cjPlayerController : MonoBehaviour, IDamage
     void movement()
     {
         shootTimer += Time.deltaTime;
-        meleeCD += Time.deltaTime;
+        meleeCDTimer += Time.deltaTime;
 
         if (controller.isGrounded)
         {
@@ -153,8 +155,6 @@ public class cjPlayerController : MonoBehaviour, IDamage
     void melee()
     {
         meleeCDTimer = 0;
-
-        // work on cooldown and timer later
 
         RaycastHit hit;
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, meleeDist, ~ignoreLayer))
