@@ -6,7 +6,6 @@ public class GrappleSystem : MonoBehaviour
     private Vector3 anchorPoint;
     public LineRenderer grappleRope;
     public float grappleAccel;
-    //public Rigidbody rb;
     private bool isGrappling;
     public LayerMask grappleLayer;
     public Transform grappleStart;
@@ -22,7 +21,6 @@ public class GrappleSystem : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void StartGrapple()
     {
-        
         RaycastHit hit;
         if (Physics.Raycast(Camera.position, Camera.forward, out hit, maxGrappleDist, grappleLayer))
         {
@@ -34,9 +32,6 @@ public class GrappleSystem : MonoBehaviour
             
 
             grappleRope.positionCount = 2;
-
-            
-            
         }
     }
 
@@ -44,25 +39,19 @@ public class GrappleSystem : MonoBehaviour
     {
         isGrappling = false;
         grappleRope.positionCount = 0;
-        
-        
-        
     }
 
     void UpdateGrapple()
     {
         Vector3 dir = anchorPoint - transform.position;
-        //rb.AddForce(dir * grappleAccel, ForceMode.Acceleration);
-
-        //attempt at overriding playerController during grapple
         float dist = dir.magnitude;
         Vector3 direction = dir.normalized;
+
         if (dist < 1f)
         {
             StopGrapple();
             return;
         }
-
 
         Vector3 move = dir.normalized * grappleSpeed * Time.deltaTime;
         controller.Move(move);
@@ -71,9 +60,6 @@ public class GrappleSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-        
-
         if (Input.GetButtonDown("Grapple"))
         {
             StartGrapple();
@@ -91,7 +77,5 @@ public class GrappleSystem : MonoBehaviour
             grappleRope.SetPositions(new Vector3[] { grappleStart.position, anchorPoint });
             UpdateGrapple();
         }
-      
-        
     }
 }
