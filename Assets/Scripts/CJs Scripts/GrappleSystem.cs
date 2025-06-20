@@ -74,13 +74,13 @@ public class GrappleSystem : MonoBehaviour
         
         
 
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetButtonDown("Grapple"))
         {
             StartGrapple();
         }
        
 
-        if (Input.GetKeyUp(KeyCode.Q))
+        if (Input.GetButtonUp("Grapple"))
         {
             StopGrapple();
         }
