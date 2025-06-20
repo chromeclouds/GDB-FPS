@@ -10,30 +10,32 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 11242e694f104fa4583c043ba33a36c8, type: 3}
-  m_Name: WD_mossberg
+  m_Name: WD_boringFlamethrower
   m_EditorClassIdentifier: 
-  weaponName: Mossberg Pump
-  fireRate: 1
-  damage: 1
-  bulletSpeed: 45
-  bulletPrefab: {fileID: 6255843267276114019, guid: eb4250e6b764fd845b889fe3cc6ea8ab, type: 3}
+  weaponName: Boring Flamethrower
+  fireRate: 0.1
+  damage: 0
+  bulletSpeed: 30
+  bulletPrefab: {fileID: 5087789678566660184, guid: ad58bf2ebe85e06408fe5fde44c2263c, type: 3}
   spreadAngle: 4
-  bulletsPerShot: 7
+  bulletsPerShot: 1
   muzzleFlash: {fileID: 0}
-  recoilKickback: 1.2
-  recoilRecoverySpeed: 5
-  hasADS: 1
+  recoilKickback: 0.1
+  recoilRecoverySpeed: 9
+  hasADS: 0
   adsPositionOffset: {x: 0, y: 0, z: 0}
-  adsSpeed: 10
+  adsSpeed: 7
   adsFOV: 50
   adsFOVSpeed: 10
-  fireMode: 0
+  fireMode: 1
   burstCount: 0
   ammoType: 1
-  reloadTime: 3
-  maxAmmo: 6
-  isFlamethrower: 0
-  overheatTime: 0
-  cooldownTime: 0
+  reloadTime: 0
+  maxAmmo: 200
+  isFlamethrower: 1
+  overheatTime: 5
+  cooldownTime: 3
   weaponPositionOffset: {x: 0, y: 0, z: 0}
   weaponRotationOffset: {x: 0, y: 0, z: 0}
+  weaponWorldPrefab: {fileID: 8205573396522084344, guid: 30be31c4141e49c4c9292544e3e6686d, type: 3}
+  weaponHeldPrefab: {fileID: 5209768812415698213, guid: 33cfa57a8cfdc364f8f82780766eaabe, type: 3}

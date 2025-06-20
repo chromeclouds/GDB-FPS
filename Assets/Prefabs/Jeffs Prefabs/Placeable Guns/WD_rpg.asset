@@ -10,30 +10,32 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 11242e694f104fa4583c043ba33a36c8, type: 3}
-  m_Name: WD_barrett50
+  m_Name: WD_rpg
   m_EditorClassIdentifier: 
-  weaponName: Barrett 50 Cal
-  fireRate: 1.5
-  damage: 5
-  bulletSpeed: 150
-  bulletPrefab: {fileID: 6255843267276114019, guid: eb4250e6b764fd845b889fe3cc6ea8ab, type: 3}
+  weaponName: RPG-7
+  fireRate: 2.5
+  damage: 150
+  bulletSpeed: 40
+  bulletPrefab: {fileID: 6255843267276114019, guid: c2a6add062492604aa874a26f8f4ffcc, type: 3}
   spreadAngle: 0
   bulletsPerShot: 1
   muzzleFlash: {fileID: 0}
-  recoilKickback: 1.5
+  recoilKickback: 2
   recoilRecoverySpeed: 2
-  hasADS: 1
+  hasADS: 0
   adsPositionOffset: {x: 0, y: 0, z: 0}
-  adsSpeed: 8
-  adsFOV: 20
+  adsSpeed: 5
+  adsFOV: 40
   adsFOVSpeed: 5
   fireMode: 0
   burstCount: 0
   ammoType: 2
-  reloadTime: 3.5
-  maxAmmo: 5
+  reloadTime: 4
+  maxAmmo: 1
   isFlamethrower: 0
   overheatTime: 0
   cooldownTime: 0
   weaponPositionOffset: {x: 0, y: 0, z: 0}
   weaponRotationOffset: {x: 0, y: 0, z: 0}
+  weaponWorldPrefab: {fileID: 2835842561462446218, guid: 1268d62ced763214e865783c0c80488e, type: 3}
+  weaponHeldPrefab: {fileID: 6176639814356886078, guid: ce0bcdf45a977b74a8b0cc9733437df3, type: 3}

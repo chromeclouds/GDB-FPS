@@ -36,22 +36,43 @@ public class WeaponCrate : MonoBehaviour
         }
     }
 
-    public void PlaceItem(GameObject itemPrefab)
+    public void PlaceItem(GameObject item)
     {
-        if (currentItem != null) Destroy(currentItem);
+        if (currentItem != null)
+            Destroy(currentItem);
 
-        currentItem = Instantiate(itemPrefab, itemHolder);
-        currentItem.transform.localPosition = Vector3.zero;
+        if (item.scene.IsValid()) // Placing a scene object (e.g. from player drop)
+        {
+            currentItem = item;
+            currentItem.transform.SetParent(itemHolder);
+            currentItem.transform.localPosition = Vector3.zero;
+        }
+        else // item is a prefab asset, must instantiate
+        {
+            currentItem = Instantiate(item, itemHolder);
+            currentItem.transform.localPosition = Vector3.zero;
+        }
 
+        // Safe rigidbody/collider handling
         Rigidbody rb = currentItem.GetComponent<Rigidbody>();
         if (rb) rb.isKinematic = true;
 
-        Collider col = currentItem.GetComponent<Collider>();
-        if (col) col.isTrigger = true;
+        foreach (Collider col in currentItem.GetComponentsInChildren<Collider>())
+            col.isTrigger = true;
 
-        CrateItem crateItem = currentItem.AddComponent<CrateItem>();
+        // Attach crate marker if missing
+        CrateItem crateItem = currentItem.GetComponent<CrateItem>();
+        if (crateItem == null)
+            crateItem = currentItem.AddComponent<CrateItem>();
+
         crateItem.originCrate = this;
     }
+
+    public void ClearItemWithoutDestroy()
+    {
+        currentItem = null;
+    }
+
 
     public void ClearItem()
     {

@@ -228,13 +228,14 @@ MonoBehaviour:
   HP: 3
   factTargetSpeed: 8
   roamDist: 15
-  roamstopTime: 3
+  roamstopTime: 0
   shootPos: {fileID: 2730371141628571823}
   bullet: {fileID: 6255843267276114019, guid: 0c914cb9940e0ca4d915f20fa4b07174, type: 3}
   shootRate: 0.5
-  animSpeedTrans: 0
+  animSpeedTrans: 8
   FOV: 90
-  anim: {fileID: 0}
+  anim: {fileID: 7269325041420033999}
+  swordCol: {fileID: 0}
 --- !u!195 &6371813515482772422
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -364,6 +365,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1842746709120287140}
+  - component: {fileID: 2126607704906051280}
+  - component: {fileID: 707652239775976957}
   m_Layer: 0
   m_Name: Bip001 R Hand
   m_TagString: Untagged
@@ -387,6 +390,47 @@ Transform:
   - {fileID: 2730371141628571823}
   m_Father: {fileID: 592229137483531219}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2126607704906051280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1110773967553615161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc749d5350239a642bb978551dd8f1c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
+  rb: {fileID: 0}
+  damageAmount: 1
+  damageRate: 0
+  speed: 0
+  destroyTime: 0
+--- !u!136 &707652239775976957
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1110773967553615161}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 1.96
+  m_Direction: 0
+  m_Center: {x: -0.55, y: 0.03, z: 0}
 --- !u!1 &1695436412256455715
 GameObject:
   m_ObjectHideFlags: 0

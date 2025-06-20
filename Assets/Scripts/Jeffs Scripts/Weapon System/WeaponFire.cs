@@ -16,6 +16,9 @@ public class WeaponFire : MonoBehaviour
     private bool isOverheated = false;
     private float flamethrowerTimer = 0f;
     private AmmoManager ammoManager;
+    [HideInInspector] public GameObject weaponWorldPrefab;
+    [HideInInspector] public GameObject weaponHeldPrefab;
+
 
     void Start()
     {

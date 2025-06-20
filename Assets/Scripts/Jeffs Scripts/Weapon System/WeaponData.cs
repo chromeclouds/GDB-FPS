@@ -76,4 +76,11 @@ public class WeaponData : ScriptableObject
     public Vector3 WeaponPositionOffset => weaponPositionOffset;
     public Vector3 WeaponRotationOffset => weaponRotationOffset;
 
+    [Header("Prefabs")]
+    [SerializeField] private GameObject weaponWorldPrefab;
+    [SerializeField] private GameObject weaponHeldPrefab;
+    public GameObject WeaponWorldPrefab => weaponWorldPrefab;
+    public GameObject WeaponHeldPrefab => weaponHeldPrefab;
+
+
 }
