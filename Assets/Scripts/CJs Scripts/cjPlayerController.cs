@@ -6,6 +6,7 @@ public class cjPlayerController : MonoBehaviour, IDamage
     [SerializeField] Renderer model;
     [SerializeField] CharacterController controller;
     [SerializeField] LayerMask ignoreLayer;
+    [SerializeField] Animator anim;
 
     [SerializeField] int HP;
     [SerializeField] int speed;
@@ -59,6 +60,8 @@ public class cjPlayerController : MonoBehaviour, IDamage
     // Update is called once per frame
     void Update()
     {
+        setAnims();
+
         if (ammoCount != null)
         {
             ammoCount.text = "Ammo: " + ammo.ToString();
@@ -67,6 +70,15 @@ public class cjPlayerController : MonoBehaviour, IDamage
 
         movement();
         sprint();
+    }
+
+    void setAnims()
+    {
+        // Run
+        if (controller.isGrounded) // setting up for jump
+        {
+            anim.SetFloat("Speed", controller.velocity.normalized.magnitude);
+        }
     }
 
     void movement()
