@@ -10,6 +10,7 @@ public class gameManager : MonoBehaviour
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
+    [SerializeField] GameObject startRoundPrompt;
     [SerializeField] TMP_Text gameGoalCountText;
     [SerializeField] TMP_Text scoreText;
     [SerializeField] TMP_Text scoreRound;
@@ -41,13 +42,13 @@ public class gameManager : MonoBehaviour
     void Awake()
     {
         instance = this;
-        currRound = 1;
+        currRound = 0;
         player = GameObject.FindWithTag("Player");
         scoreText.text = wallet.ToString("f0");
         scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
         playerScript = player.GetComponent<playerController>();
         timescaleOrig = Time.timeScale;
-        activateSpawners();
+        startRoundPrompt.SetActive(true);
     }
 
     // Update is called once per frame
@@ -68,6 +69,15 @@ public class gameManager : MonoBehaviour
             { 
                 stateUnpause(); 
             }
+        }
+        if (startRoundPrompt.activeSelf && Input.GetButtonDown("Submit"))
+        {
+            startRoundPrompt.SetActive(false);
+            wallet += roundValue;
+            currRound++;
+            scoreText.text = wallet.ToString("f0");
+            scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
+            activateSpawners();
         }
     }
 
@@ -103,11 +113,7 @@ public class gameManager : MonoBehaviour
         }
         else if(gameGoalCount <= 0)
         {
-            wallet += roundValue;
-            currRound++;
-            scoreText.text = wallet.ToString("f0");
-            scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
-            activateSpawners();
+            startRoundPrompt.SetActive(true);
         }
     }
     
