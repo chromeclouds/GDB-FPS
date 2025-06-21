@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11242e694f104fa4583c043ba33a36c8, type: 3}
+  m_Name: WD_BullpupRM277
+  m_EditorClassIdentifier: 
+  weaponName: RM277 Bullpup
+  fireRate: 0.1
+  damage: 1
+  bulletSpeed: 100
+  bulletPrefab: {fileID: 6255843267276114019, guid: eb4250e6b764fd845b889fe3cc6ea8ab, type: 3}
+  spreadAngle: 0.3
+  bulletsPerShot: 1
+  muzzleFlash: {fileID: 0}
+  recoilKickback: 1
+  recoilRecoverySpeed: 5
+  hasADS: 1
+  adsPositionOffset: {x: 0, y: 0, z: 0}
+  adsSpeed: 10
+  adsFOV: 40
+  adsFOVSpeed: 10
+  fireMode: 2
+  burstCount: 3
+  ammoType: 0
+  reloadTime: 1
+  maxAmmo: 32
+  isFlamethrower: 0
+  overheatTime: 5
+  cooldownTime: 3
+  weaponPositionOffset: {x: 0, y: 0, z: 0}
+  weaponRotationOffset: {x: 0, y: 0, z: 0}
+  weaponWorldPrefab: {fileID: 2629047538590957014, guid: 13712342e02cf1640a1a31187e5a4418, type: 3}
+  weaponHeldPrefab: {fileID: 3724601276091719282, guid: 08194240b2e3d0e4eb8b735057c1815c, type: 3}
