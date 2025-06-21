@@ -10,6 +10,8 @@ public class gameManager : MonoBehaviour
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
+    [SerializeField] GameObject startRoundPrompt;
+    [SerializeField] GameObject difficultyPrompt;
     [SerializeField] TMP_Text gameGoalCountText;
     [SerializeField] TMP_Text scoreText;
     [SerializeField] TMP_Text scoreRound;
@@ -33,6 +35,7 @@ public class gameManager : MonoBehaviour
 
     int gameGoalCount;
     int currRound;
+    int scoreMult;
     
 
    [SerializeField] TMP_Text ammo;
@@ -41,13 +44,13 @@ public class gameManager : MonoBehaviour
     void Awake()
     {
         instance = this;
-        currRound = 1;
+        currRound = 0;
         player = GameObject.FindWithTag("Player");
         scoreText.text = wallet.ToString("f0");
         scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
         playerScript = player.GetComponent<playerController>();
         timescaleOrig = Time.timeScale;
-        activateSpawners();
+        difficultyPrompt.SetActive(true);
     }
 
     // Update is called once per frame
@@ -68,6 +71,29 @@ public class gameManager : MonoBehaviour
             { 
                 stateUnpause(); 
             }
+        }
+        if (startRoundPrompt.activeSelf && Input.GetButtonDown("Submit"))
+        {
+            startRoundPrompt.SetActive(false);
+            currRound++;
+            scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
+            activateSpawners();
+        }
+        if (difficultyPrompt.activeSelf && Input.GetButtonDown("Yes"))
+        {
+            difficultyPrompt.SetActive(false);
+            scoreMult = 2;
+            wallet += (roundValue * scoreMult);
+            scoreText.text = wallet.ToString("f0");
+            startRoundPrompt.SetActive(true);
+        }
+        else if (difficultyPrompt.activeSelf && Input.GetButtonDown("No"))
+        {
+            difficultyPrompt.SetActive(false);
+            scoreMult = 1;
+            wallet += (roundValue * scoreMult);
+            scoreText.text = wallet.ToString("f0");
+            startRoundPrompt.SetActive(true);
         }
     }
 
@@ -103,11 +129,7 @@ public class gameManager : MonoBehaviour
         }
         else if(gameGoalCount <= 0)
         {
-            wallet += roundValue;
-            currRound++;
-            scoreText.text = wallet.ToString("f0");
-            scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
-            activateSpawners();
+            difficultyPrompt.SetActive(true);
         }
     }
     
@@ -141,7 +163,7 @@ public class gameManager : MonoBehaviour
     }
     public void increaseWallet(int amount)
     {
-        wallet += amount;
+        wallet += (amount * scoreMult);
         scoreText.text = wallet.ToString("f0");
     }
 
