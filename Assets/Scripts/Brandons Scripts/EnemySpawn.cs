@@ -34,7 +34,7 @@ public class EnemySpawn : MonoBehaviour
     }
 
     // Create call method if gameManager is using trigger
-    void TriggerSpawn()
+    public void TriggerSpawn()
     {
         if (!isSpawning)
         {

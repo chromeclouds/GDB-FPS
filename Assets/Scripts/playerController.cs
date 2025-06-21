@@ -176,6 +176,7 @@ public class playerController : MonoBehaviour, IDamage
             ICost cost = hit.collider.GetComponent<ICost>();
             if (cost != null && !hit.collider.CompareTag("Bought"))
             {
+                gameManager.instance.interactPromptPrice.text = cost.checkPrice().ToString("f0");
                 gameManager.instance.interactPrompt.SetActive(true);
             }
             else
