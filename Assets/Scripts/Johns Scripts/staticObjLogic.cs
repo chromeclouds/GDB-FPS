@@ -71,4 +71,8 @@ public class staticObjLogic : MonoBehaviour, IDamage, ICost
             model.tag = "Bought";
         }
     }
+    public int checkPrice()
+    {
+        return price;
+    }
 }

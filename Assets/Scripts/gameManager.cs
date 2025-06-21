@@ -24,6 +24,7 @@ public class gameManager : MonoBehaviour
     public playerController playerScript;
     public GameObject playerSpawnPos;
     public GameObject interactPrompt;
+    public TMP_Text interactPromptPrice;
     public GameObject checkpointPopup;
 
     public bool isPaused;
@@ -136,6 +137,12 @@ public class gameManager : MonoBehaviour
     public void reduceWallet(int amount)
     {
         wallet -= amount;
+        scoreText.text = wallet.ToString("f0");
     }
- 
+    public void increaseWallet(int amount)
+    {
+        wallet += amount;
+        scoreText.text = wallet.ToString("f0");
+    }
+
 }
