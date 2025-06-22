@@ -19,6 +19,21 @@ public class unifiedAmmoPickup : MonoBehaviour
         if (ammoManager != null)
         {
             ammoManager.AddAmmo(ammoType, amount);
+
+            //update ui on pickup
+            var controller = other.GetComponent<unifiedPlayerController>();
+            if (controller != null) 
+            {
+                GameObject currentWeapon = controller.GetCurrentHeldWeapon();
+                if (currentWeapon != null)
+                {
+                    WeaponFire fire = currentWeapon.GetComponent<WeaponFire>();
+                    if (fire != null && fire.weaponData.AmmotType == ammoType)
+                    {
+                        WeaponUIManager.instance.UpdateAmmoCount(fire.CurrentAmmo, ammoManager.GetAmmoCount(ammoType));
+                    }
+                }
+            }
             ClearFromCrate();
             Destroy(gameObject);
         }
