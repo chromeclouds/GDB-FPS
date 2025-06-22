@@ -128,6 +128,8 @@ public class cjUnifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
     {
         meleeCDTimer = 0;
 
+        anim.SetTrigger("Melee");
+
         RaycastHit hit;
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, meleeDist, ~ignoreLayer))
         {
