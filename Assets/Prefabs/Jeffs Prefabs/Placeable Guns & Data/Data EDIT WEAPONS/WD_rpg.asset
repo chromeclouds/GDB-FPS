@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: WD_rpg
   m_EditorClassIdentifier: 
   weaponName: RPG-7
-  fireRate: 2.5
-  damage: 150
-  bulletSpeed: 40
+  fireRate: 1
+  damage: 1
+  bulletSpeed: 150
   bulletPrefab: {fileID: 6255843267276114019, guid: c2a6add062492604aa874a26f8f4ffcc, type: 3}
   spreadAngle: 0
   bulletsPerShot: 1
   muzzleFlash: {fileID: 0}
-  recoilKickback: 2
+  recoilKickback: 1
   recoilRecoverySpeed: 2
   hasADS: 0
   adsPositionOffset: {x: 0, y: 0, z: 0}
@@ -30,7 +30,7 @@ MonoBehaviour:
   fireMode: 0
   burstCount: 0
   ammoType: 2
-  reloadTime: 4
+  reloadTime: 1.5
   maxAmmo: 1
   isFlamethrower: 0
   overheatTime: 0
