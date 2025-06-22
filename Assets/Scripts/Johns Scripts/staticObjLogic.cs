@@ -63,6 +63,7 @@ public class staticObjLogic : MonoBehaviour, IDamage, ICost
     }
     public void buy()
     {
+
         if (gameManager.instance.walletAmount() - price >= 0)
         {
             gameObject.layer = layerOrig;
@@ -70,7 +71,30 @@ public class staticObjLogic : MonoBehaviour, IDamage, ICost
             gameManager.instance.reduceWallet(price);
             model.tag = "Bought";
         }
+
+        /*
+        //jeffs attempt at buying ammo infinitely
+        ICost costComponent = GetComponent<ICost>();
+
+        if (gameManager.instance.walletAmount() - price >= 0)
+        {
+            gameManager.instance.reduceWallet(price);
+            if (costComponent != null && costComponent != this)
+            {
+                costComponent.buy(); //trigger ammo pickup logic
+                return;
+            }
+            
+            //johns default logic
+            gameObject.layer = layerOrig;
+            model.material.color = colorOrig;
+            model.tag = "Bought";
+        }
+        */
     }
+
+   
+
     public int checkPrice()
     {
         return price;
