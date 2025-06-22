@@ -38,7 +38,7 @@ public class gameManager : MonoBehaviour
     int scoreMult;
     
 
-   [SerializeField] TMP_Text ammo;
+   
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -50,15 +50,13 @@ public class gameManager : MonoBehaviour
         scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
         playerScript = player.GetComponent<playerController>();
         timescaleOrig = Time.timeScale;
+        playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");
         difficultyPrompt.SetActive(true);
     }
 
     // Update is called once per frame
     void Update()
     {
-        //updateAmmoCount();
-
-
         if (Input.GetButtonDown("Cancel"))
         {
             if (menuActive == null) 
