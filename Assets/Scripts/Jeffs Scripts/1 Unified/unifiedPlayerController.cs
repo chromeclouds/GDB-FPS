@@ -192,6 +192,10 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         {
             ownedWeapons[i].SetActive(i == currentWeaponIndex);
         }
+
+        AmmoManager ammoManager = GetComponent<AmmoManager>();
+        int reserve = ammoManager != null ? ammoManager.GetAmmoCount(data.AmmotType) : 0;
+        WeaponUIManager.instance.UpdateWeaponUI(data, fire.CurrentAmmo, reserve);
     }
 
 
@@ -204,12 +208,14 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         if (Input.GetAxis("Mouse ScrollWheel") > 0)
         {
             currentWeaponIndex = (currentWeaponIndex + 1) % ownedWeapons.Count;
+            switchTo(currentWeaponIndex);
         }
         else if (Input.GetAxis("Mouse ScrollWheel") < 0)
         {
             currentWeaponIndex--;
             if (currentWeaponIndex < 0)
                 currentWeaponIndex = ownedWeapons.Count - 1;
+            switchTo(currentWeaponIndex);
         }
 
         //manually activate only the current weapon
@@ -217,6 +223,7 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         {
             ownedWeapons[i].SetActive(i == currentWeaponIndex);
         }
+        
     }
     public void AddExistingWeapon(GameObject weapon)
     {
@@ -240,6 +247,15 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         ownedWeapons[currentWeaponIndex].SetActive(false);
         currentWeaponIndex = index;
         ownedWeapons[currentWeaponIndex].SetActive(true);
+        
+        WeaponFire fire = ownedWeapons[currentWeaponIndex].GetComponent<WeaponFire>();
+        if (fire != null && fire.weaponData != null)
+        {
+            AmmoManager ammoManager = GetComponent<AmmoManager>();
+            int reserve = ammoManager != null ? ammoManager.GetAmmoCount(fire.weaponData.AmmotType) : 0;
+            WeaponUIManager.instance.UpdateWeaponUI(fire.weaponData, fire.CurrentAmmo, reserve);
+        }
+
     }
 
     public GameObject GetCurrentHeldWeapon()

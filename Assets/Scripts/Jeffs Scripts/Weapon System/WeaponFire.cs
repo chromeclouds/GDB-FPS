@@ -7,7 +7,10 @@ public class WeaponFire : MonoBehaviour
     public Transform bulletSpawnPoint;
 
     private float fireTimer;
+    
     private int currentAmmo;
+    public int CurrentAmmo => currentAmmo;
+
     private bool isFiringBurst;
     private int shotsFiredInBurst;
     private bool isReloading = false;
@@ -94,6 +97,7 @@ public class WeaponFire : MonoBehaviour
     {
         if (currentAmmo <= 0) return;
         currentAmmo--;
+        WeaponUIManager.instance.UpdateAmmoCount(CurrentAmmo, ammoManager.GetAmmoCount(weaponData.AmmotType));
 
         if (weaponData.MuzzleFlash != null)
         {
@@ -167,6 +171,8 @@ public class WeaponFire : MonoBehaviour
         {
             ammoManager.ConsumeAmmo(weaponData.AmmotType, ammoToLoad);
             currentAmmo += ammoToLoad;
+            WeaponUIManager.instance.UpdateAmmoCount(CurrentAmmo, ammoManager.GetAmmoCount(weaponData.AmmotType));
+
         }
 
         isReloading = false;
