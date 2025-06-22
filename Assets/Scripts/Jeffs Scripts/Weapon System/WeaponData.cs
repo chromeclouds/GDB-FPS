@@ -82,5 +82,7 @@ public class WeaponData : ScriptableObject
     public GameObject WeaponWorldPrefab => weaponWorldPrefab;
     public GameObject WeaponHeldPrefab => weaponHeldPrefab;
 
-
+    [Header("Icon")]
+    [SerializeField] private Sprite weaponIcon;
+    public Sprite WeaponIcon => weaponIcon;
 }
