@@ -327,7 +327,7 @@ public class cjUnifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         float elapsed = 0f;
 
         float startAngle = -45f;
-        float endAngle = 45f;
+        float endAngle = 125f;
 
         Transform pivot = pivotPoint.transform;
 
