@@ -21,6 +21,7 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
     [Header("UI")]
     [SerializeField] TMP_Text ammoCount;
     [SerializeField] float lookDistance;
+    [SerializeField] float interactRate;
 
     [Header("Weapon Handling")]
     public Transform weaponHolder;
@@ -30,6 +31,7 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
     Vector3 moveDir;
     Vector3 playerVel;
     int jumpCount;
+    float interactTime;
     bool isSprinting;
 
     void Start()
@@ -63,7 +65,9 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         controller.Move(playerVel * Time.deltaTime);
         playerVel.y -= gravity * Time.deltaTime;
 
-        if (Input.GetButton("Interact"))
+        interactTime += Time.deltaTime;
+
+        if (Input.GetButton("Interact") && interactTime >= interactRate)
             interact();
 
         look();
@@ -139,6 +143,7 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
             ICost cost = hit.collider.GetComponent<ICost>();
             if (cost != null && !hit.collider.CompareTag("Bought"))
                 cost.buy();
+            interactTime = 0;
         }
     }
 
