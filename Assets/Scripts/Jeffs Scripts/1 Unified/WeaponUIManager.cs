@@ -8,12 +8,9 @@ public class WeaponUIManager : MonoBehaviour
 
     [Header("UI References")]
     public TMP_Text gunNameText;
-    public TMP_Text gunNameTextShadow;
     public Image gunIcon;
     public TMP_Text ammoTypeText;
     public TMP_Text ammoCountText;
-    public TMP_Text ammoCountTextShadow;
-    public TMP_Text ammoTypeTextShadow;
     [Header("Ammo Colors")]
     public Color lightColor = Color.yellow;
     public Color mediumColor = Color.cyan;
@@ -28,7 +25,7 @@ public class WeaponUIManager : MonoBehaviour
     public void UpdateWeaponUI(WeaponData weaponData, int currentAmmo, int totalAmmo)
     {
         gunNameText.text = weaponData.WeaponName;
-        gunNameTextShadow.text = weaponData.WeaponName;
+
         if (weaponData.WeaponIcon != null)
         {
             gunIcon.sprite = weaponData.WeaponIcon;
@@ -41,9 +38,9 @@ public class WeaponUIManager : MonoBehaviour
         }
 
         ammoTypeText.text = weaponData.AmmotType.ToString();
-        ammoTypeTextShadow.text = weaponData.AmmotType.ToString();
+
         ammoCountText.text = $"{currentAmmo} / {totalAmmo}";
-        ammoCountTextShadow.text = $"{currentAmmo} / {totalAmmo}";
+
         switch (weaponData.AmmotType)
         {
             case AmmoType.Light:
@@ -61,7 +58,7 @@ public class WeaponUIManager : MonoBehaviour
     public void UpdateAmmoCount(int currentAmmo, int totalAmmo)
     {
         ammoCountText.text = $"{currentAmmo} / {totalAmmo}";
-        ammoCountTextShadow.text = $"{currentAmmo} / {totalAmmo}";
+
     }
 
 }
