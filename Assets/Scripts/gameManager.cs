@@ -33,7 +33,7 @@ public class gameManager : MonoBehaviour
 
     float timescaleOrig;
 
-    int gameGoalCount;
+    public int gameGoalCount;
     int currRound;
     int scoreMult;
     
@@ -165,4 +165,8 @@ public class gameManager : MonoBehaviour
         scoreText.text = wallet.ToString("f0");
     }
 
+    public void openDoor()
+    {
+
+    }
 }
