@@ -137,7 +137,7 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, lookDistance, ~ignoreLayer))
         {
             ICost cost = hit.collider.GetComponent<ICost>();
-            if (cost != null)
+            if (cost != null && !hit.collider.CompareTag("Bought"))
                 cost.buy();
         }
     }
