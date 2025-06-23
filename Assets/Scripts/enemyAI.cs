@@ -23,6 +23,7 @@ public class enemyAI : MonoBehaviour, IDamage
     float angleToPlayer;
 
     bool playerInRange;
+          
 
     Vector3 playerDir;
 
@@ -31,12 +32,13 @@ public class enemyAI : MonoBehaviour, IDamage
     {
         colorOrig = model.material.color;
         gameManager.instance.updateGameGoal(1);
-
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+        
         if (playerInRange && canSeePlayer())
         {
 
@@ -46,6 +48,7 @@ public class enemyAI : MonoBehaviour, IDamage
 
     bool canSeePlayer()
     {
+
         playerDir = gameManager.instance.player.transform.position - headPos.position;
         angleToPlayer = Vector3.Angle(playerDir, transform.forward);
         Debug.DrawRay(headPos.position, playerDir);

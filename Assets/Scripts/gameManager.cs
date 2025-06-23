@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
- 
 public class gameManager : MonoBehaviour
 {
     public static gameManager instance;
@@ -11,42 +10,53 @@ public class gameManager : MonoBehaviour
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
+    [SerializeField] GameObject startRoundPrompt;
+    [SerializeField] GameObject difficultyPrompt;
     [SerializeField] TMP_Text gameGoalCountText;
+    [SerializeField] TMP_Text scoreText;
+    [SerializeField] TMP_Text scoreRound;
     [SerializeField] int wallet;
+    [SerializeField] int rounds;
+    [SerializeField] int roundValue;
 
     public Image playerHPBar;
     public GameObject playerDamageScreen;
  
     public GameObject player;
     public playerController playerScript;
+    public GameObject playerSpawnPos;
     public GameObject interactPrompt;
+    public TMP_Text interactPromptPrice;
+    public GameObject checkpointPopup;
 
     public bool isPaused;
 
     float timescaleOrig;
 
     int gameGoalCount;
+    int currRound;
+    int scoreMult;
     
 
-   [SerializeField] TMP_Text ammo;
+   
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
         instance = this;
+        currRound = 0;
         player = GameObject.FindWithTag("Player");
+        scoreText.text = wallet.ToString("f0");
+        scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
         playerScript = player.GetComponent<playerController>();
-
         timescaleOrig = Time.timeScale;
-        
+        playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");
+        difficultyPrompt.SetActive(true);
     }
 
     // Update is called once per frame
     void Update()
     {
-        updateAmmoCount();
-
-
         if (Input.GetButtonDown("Cancel"))
         {
             if (menuActive == null) 
@@ -59,6 +69,29 @@ public class gameManager : MonoBehaviour
             { 
                 stateUnpause(); 
             }
+        }
+        if (startRoundPrompt.activeSelf && Input.GetButtonDown("Submit"))
+        {
+            startRoundPrompt.SetActive(false);
+            currRound++;
+            scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
+            activateSpawners();
+        }
+        if (difficultyPrompt.activeSelf && Input.GetButtonDown("Yes"))
+        {
+            difficultyPrompt.SetActive(false);
+            scoreMult = 2;
+            wallet += (roundValue * scoreMult);
+            scoreText.text = wallet.ToString("f0");
+            startRoundPrompt.SetActive(true);
+        }
+        else if (difficultyPrompt.activeSelf && Input.GetButtonDown("No"))
+        {
+            difficultyPrompt.SetActive(false);
+            scoreMult = 1;
+            wallet += (roundValue * scoreMult);
+            scoreText.text = wallet.ToString("f0");
+            startRoundPrompt.SetActive(true);
         }
     }
 
@@ -85,43 +118,31 @@ public class gameManager : MonoBehaviour
         gameGoalCount += amount;
         gameGoalCountText.text = gameGoalCount.ToString("f0");
 
-        if(gameGoalCount <= 0)
+        if(gameGoalCount <= 0 && currRound == rounds)
         {
             //you win
             statePause();
             menuActive = menuWin;
             menuActive.SetActive(true);
         }
-    }
-    public void updateAmmoCount(int amount=1)
-    {
- 
- 
-        //|| Input.GetButton("Fire1")
-        //the code above will subtract 1 from the ammo every frame of the game if put into the if statement below
-
-        //Checking to see if the Fire1 button is pressed
-        if (Input.GetButtonDown("Fire1"))
+        else if(gameGoalCount <= 0)
         {
- 
-            //if so, turn ammo.text into an int named ammoBase
-            if (int.TryParse(ammo.text, out int ammoBase) )
-            {
-                //checking to see if ammoBase is not equal to 0, if so, continue with the method.
-                if (ammoBase != 0)
-                {
-                    //create a new int called newAmmo and have it equal ammoBase - amount (1)
-                    int newAmmo = ammoBase - amount;
-                    //update the string
-                    ammo.text = newAmmo.ToString();
-                    //debug
-                    //Debug.Log("Ammo updated to: " + newAmmo);
-                }
-
-            }
+            difficultyPrompt.SetActive(true);
         }
- 
     }
+    
+    void activateSpawners()
+    {
+        EnemySpawn[] spawners = FindObjectsByType<EnemySpawn>(FindObjectsSortMode.None);
+
+        foreach(var spawner in spawners)
+        {
+            spawner.TriggerSpawn();
+        }
+
+    }
+
+
     public void youLose()
     {
         statePause();
@@ -136,6 +157,12 @@ public class gameManager : MonoBehaviour
     public void reduceWallet(int amount)
     {
         wallet -= amount;
+        scoreText.text = wallet.ToString("f0");
     }
- 
+    public void increaseWallet(int amount)
+    {
+        wallet += (amount * scoreMult);
+        scoreText.text = wallet.ToString("f0");
+    }
+
 }
