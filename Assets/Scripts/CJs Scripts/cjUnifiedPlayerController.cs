@@ -21,6 +21,7 @@ public class cjUnifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
     [SerializeField] int meleeDist;
     [SerializeField] int meleeDmg;
     [SerializeField] float meleeCD;
+    [SerializeField] GameObject pivotPoint;
 
     [Header("Player Stats")]
     [SerializeField] int HP;
@@ -129,6 +130,7 @@ public class cjUnifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         meleeCDTimer = 0;
 
         anim.SetTrigger("Melee");
+        StartCoroutine(MeleeAnim());
 
         RaycastHit hit;
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, meleeDist, ~ignoreLayer))
@@ -319,4 +321,29 @@ public class cjUnifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         return weaponToDrop;
     }
 
+    IEnumerator MeleeAnim()
+    {
+        float duration = 0.15f;
+        float elapsed = 0f;
+
+        float startAngle = -45f;
+        float endAngle = 45f;
+
+        Transform pivot = pivotPoint.transform;
+
+        pivot.localRotation = Quaternion.Euler(0f, startAngle, 0f);
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+
+            float angle = Mathf.Lerp(startAngle, endAngle, Mathf.SmoothStep(0f, 1f, t));
+            pivot.localRotation = Quaternion.Euler(0f, angle, 0f);
+
+            yield return null;
+        }
+
+        pivot.localRotation = Quaternion.Euler(0f, startAngle, 0f);
+    }
 }
