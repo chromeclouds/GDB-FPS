@@ -154,6 +154,7 @@ public class unifiedPlayerController1 : MonoBehaviour, IDamage, IPickup, IOpen
             //oh no im dead
             gameManager.instance.youLose();
         }
+ 
     }
 
     void updatePlayerUI()
