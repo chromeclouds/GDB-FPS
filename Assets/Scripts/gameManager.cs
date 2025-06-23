@@ -20,6 +20,7 @@ public class gameManager : MonoBehaviour
     [SerializeField] int roundValue;
 
     public Image playerHPBar;
+    public Image playerArmorBar;
     public GameObject playerDamageScreen;
  
     public GameObject player;
