@@ -15,6 +15,7 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
     [SerializeField] float shootRate;
     [SerializeField] int animSpeedTrans;
     [SerializeField] int FOV;
+    [SerializeField] int scoreValue;
     [SerializeField] Animator anim;
     [SerializeField] Collider swordCol;
 
@@ -149,11 +150,17 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
         {
             Destroy(gameObject);
             gameManager.instance.updateGameGoal(-1);
+            gameManager.instance.increaseWallet(scoreValue);
         }
         else
         {
             StartCoroutine(flashRed());
         }
+    }
+    public void endRound()
+    {
+        gameManager.instance.reduceWallet(scoreValue);
+        Destroy(gameObject);
     }
 
     IEnumerator flashRed() //Timer
