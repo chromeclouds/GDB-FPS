@@ -16,6 +16,11 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
 
     [Header("Player Stats")]
     [SerializeField] int HP;
+    [SerializeField] int armor;
+    [SerializeField] int armorValue;
+    [SerializeField] int medArmorValue;
+    [SerializeField] int heavyArmorValue;
+    [SerializeField] int armorMax;
     int HPOrig;
 
     [Header("UI")]
@@ -33,10 +38,11 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
     int jumpCount;
     float interactTime;
     bool isSprinting;
-
+    int remainingDamage;
     void Start()
     {
         HPOrig = HP;
+        armorValue = armor;
         spawnPlayer();
     }
 
@@ -95,22 +101,72 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
             jumpCount++;
         }
     }
+    private void OnTriggerEnter(Collider other)
+    {
 
+        if (other.CompareTag("Armor"))
+        {
+            armorValue++;
+        }
+        if (other.CompareTag("MedArmor"))
+        {
+            armorValue = armorValue + 2;
+        }
+        if (other.CompareTag("HeavyArmor"))
+        {
+            armorValue = armorValue + 3;
+        }
+        // Clamp to max armor value
+        if (armorValue > armorMax)
+        {
+            armorValue = armorMax;
+        }
+
+        updatePlayerUI();
+
+        // Destroy pickup object after collection
+        if (other.CompareTag("Armor") || other.CompareTag("MedArmor") || other.CompareTag("HeavyArmor"))
+        {
+            Destroy(other.gameObject);
+        }
+    }
     public void takeDamage(int amount)
     {
-        HP -= amount;
+
+
         updatePlayerUI();
         StartCoroutine(damageFlash());
+        if (armorValue <= 0)
+        {
+            HP -= amount;
+        }
+        if (armorValue > 0)
+        {
+            int remainingDamage = amount - armorValue;
+            armorValue -= amount;
+            updatePlayerUI();
+            StartCoroutine(damageFlash());
+        }
+        if (remainingDamage > 0)
+        {
+            HP -= remainingDamage;
+        }
+
         if (HP <= 0)
         {
+            //oh no im dead
             gameManager.instance.youLose();
         }
+
     }
 
     void updatePlayerUI()
     {
         gameManager.instance.playerHPBar.fillAmount = (float)HP / HPOrig;
+        float armorPercent = (float)armorValue / armorMax;
+        gameManager.instance.playerArmorBar.fillAmount = armorPercent;
     }
+
 
     IEnumerator damageFlash()
     {
