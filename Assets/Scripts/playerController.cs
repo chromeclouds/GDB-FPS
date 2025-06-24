@@ -20,7 +20,7 @@ public class playerController : MonoBehaviour, IDamage
     [SerializeField] int shootDamage;
     [SerializeField] int shootDistance;
     [SerializeField] float shootRate;
-
+    [SerializeField] int armorValue;
     [SerializeField] float lookDistance;
 
     [SerializeField] GameObject ammoPickup;
@@ -34,6 +34,7 @@ public class playerController : MonoBehaviour, IDamage
     bool isSprinting;
     int jumpCount;
     int HPOrig;
+    int remainingDamage;
     float shootTimer;
  
 
@@ -145,10 +146,23 @@ public class playerController : MonoBehaviour, IDamage
 
     public void takeDamage(int amount)
     {
-        HP -= amount;
-        updatePlayerUI();
-        StartCoroutine(damageFlash());
-       
+ 
+            HP -= amount;
+            updatePlayerUI();
+            StartCoroutine(damageFlash());
+     
+        if (armorValue > 0)
+        {
+            int remainingDamage = amount - armorValue;
+            armorValue -= amount;
+            updatePlayerUI();
+            StartCoroutine(damageFlash());
+        }
+        if (remainingDamage > 0)
+        {
+            HP -= remainingDamage;
+        }
+ 
         if (HP <= 0)
         {
             //oh no im dead
@@ -224,5 +238,10 @@ public class playerController : MonoBehaviour, IDamage
         {
             ammo++;
         }
+        if (other.CompareTag("Armor"))
+        {
+            armorValue++;
+        }
     }
+
 }

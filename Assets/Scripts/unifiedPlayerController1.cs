@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 
-public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
+public class unifiedPlayerController1 : MonoBehaviour, IDamage, IPickup, IOpen
 {
     [Header("Character Movement")]
     [SerializeField] CharacterController controller;
@@ -26,7 +26,6 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
     [Header("UI")]
     [SerializeField] TMP_Text ammoCount;
     [SerializeField] float lookDistance;
-    [SerializeField] float interactRate;
 
     [Header("Weapon Handling")]
     public Transform weaponHolder;
@@ -36,9 +35,9 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
     Vector3 moveDir;
     Vector3 playerVel;
     int jumpCount;
-    float interactTime;
     bool isSprinting;
     int remainingDamage;
+
     void Start()
     {
         HPOrig = HP;
@@ -71,9 +70,7 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         controller.Move(playerVel * Time.deltaTime);
         playerVel.y -= gravity * Time.deltaTime;
 
-        interactTime += Time.deltaTime;
-
-        if (Input.GetButton("Interact") && interactTime >= interactRate)
+        if (Input.GetButton("Interact"))
             interact();
 
         look();
@@ -110,7 +107,7 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         }
         if (other.CompareTag("MedArmor"))
         {
-            armorValue = armorValue + 2;
+            armorValue= armorValue + 2;
         }
         if (other.CompareTag("HeavyArmor"))
         {
@@ -133,7 +130,7 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
     public void takeDamage(int amount)
     {
 
-
+    
         updatePlayerUI();
         StartCoroutine(damageFlash());
         if (armorValue <= 0)
@@ -157,7 +154,7 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
             //oh no im dead
             gameManager.instance.youLose();
         }
-
+ 
     }
 
     void updatePlayerUI()
@@ -166,7 +163,6 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         float armorPercent = (float)armorValue / armorMax;
         gameManager.instance.playerArmorBar.fillAmount = armorPercent;
     }
-
 
     IEnumerator damageFlash()
     {
@@ -197,9 +193,8 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, lookDistance, ~ignoreLayer))
         {
             ICost cost = hit.collider.GetComponent<ICost>();
-            if (cost != null && !hit.collider.CompareTag("Bought"))
+            if (cost != null)
                 cost.buy();
-            interactTime = 0;
         }
     }
 

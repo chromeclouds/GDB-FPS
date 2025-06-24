@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class door : MonoBehaviour
+public class door : MonoBehaviour 
 {
 
     [SerializeField] GameObject doorModel;
@@ -14,9 +14,8 @@ public class door : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        IOpen open = other.GetComponent<IOpen>();
 
-        if (open!= null)
+        if (gameManager.instance.gameGoalCount <= 0)
         {
             doorModel.SetActive(false);
         }
