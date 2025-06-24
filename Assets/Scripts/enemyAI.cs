@@ -10,6 +10,7 @@ public class enemyAI : MonoBehaviour, IDamage
 
     [SerializeField] Transform headPos;
     [SerializeField] int HP;
+    [SerializeField] int scoreValue;
     [SerializeField] int faceTargetSpeed;
     [SerializeField] int FOV;
 
@@ -31,8 +32,6 @@ public class enemyAI : MonoBehaviour, IDamage
     void Start()
     {
         colorOrig = model.material.color;
-        gameManager.instance.updateGameGoal(1);
-        
     }
 
     // Update is called once per frame
@@ -108,6 +107,7 @@ public class enemyAI : MonoBehaviour, IDamage
         {
             Destroy(gameObject);
             gameManager.instance.updateGameGoal(-1);
+            gameManager.instance.increaseWallet(scoreValue);
         }
         else
         {

@@ -31,6 +31,7 @@ public class gameManager : MonoBehaviour
     public TMP_Text interactPromptPrice;
     public GameObject checkpointPopup;
     public GameObject startMessage;
+    public GameObject levelTimer;
 
     public bool isPaused;
 
@@ -82,15 +83,13 @@ public class gameManager : MonoBehaviour
             scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
             activateSpawners();
             menuActive = null;
+            levelTimer.GetComponent<LevelTimer>().StartTimer();
         }
     }
 
     IEnumerator welcomeMessage()
     {
-        startMessage.SetActive(true);
-        menuActive = startMessage;
-        yield return new WaitForSeconds(5.0f);
-        startMessage.SetActive(false);
+        yield return new WaitForSeconds(0.1f);
         difficultySelection();
     }
     public void statePause()
@@ -176,6 +175,17 @@ public class gameManager : MonoBehaviour
         stateUnpause();
         startRoundPrompt.SetActive(true);
         menuActive = startRoundPrompt;
+    }
+
+    public void endRound()
+    {
+        LectureEnemyAI[] enemies = FindObjectsByType<LectureEnemyAI>(FindObjectsSortMode.None);
+
+        foreach (var enemy in enemies)
+        {
+            enemy.endRound();
+        }
+        updateGameGoal(-gameGoalCount);
     }
     public int walletAmount()
     {
