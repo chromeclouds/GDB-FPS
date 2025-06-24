@@ -30,10 +30,10 @@ public class gameManager : MonoBehaviour
     public GameObject interactPrompt;
     public TMP_Text interactPromptPrice;
     public GameObject checkpointPopup;
-    public GameObject startMessage;
     public GameObject levelTimer;
 
     public bool isPaused;
+    bool roundPaused;
 
     float timescaleOrig;
 
@@ -75,14 +75,14 @@ public class gameManager : MonoBehaviour
                 stateUnpause(); 
             }
         }
-        if (startRoundPrompt.activeSelf && Input.GetButtonDown("Submit"))
+        if (startRoundPrompt.activeSelf && Input.GetButtonDown("Submit") && !isPaused)
         {
             startRoundPrompt.SetActive(false);
-            menuActive = startRoundPrompt;
             currRound++;
             scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
             activateSpawners();
             menuActive = null;
+            roundPaused = false;
             levelTimer.GetComponent<LevelTimer>().StartTimer();
         }
     }
@@ -102,12 +102,16 @@ public class gameManager : MonoBehaviour
 
     public void stateUnpause()
     {
+        if(roundPaused)
+            startRoundPrompt.SetActive(false);
         isPaused = !isPaused;
         Time.timeScale = timescaleOrig;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         menuActive.SetActive(false);
         menuActive = null;
+        if (roundPaused)
+            startRoundPrompt.SetActive(true);
     }
 
     public void updateGameGoal(int amount)
@@ -124,6 +128,7 @@ public class gameManager : MonoBehaviour
         }
         else if(gameGoalCount <= 0)
         {
+            roundPaused = true;
             difficultySelection();
         }
     }
@@ -162,7 +167,6 @@ public class gameManager : MonoBehaviour
         scoreText.text = wallet.ToString("f0");
         stateUnpause();
         startRoundPrompt.SetActive(true);
-        menuActive = startRoundPrompt;
     }
 
     public void no()
@@ -174,7 +178,6 @@ public class gameManager : MonoBehaviour
         scoreText.text = wallet.ToString("f0");
         stateUnpause();
         startRoundPrompt.SetActive(true);
-        menuActive = startRoundPrompt;
     }
 
     public void endRound()
