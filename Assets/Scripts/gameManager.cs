@@ -39,6 +39,7 @@ public class gameManager : MonoBehaviour
     public int gameGoalCount;
     int currRound;
     int scoreMult;
+    int spawnMult;
     
 
    
@@ -134,7 +135,7 @@ public class gameManager : MonoBehaviour
 
         foreach(var spawner in spawners)
         {
-            spawner.TriggerSpawn();
+            spawner.TriggerSpawn(spawnMult);
         }
 
     }
@@ -157,6 +158,7 @@ public class gameManager : MonoBehaviour
     {
         difficultyPrompt.SetActive(false);
         scoreMult = 2;
+        spawnMult = 2;
         wallet += (roundValue * scoreMult);
         scoreText.text = wallet.ToString("f0");
         stateUnpause();
@@ -168,6 +170,7 @@ public class gameManager : MonoBehaviour
     {
         difficultyPrompt.SetActive(false);
         scoreMult = 1;
+        spawnMult = 1;
         wallet += (roundValue * scoreMult);
         scoreText.text = wallet.ToString("f0");
         stateUnpause();
