@@ -12,6 +12,9 @@ public class buyableAmmo : MonoBehaviour, ICost
             GameObject player = GameObject.FindWithTag("Player");
             if (player != null)
             {
+                //GiveAmmoToPlayer(player); //pass gameobject directly
+                //gameManager.instance.reduceWallet(price);
+                
                 Collider playerCollider = player.GetComponent<Collider>();
                 if (playerCollider != null)
                 {
@@ -22,9 +25,11 @@ public class buyableAmmo : MonoBehaviour, ICost
                 {
                     Debug.LogWarning("player does not have collider");
                 }
+                
             }
         }
     }
+
     private void GiveAmmoToPlayer(Collider player)
     {
         if (player == null) return;
