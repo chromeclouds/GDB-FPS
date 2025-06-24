@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
 public class gameManager : MonoBehaviour
 {
@@ -29,6 +30,7 @@ public class gameManager : MonoBehaviour
     public GameObject interactPrompt;
     public TMP_Text interactPromptPrice;
     public GameObject checkpointPopup;
+    public GameObject startMessage;
 
     public bool isPaused;
 
@@ -52,7 +54,7 @@ public class gameManager : MonoBehaviour
         playerScript = player.GetComponent<playerController>();
         timescaleOrig = Time.timeScale;
         playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");
-        difficultyPrompt.SetActive(true);
+        StartCoroutine(welcomeMessage());
     }
 
     // Update is called once per frame
@@ -74,28 +76,22 @@ public class gameManager : MonoBehaviour
         if (startRoundPrompt.activeSelf && Input.GetButtonDown("Submit"))
         {
             startRoundPrompt.SetActive(false);
+            menuActive = startRoundPrompt;
             currRound++;
             scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
             activateSpawners();
-        }
-        if (difficultyPrompt.activeSelf && Input.GetButtonDown("Yes"))
-        {
-            difficultyPrompt.SetActive(false);
-            scoreMult = 2;
-            wallet += (roundValue * scoreMult);
-            scoreText.text = wallet.ToString("f0");
-            startRoundPrompt.SetActive(true);
-        }
-        else if (difficultyPrompt.activeSelf && Input.GetButtonDown("No"))
-        {
-            difficultyPrompt.SetActive(false);
-            scoreMult = 1;
-            wallet += (roundValue * scoreMult);
-            scoreText.text = wallet.ToString("f0");
-            startRoundPrompt.SetActive(true);
+            menuActive = null;
         }
     }
 
+    IEnumerator welcomeMessage()
+    {
+        startMessage.SetActive(true);
+        menuActive = startMessage;
+        yield return new WaitForSeconds(5.0f);
+        startMessage.SetActive(false);
+        difficultySelection();
+    }
     public void statePause()
     {
         isPaused = !isPaused;
@@ -128,7 +124,7 @@ public class gameManager : MonoBehaviour
         }
         else if(gameGoalCount <= 0)
         {
-            difficultyPrompt.SetActive(true);
+            difficultySelection();
         }
     }
     
@@ -151,6 +147,33 @@ public class gameManager : MonoBehaviour
         menuActive.SetActive(true);
     }
 
+    public void difficultySelection()
+    {
+        statePause();
+        menuActive = difficultyPrompt;
+        difficultyPrompt.SetActive(true);
+    }
+    public void yes()
+    {
+        difficultyPrompt.SetActive(false);
+        scoreMult = 2;
+        wallet += (roundValue * scoreMult);
+        scoreText.text = wallet.ToString("f0");
+        stateUnpause();
+        startRoundPrompt.SetActive(true);
+        menuActive = startRoundPrompt;
+    }
+
+    public void no()
+    {
+        difficultyPrompt.SetActive(false);
+        scoreMult = 1;
+        wallet += (roundValue * scoreMult);
+        scoreText.text = wallet.ToString("f0");
+        stateUnpause();
+        startRoundPrompt.SetActive(true);
+        menuActive = startRoundPrompt;
+    }
     public int walletAmount()
     {
         return wallet;
