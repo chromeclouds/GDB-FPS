@@ -189,7 +189,7 @@ public class DemonAI : MonoBehaviour, IDamage, IOpen
 
     public void createBullet()
     {
-        // Prevent the fireball from spawning if the player is not within range.
+        // Prevent the fireball from spawning if the player is not within range
         if (!playerInRange)
         {
             return;
