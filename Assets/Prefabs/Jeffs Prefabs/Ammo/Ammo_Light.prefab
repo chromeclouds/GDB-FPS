@@ -215,6 +215,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1353443215178592415}
   - component: {fileID: -4819726058687310943}
+  - component: {fileID: -2243425428311518603}
   - component: {fileID: 5398817613778932657}
   - component: {fileID: 3303595142170165867}
   - component: {fileID: 8910205135712308034}
@@ -255,6 +256,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ammoType: 0
   amount: 30
+  price: 100
+--- !u!114 &-2243425428311518603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5196667150651594481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b622066426a45448ae701fff3717af7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  originCrate: {fileID: 0}
 --- !u!33 &5398817613778932657
 MeshFilter:
   m_ObjectHideFlags: 0

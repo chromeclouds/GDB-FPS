@@ -16,11 +16,17 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
 
     [Header("Player Stats")]
     [SerializeField] int HP;
+    [SerializeField] int armor;
+    [SerializeField] int armorValue;
+    [SerializeField] int medArmorValue;
+    [SerializeField] int heavyArmorValue;
+    [SerializeField] int armorMax;
     int HPOrig;
 
     [Header("UI")]
     [SerializeField] TMP_Text ammoCount;
     [SerializeField] float lookDistance;
+    [SerializeField] float interactRate;
 
     [Header("Weapon Handling")]
     public Transform weaponHolder;
@@ -30,11 +36,13 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
     Vector3 moveDir;
     Vector3 playerVel;
     int jumpCount;
+    float interactTime;
     bool isSprinting;
-
+    int remainingDamage;
     void Start()
     {
         HPOrig = HP;
+        armorValue = armor;
         spawnPlayer();
     }
 
@@ -63,7 +71,9 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         controller.Move(playerVel * Time.deltaTime);
         playerVel.y -= gravity * Time.deltaTime;
 
-        if (Input.GetButton("Interact"))
+        interactTime += Time.deltaTime;
+
+        if (Input.GetButton("Interact") && interactTime >= interactRate)
             interact();
 
         look();
@@ -91,22 +101,72 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
             jumpCount++;
         }
     }
+    private void OnTriggerEnter(Collider other)
+    {
 
+        if (other.CompareTag("Armor"))
+        {
+            armorValue++;
+        }
+        if (other.CompareTag("MedArmor"))
+        {
+            armorValue = armorValue + 2;
+        }
+        if (other.CompareTag("HeavyArmor"))
+        {
+            armorValue = armorValue + 3;
+        }
+        // Clamp to max armor value
+        if (armorValue > armorMax)
+        {
+            armorValue = armorMax;
+        }
+
+        updatePlayerUI();
+
+        // Destroy pickup object after collection
+        if (other.CompareTag("Armor") || other.CompareTag("MedArmor") || other.CompareTag("HeavyArmor"))
+        {
+            Destroy(other.gameObject);
+        }
+    }
     public void takeDamage(int amount)
     {
-        HP -= amount;
+
+
         updatePlayerUI();
         StartCoroutine(damageFlash());
+        if (armorValue <= 0)
+        {
+            HP -= amount;
+        }
+        if (armorValue > 0)
+        {
+            int remainingDamage = amount - armorValue;
+            armorValue -= amount;
+            updatePlayerUI();
+            StartCoroutine(damageFlash());
+        }
+        if (remainingDamage > 0)
+        {
+            HP -= remainingDamage;
+        }
+
         if (HP <= 0)
         {
+            //oh no im dead
             gameManager.instance.youLose();
         }
+
     }
 
     void updatePlayerUI()
     {
         gameManager.instance.playerHPBar.fillAmount = (float)HP / HPOrig;
+        float armorPercent = (float)armorValue / armorMax;
+        gameManager.instance.playerArmorBar.fillAmount = armorPercent;
     }
+
 
     IEnumerator damageFlash()
     {
@@ -137,8 +197,9 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, lookDistance, ~ignoreLayer))
         {
             ICost cost = hit.collider.GetComponent<ICost>();
-            if (cost != null)
+            if (cost != null && !hit.collider.CompareTag("Bought"))
                 cost.buy();
+            interactTime = 0;
         }
     }
 
