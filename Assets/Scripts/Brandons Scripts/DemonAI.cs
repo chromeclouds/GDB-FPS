@@ -32,7 +32,7 @@ public class DemonAI : MonoBehaviour, IDamage, IOpen
     void Start()
     {
         colorOrig = model.material.color;
-        //gameManager.instance.updateGameGoal(1);
+        gameManager.instance.updateGameGoal(1);
         startingPos = transform.position;
         stoppingDistOrig = agent.stoppingDistance;
 
