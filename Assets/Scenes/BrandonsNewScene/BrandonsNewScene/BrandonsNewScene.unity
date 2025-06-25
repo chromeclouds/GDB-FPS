@@ -2971,7 +2971,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 807446212088613887}
-  - component: {fileID: 8665872984213608034}
+  - component: {fileID: 8665872984213608036}
   - component: {fileID: 8377773170984749727}
   - component: {fileID: 5611483303656302682}
   - component: {fileID: 8665872984213608033}
@@ -11879,7 +11879,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &5622727218920221639
 GameObject:
   m_ObjectHideFlags: 0
@@ -12393,28 +12393,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!95 &5866630310750325552
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7862032547937724775}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: a9ad445cb02a11d428f39b0995d05478, type: 3}
-  m_Controller: {fileID: 9100000, guid: db34782fd751b1c44a7370553029cca4, type: 2}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!4 &5870468826848029193
 Transform:
   m_ObjectHideFlags: 0
@@ -17160,7 +17138,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1233563124552027688}
   - component: {fileID: 1444688040350962045}
-  - component: {fileID: 5866630310750325552}
   - component: {fileID: 5160240968654669041}
   m_Layer: 7
   m_Name: Hellborn Demon
@@ -18142,9 +18119,9 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 10
+  m_StoppingDistance: 20
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
+  m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 0
@@ -18562,7 +18539,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd5b7f8b4b0d0a64ab82bd3d2cef4569, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 1956096705684442816}
+  enemyPrefab: {fileID: 1320089276414987035}
   spawnAmount: 3
   spawnIntreval: 5
   spawnPoint: {fileID: 4026104822409020141}
@@ -18715,34 +18692,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 15
+  m_Radius: 30
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8665872984213608034
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1320089276414987035}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aafd96b22d19e8043a92031254b0818e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  model: {fileID: 3474941024281624874}
-  agent: {fileID: 8377773170984749727}
-  headPOS: {fileID: 2932681790086944622}
-  HP: 10
-  factTargetSpeed: 80
-  roamDist: 5
-  roamstopTime: 3
-  shootPos: {fileID: 2173723863251728981}
-  bullet: {fileID: 2605596456829534252, guid: 939c8dea707a74b4fbd2b0181ab28294, type: 3}
-  shootRate: 1.5
-  animSpeedTrans: 1
-  FOV: 90
-  anim: {fileID: 8665872984213608035}
-  swordCol: {fileID: 0}
 --- !u!95 &8665872984213608035
 Animator:
   serializedVersion: 7
@@ -18756,7 +18707,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: db34782fd751b1c44a7370553029cca4, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
@@ -18765,6 +18716,32 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8665872984213608036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1320089276414987035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17d406270777ed646944f574c673c3d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  model: {fileID: 3474941024281624874}
+  agent: {fileID: 8377773170984749727}
+  headPOS: {fileID: 2932681790086944622}
+  HP: 10
+  factTargetSpeed: 80
+  roamDist: 5
+  roamstopTime: 3
+  shootPos: {fileID: 2173723863251728981}
+  bullet: {fileID: 2605596456829534252, guid: 939c8dea707a74b4fbd2b0181ab28294, type: 3}
+  shootRate: 2
+  animSpeedTrans: 8
+  FOV: 80
+  anim: {fileID: 8665872984213608035}
+  swordCol: {fileID: 0}
 --- !u!4 &8669897877990349554
 Transform:
   m_ObjectHideFlags: 0

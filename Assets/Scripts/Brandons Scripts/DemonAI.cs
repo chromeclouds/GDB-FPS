@@ -55,6 +55,12 @@ public class DemonAI : MonoBehaviour, IDamage, IOpen
         {
             roamCheck();
         }
+
+        // Prevents the enemy from creeping forward when already within attack range
+        if (playerInRange && agent.remainingDistance <= agent.stoppingDistance)
+        {
+            agent.velocity = Vector3.zero;
+        }
     }
 
     void setAnimations()
@@ -105,7 +111,22 @@ public class DemonAI : MonoBehaviour, IDamage, IOpen
             {
                 
                 shootTimer += Time.deltaTime;
-                agent.SetDestination(gameManager.instance.player.transform.position);
+
+                // Calculate the current distance between the enemy and the player
+                float distToPlayer = Vector3.Distance(transform.position, gameManager.instance.player.transform.position);
+                // If the player is farther than the stopping distance continue chasing
+                if (distToPlayer > agent.stoppingDistance)
+                {
+                    // Resume movement and update destination to follow the player
+                    agent.isStopped = false;
+                    agent.SetDestination(gameManager.instance.player.transform.position);
+                }
+                else
+                {
+                    // Stop movement without cancelling path
+                    agent.isStopped = true;
+                }
+
                 if (shootTimer > shootRate)
                 {
                     shoot();
@@ -182,6 +203,8 @@ public class DemonAI : MonoBehaviour, IDamage, IOpen
 
     void shoot()
     {
+        //
+        if (!playerInRange) return;
 
         shootTimer = 0;
         anim.SetTrigger("Shoot"); 
@@ -189,12 +212,6 @@ public class DemonAI : MonoBehaviour, IDamage, IOpen
 
     public void createBullet()
     {
-        // Prevent the fireball from spawning if the player is not within range
-        if (!playerInRange)
-        {
-            return;
-        }
-
         Instantiate(bullet, shootPos.position, transform.rotation);
 
     }
