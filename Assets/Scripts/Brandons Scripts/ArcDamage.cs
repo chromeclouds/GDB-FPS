@@ -12,8 +12,13 @@ public class ArcDamage : MonoBehaviour
     [SerializeField] int speed;
     [SerializeField] int destroyTime;
 
+    [SerializeField] float homingDelay;     // Time before the projectile starts homing after being launched
+    [SerializeField] float homingSpeed;     // Speed the projectile moves once homing starts
+    [SerializeField] float turnRate;        // How quickly the projectile can rotate toward its target
 
     bool isDamaging;
+    // See if the projectile is currently homing
+    bool isHoming = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -22,24 +27,29 @@ public class ArcDamage : MonoBehaviour
         {
             Destroy(gameObject, destroyTime);
 
-            if(type == damageType.moving)
+            // Enable gravity so the projectile follows arc trajectory
+            rb.useGravity = true;
+            // Launch the projectile in a forward direction with a slight upward arc
+            Vector3 launchDirection = (transform.forward + Vector3.up * 1.0f).normalized;
+            rb.AddForce(launchDirection * speed, ForceMode.VelocityChange);
+
+            // If the projectile is a homing start delay
+            if (type == damageType.homing)
             {
-                // Launch the projectile in a forward direction with a slight upward arc
-                Vector3 launchDirection = (transform.forward + Vector3.up * 0.5f).normalized;
-                rb.AddForce(launchDirection * speed, ForceMode.VelocityChange);
-            }
+                StartCoroutine(StartHoming());
+            }         
         }
-        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(type == damageType.homing)
+        if(isHoming)
         {
             // Continuously adjust the projectiles direction to home in on the player
-            Vector3 homingDir = (gameManager.instance.player.transform.position - transform.position).normalized;
-            rb.AddForce(homingDir * speed * Time.deltaTime, ForceMode.VelocityChange);
+            Vector3 toTarget = (gameManager.instance.player.transform.position - transform.position).normalized;
+            Vector3 newDir = Vector3.RotateTowards(rb.linearVelocity.normalized, toTarget, turnRate * Time.deltaTime, 0f);
+            rb.linearVelocity = newDir * homingSpeed;
         }
         
     }
@@ -68,7 +78,7 @@ public class ArcDamage : MonoBehaviour
         if(other.isTrigger) return;
 
         IDamage dmg = other.GetComponent <IDamage>();
-        if(dmg != null && type  == damageType.DOT & !isDamaging)
+        if(dmg != null && type  == damageType.DOT && !isDamaging)
         {
             StartCoroutine(damageOther(dmg));
         }
@@ -81,5 +91,13 @@ public class ArcDamage : MonoBehaviour
         yield return new WaitForSeconds(damageRate);
         isDamaging = false;
 
+    }
+
+    // Coroutine that enables homing behavior after a delay
+    IEnumerator StartHoming()
+    {
+        yield return new WaitForSeconds(homingDelay);
+        isHoming = true;
+        rb.useGravity = false;
     }
 }
