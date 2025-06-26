@@ -60,8 +60,6 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         {
             movement();
             sprint();
-            weaponSwap();
-
             if (!isMeleeing)
             {
                 weaponSwap();
@@ -125,6 +123,7 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
 
     void melee()
     {
+        pivotPoint.gameObject.SetActive(true);
         meleeCDTimer = 0;
 
         isMeleeing = true;
@@ -169,6 +168,7 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         pivot.localRotation = Quaternion.Euler(0f, startAngle, 0f);
         weaponHolder.gameObject.SetActive(true);
         isMeleeing = false;
+        pivotPoint.gameObject.SetActive(false);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -252,7 +252,7 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         {
             ICost cost = hit.collider.GetComponent<ICost>();
             if (cost != null)
-            gameManager.instance.interactPromptPrice.text = cost.checkPrice().ToString("f0");
+                gameManager.instance.interactPromptPrice.text = cost.checkPrice().ToString("f0");
             gameManager.instance.interactPrompt.SetActive(cost != null && !hit.collider.CompareTag("Bought"));
         }
         else
@@ -354,7 +354,7 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         {
             ownedWeapons[i].SetActive(i == currentWeaponIndex);
         }
-        
+
     }
     public void AddExistingWeapon(GameObject weapon)
     {
@@ -363,8 +363,8 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         weapon.transform.localRotation = Quaternion.identity;
 
         ownedWeapons.Add(weapon);
-        currentWeaponIndex = ownedWeapons.Count -1;
-        for (int i = 0; i < ownedWeapons.Count; i++ )
+        currentWeaponIndex = ownedWeapons.Count - 1;
+        for (int i = 0; i < ownedWeapons.Count; i++)
         {
             ownedWeapons[i].SetActive(i == currentWeaponIndex);
         }
@@ -378,7 +378,7 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         ownedWeapons[currentWeaponIndex].SetActive(false);
         currentWeaponIndex = index;
         ownedWeapons[currentWeaponIndex].SetActive(true);
-        
+
         WeaponFire fire = ownedWeapons[currentWeaponIndex].GetComponent<WeaponFire>();
         if (fire != null && fire.weaponData != null)
         {
