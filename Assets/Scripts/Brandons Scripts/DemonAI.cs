@@ -15,6 +15,7 @@ public class DemonAI : MonoBehaviour, IDamage, IOpen
     [SerializeField] float shootRate;
     [SerializeField] int animSpeedTrans;
     [SerializeField] int FOV;
+    [SerializeField] int scoreValue;
     [SerializeField] Animator anim;
     [SerializeField] Collider swordCol;
 
@@ -32,7 +33,6 @@ public class DemonAI : MonoBehaviour, IDamage, IOpen
     void Start()
     {
         colorOrig = model.material.color;
-        gameManager.instance.updateGameGoal(1);
         startingPos = transform.position;
         stoppingDistOrig = agent.stoppingDistance;
 
@@ -172,6 +172,7 @@ public class DemonAI : MonoBehaviour, IDamage, IOpen
         {
             Destroy(gameObject);
             gameManager.instance.updateGameGoal(-1);
+            gameManager.instance.increaseWallet(scoreValue);
         }
         else
         {
@@ -207,7 +208,12 @@ public class DemonAI : MonoBehaviour, IDamage, IOpen
         if (!playerInRange) return;
 
         shootTimer = 0;
-        anim.SetTrigger("Shoot"); 
+        anim.SetTrigger("Shoot");
+    }
+    public void endRound()
+    {
+        gameManager.instance.reduceWallet(scoreValue);
+        Destroy(gameObject);
     }
 
     public void createBullet()
