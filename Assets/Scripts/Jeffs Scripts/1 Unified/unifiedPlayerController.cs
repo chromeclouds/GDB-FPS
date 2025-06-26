@@ -351,4 +351,11 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         return weaponToDrop;
     }
 
+    public void addArmor(int amount)
+    {
+        armorValue += amount;
+        if (armorValue > armorMax)
+            armorValue = armorMax;
+        updatePlayerUI();
+    }
 }

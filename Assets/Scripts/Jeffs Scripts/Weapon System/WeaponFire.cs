@@ -86,7 +86,7 @@ public class WeaponFire : MonoBehaviour
                     break;
             }
 
-            if (Input.GetKeyDown(KeyCode.R))
+            if (Input.GetKeyDown(KeyCode.R) && !weaponData.HasInfiniteAmmo)
             {
                 StartCoroutine(Reload());
             }
@@ -95,8 +95,11 @@ public class WeaponFire : MonoBehaviour
 
     void Fire()
     {
-        if (currentAmmo <= 0) return;
-        currentAmmo--;
+        if (!weaponData.HasInfiniteAmmo && currentAmmo <= 0) return;
+
+        if(!weaponData.HasInfiniteAmmo)
+            currentAmmo--;
+
         WeaponUIManager.instance.UpdateAmmoCount(CurrentAmmo, ammoManager.GetAmmoCount(weaponData.AmmotType));
 
         if (weaponData.MuzzleFlash != null)
