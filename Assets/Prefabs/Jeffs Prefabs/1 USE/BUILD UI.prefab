@@ -1050,6 +1050,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2440245315818739242}
   - {fileID: 2640557653410734931}
   - {fileID: 3860683663675512055}
   - {fileID: 1685335647010522202}
@@ -8619,3 +8620,81 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1001 &225890942792346224
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2007633055173726168}
+    m_Modifications:
+    - target: {fileID: 2522007760094264410, guid: 23a729cfa4c94d040b683187b2a8a1a0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -787.01654
+      objectReference: {fileID: 0}
+    - target: {fileID: 2522007760094264410, guid: 23a729cfa4c94d040b683187b2a8a1a0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -493.62857
+      objectReference: {fileID: 0}
+    - target: {fileID: 2522007760094264410, guid: 23a729cfa4c94d040b683187b2a8a1a0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 7.90752
+      objectReference: {fileID: 0}
+    - target: {fileID: 2522007760094264410, guid: 23a729cfa4c94d040b683187b2a8a1a0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2522007760094264410, guid: 23a729cfa4c94d040b683187b2a8a1a0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2522007760094264410, guid: 23a729cfa4c94d040b683187b2a8a1a0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2522007760094264410, guid: 23a729cfa4c94d040b683187b2a8a1a0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2522007760094264410, guid: 23a729cfa4c94d040b683187b2a8a1a0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2522007760094264410, guid: 23a729cfa4c94d040b683187b2a8a1a0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2522007760094264410, guid: 23a729cfa4c94d040b683187b2a8a1a0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6014336687922092540, guid: 23a729cfa4c94d040b683187b2a8a1a0, type: 3}
+      propertyPath: m_Name
+      value: WeaponUIManagerZacksUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 9157318057025818534, guid: 23a729cfa4c94d040b683187b2a8a1a0, type: 3}
+      propertyPath: gunIcon
+      value: 
+      objectReference: {fileID: 2355907194475734357}
+    - target: {fileID: 9157318057025818534, guid: 23a729cfa4c94d040b683187b2a8a1a0, type: 3}
+      propertyPath: gunNameText
+      value: 
+      objectReference: {fileID: 9095121101007390555}
+    - target: {fileID: 9157318057025818534, guid: 23a729cfa4c94d040b683187b2a8a1a0, type: 3}
+      propertyPath: ammoTypeText
+      value: 
+      objectReference: {fileID: 1121373467190978712}
+    - target: {fileID: 9157318057025818534, guid: 23a729cfa4c94d040b683187b2a8a1a0, type: 3}
+      propertyPath: ammoCountText
+      value: 
+      objectReference: {fileID: 6510307269963192120}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 23a729cfa4c94d040b683187b2a8a1a0, type: 3}
+--- !u!4 &2440245315818739242 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2522007760094264410, guid: 23a729cfa4c94d040b683187b2a8a1a0, type: 3}
+  m_PrefabInstance: {fileID: 225890942792346224}
+  m_PrefabAsset: {fileID: 0}
