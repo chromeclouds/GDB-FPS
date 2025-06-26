@@ -128,6 +128,7 @@ public class gameManager : MonoBehaviour
         }
         else if(gameGoalCount <= 0)
         {
+            player.GetComponent<unifiedPlayerController>().resetHealth();
             roundPaused = true;
             difficultySelection();
         }
@@ -187,6 +188,14 @@ public class gameManager : MonoBehaviour
         foreach (var enemy in enemies)
         {
             enemy.endRound();
+        }
+        updateGameGoal(-gameGoalCount);
+
+        DemonAI[] demonEnemies = FindObjectsByType<DemonAI>(FindObjectsSortMode.None);
+
+        foreach (var singleDemon in demonEnemies)
+        {
+            singleDemon.endRound();
         }
         updateGameGoal(-gameGoalCount);
     }

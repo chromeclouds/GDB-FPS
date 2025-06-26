@@ -167,7 +167,11 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         gameManager.instance.playerArmorBar.fillAmount = armorPercent;
     }
 
-
+    public void resetHealth()
+    {
+        HP = HPOrig;
+        updatePlayerUI();
+    }
     IEnumerator damageFlash()
     {
         gameManager.instance.playerDamageScreen.SetActive(true);
