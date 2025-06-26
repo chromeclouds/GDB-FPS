@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7466091593004936699}
   - component: {fileID: 3493774783320612460}
   - component: {fileID: 1550187597293191446}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Mossberg_Held
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51,6 +51,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponData: {fileID: 11400000, guid: 01c51c574b6dd4242bc0d0b2028997ed, type: 2}
   bulletSpawnPoint: {fileID: 3617723903367044122}
+  weaponWorldPrefab: {fileID: 0}
+  weaponHeldPrefab: {fileID: 0}
 --- !u!114 &7466091593004936699
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96,7 +98,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3617723903367044122}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: bulletSpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -169,6 +171,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: e1aca0d64fe3e5141be45e23044c8aa9, type: 3}
       propertyPath: m_Name
       value: mossberg
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e1aca0d64fe3e5141be45e23044c8aa9, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

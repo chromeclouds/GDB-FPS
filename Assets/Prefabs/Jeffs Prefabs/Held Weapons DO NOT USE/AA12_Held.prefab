@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8563533331993665502}
   - component: {fileID: 8313799699348687104}
   - component: {fileID: 9021653283307381835}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: AA12_Held
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51,6 +51,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponData: {fileID: 11400000, guid: 2c6c3cead25dc1c4dad0e6ce9777490e, type: 2}
   bulletSpawnPoint: {fileID: 4700924520079128309}
+  weaponWorldPrefab: {fileID: 0}
+  weaponHeldPrefab: {fileID: 0}
 --- !u!114 &8563533331993665502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96,7 +98,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4700924520079128309}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: bulletSpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -169,6 +171,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: ed37c98ee34c2ec46a59723f225dc181, type: 3}
       propertyPath: m_Name
       value: aa12
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ed37c98ee34c2ec46a59723f225dc181, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

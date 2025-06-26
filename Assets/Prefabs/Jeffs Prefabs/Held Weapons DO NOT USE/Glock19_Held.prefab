@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1438286234365364649}
   - component: {fileID: 2399628494664814759}
   - component: {fileID: 5486456675118412971}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Glock19_Held
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51,6 +51,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponData: {fileID: 11400000, guid: 95bda635a7e3d324bbd7eb39c6131141, type: 2}
   bulletSpawnPoint: {fileID: 8187250004282442643}
+  weaponWorldPrefab: {fileID: 0}
+  weaponHeldPrefab: {fileID: 0}
 --- !u!114 &1438286234365364649
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96,7 +98,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8187250004282442643}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: bulletSpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -129,7 +131,7 @@ GameObject:
   - component: {fileID: 5882140195805961316}
   - component: {fileID: 8009169506105709420}
   - component: {fileID: 6941375949965292660}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: g19
   m_TagString: Untagged
   m_Icon: {fileID: 0}
