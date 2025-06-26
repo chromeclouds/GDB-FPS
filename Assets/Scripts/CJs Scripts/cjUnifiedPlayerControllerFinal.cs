@@ -50,6 +50,7 @@ public class cjUnifiedPlayerControllerFinal : MonoBehaviour, IDamage, IPickup, I
     float interactTime;
     float meleeCDTimer;
     bool isSprinting;
+    bool isMeleeing;
     int remainingDamage;
     void Start()
     {
@@ -65,7 +66,10 @@ public class cjUnifiedPlayerControllerFinal : MonoBehaviour, IDamage, IPickup, I
             setAnims();
             movement();
             sprint();
-            weaponSwap();
+            if (!isMeleeing)
+            {
+                weaponSwap();
+            }
         }
     }
 
@@ -141,6 +145,7 @@ public class cjUnifiedPlayerControllerFinal : MonoBehaviour, IDamage, IPickup, I
         meleeCDTimer = 0;
 
         //HideHeldWeapon();
+        isMeleeing = true;
         weaponHolder.gameObject.SetActive(false);
         anim.SetTrigger("Melee");
         StartCoroutine(MeleeAnim());
@@ -153,33 +158,6 @@ public class cjUnifiedPlayerControllerFinal : MonoBehaviour, IDamage, IPickup, I
             {
                 dmg.takeDamage(meleeDmg);
             }
-        }
-    }
-
-    void HideHeldWeapon()
-    {
-        GameObject weapon = GetCurrentHeldWeapon();
-        if (weapon != null)
-        {
-            SetLayerRecursively(weapon.transform, LayerMask.NameToLayer("Invisible"));
-        }
-    }
-    
-    void ShowHeldWeapon()
-    {
-        GameObject weapon = GetCurrentHeldWeapon();
-        if (weapon != null)
-        {
-            SetLayerRecursively(weapon.transform, LayerMask.NameToLayer("Guns"));
-        }
-    }
-
-    void SetLayerRecursively(Transform obj, int newLayer)
-    {
-        obj.gameObject.layer = newLayer;
-        foreach (Transform child in obj)
-        {
-            SetLayerRecursively(child, newLayer);
         }
     }
 
@@ -210,6 +188,7 @@ public class cjUnifiedPlayerControllerFinal : MonoBehaviour, IDamage, IPickup, I
         pivot.localRotation = Quaternion.Euler(0f, startAngle, 0f);
         //ShowHeldWeapon();
         weaponHolder.gameObject.SetActive(true);
+        isMeleeing = false;
     }
 
     private void OnTriggerEnter(Collider other)
