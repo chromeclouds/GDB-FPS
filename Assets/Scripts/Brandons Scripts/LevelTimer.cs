@@ -1,9 +1,12 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class LevelTimer : MonoBehaviour
 {
     [SerializeField] TMP_Text timer;    // Place Timer Text here
+    [SerializeField] bool isTimeLimit;    // Place Timer Text here
+    [SerializeField] float startingTime;    // Place Timer Text here
     
     float levelTime;                    // Keeps track of how much time has passed during level
     bool isRunning;                     // Checks if the timer is running
@@ -18,8 +21,21 @@ public class LevelTimer : MonoBehaviour
         // If the game isn't running stop here
         if (!isRunning) return;
 
+        if (isTimeLimit)
+        {
+            if(levelTime - Time.deltaTime > 0)
+            levelTime -= Time.deltaTime;
+
+            else
+            {
+                isRunning = false;
+                levelTime = 0;
+                gameManager.instance.endRound();
+            }
+        }
+
         // Slowly increase time as the game runs
-        levelTime += Time.deltaTime;
+        else levelTime += Time.deltaTime;
 
         // How many minutes have passed
         int minutes = Mathf.FloorToInt(levelTime / 60f);
@@ -30,16 +46,16 @@ public class LevelTimer : MonoBehaviour
         timer.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 
-    // Stop the timer
-    void StopTimer()
+    // Start the timer
+    public void StartTimer()
     { 
-        isRunning = false;
+        isRunning = true;
     }
 
     // Reset the timer
     void ResetTimer()
     { 
-        levelTime = 0f;
-        isRunning = true;
+        levelTime = startingTime;
+        isRunning = false;
     }
 }
