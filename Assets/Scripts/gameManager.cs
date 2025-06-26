@@ -15,6 +15,8 @@ public class gameManager : MonoBehaviour
     [SerializeField] GameObject difficultyPrompt;
     [SerializeField] TMP_Text gameGoalCountText;
     [SerializeField] TMP_Text scoreText;
+    [SerializeField] TMP_Text scoreWinText;
+    [SerializeField] TMP_Text scoreLoseText;
     [SerializeField] TMP_Text scoreRound;
     [SerializeField] int wallet;
     [SerializeField] int rounds;
@@ -52,6 +54,8 @@ public class gameManager : MonoBehaviour
         currRound = 0;
         player = GameObject.FindWithTag("Player");
         scoreText.text = wallet.ToString("f0");
+        scoreWinText.text = wallet.ToString("f0");
+        scoreLoseText.text = wallet.ToString("f0");
         scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
         playerScript = player.GetComponent<playerController>();
         timescaleOrig = Time.timeScale;
@@ -83,6 +87,7 @@ public class gameManager : MonoBehaviour
             activateSpawners();
             menuActive = null;
             roundPaused = false;
+            levelTimer.GetComponent<LevelTimer>().ResetTimer();
             levelTimer.GetComponent<LevelTimer>().StartTimer();
         }
     }
@@ -165,6 +170,8 @@ public class gameManager : MonoBehaviour
         spawnMult = 2;
         wallet += (roundValue * scoreMult);
         scoreText.text = wallet.ToString("f0");
+        scoreWinText.text = wallet.ToString("f0");
+        scoreLoseText.text = wallet.ToString("f0");
         stateUnpause();
         startRoundPrompt.SetActive(true);
     }
@@ -176,6 +183,8 @@ public class gameManager : MonoBehaviour
         spawnMult = 1;
         wallet += (roundValue * scoreMult);
         scoreText.text = wallet.ToString("f0");
+        scoreWinText.text = wallet.ToString("f0");
+        scoreLoseText.text = wallet.ToString("f0");
         stateUnpause();
         startRoundPrompt.SetActive(true);
     }
@@ -205,11 +214,15 @@ public class gameManager : MonoBehaviour
     {
         wallet -= amount;
         scoreText.text = wallet.ToString("f0");
+        scoreWinText.text = wallet.ToString("f0");
+        scoreLoseText.text = wallet.ToString("f0");
     }
     public void increaseWallet(int amount)
     {
         wallet += (amount * scoreMult);
         scoreText.text = wallet.ToString("f0");
+        scoreWinText.text = wallet.ToString("f0");
+        scoreLoseText.text = wallet.ToString("f0");
     }
 
     public void openDoor()
