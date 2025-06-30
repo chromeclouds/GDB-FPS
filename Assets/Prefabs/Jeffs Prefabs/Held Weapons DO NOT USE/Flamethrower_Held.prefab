@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3322018990610167955}
   - component: {fileID: 5584336736774095508}
   - component: {fileID: 3604431094535359240}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: boringflamethrower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,7 +98,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8118409355766277351}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: bulletSpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 2257514006967019847}
   - component: {fileID: 7577404631076572280}
   - component: {fileID: 5168243814651159868}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Flamethrower_Held
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -171,6 +171,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponData: {fileID: 11400000, guid: caaea9758880f7a4c8db3953b7824b23, type: 2}
   bulletSpawnPoint: {fileID: 8118409355766277351}
+  weaponWorldPrefab: {fileID: 0}
+  weaponHeldPrefab: {fileID: 0}
 --- !u!114 &2257514006967019847
 MonoBehaviour:
   m_ObjectHideFlags: 0

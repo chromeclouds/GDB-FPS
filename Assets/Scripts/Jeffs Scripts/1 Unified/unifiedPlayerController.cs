@@ -33,10 +33,18 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
     private List<GameObject> ownedWeapons = new List<GameObject>();
     private int currentWeaponIndex = 0;
 
+    [Header("Melee Values")]
+    [SerializeField] int meleeDist;
+    [SerializeField] int meleeDmg;
+    [SerializeField] float meleeCD;
+    [SerializeField] GameObject pivotPoint;
+
     Vector3 moveDir;
     Vector3 playerVel;
     int jumpCount;
     float interactTime;
+    float meleeCDTimer;
+    bool isMeleeing;
     bool isSprinting;
     int remainingDamage;
     void Start()
@@ -52,12 +60,18 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         {
             movement();
             sprint();
-            weaponSwap();
+            if (!isMeleeing)
+            {
+                weaponSwap();
+            }
         }
     }
 
+
     void movement()
     {
+        meleeCDTimer += Time.deltaTime;
+
         if (controller.isGrounded)
         {
             jumpCount = 0;
@@ -77,6 +91,11 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
             interact();
 
         look();
+
+        if (Input.GetButtonDown("Melee") && meleeCDTimer > meleeCD)
+        {
+            melee();
+        }
     }
 
     void sprint()
@@ -101,6 +120,57 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
             jumpCount++;
         }
     }
+
+    void melee()
+    {
+        pivotPoint.gameObject.SetActive(true);
+        meleeCDTimer = 0;
+
+        isMeleeing = true;
+        weaponHolder.gameObject.SetActive(false);
+        StartCoroutine(MeleeAnim());
+
+        RaycastHit hit;
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, meleeDist, ~ignoreLayer))
+        {
+            IDamage dmg = hit.collider.GetComponent<IDamage>();
+            if (dmg != null)
+            {
+                dmg.takeDamage(meleeDmg);
+            }
+        }
+    }
+
+    IEnumerator MeleeAnim()
+    {
+        float duration = 0.15f;
+        float elapsed = 0f;
+
+        float startAngle = -45f;
+        float endAngle = 125f;
+
+        Transform pivot = pivotPoint.transform;
+
+        pivot.localRotation = Quaternion.Euler(0f, startAngle, 0f);
+
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+
+            float angle = Mathf.Lerp(startAngle, endAngle, Mathf.SmoothStep(0f, 1f, t));
+            pivot.localRotation = Quaternion.Euler(0f, angle, 0f);
+
+            yield return null;
+        }
+
+        pivot.localRotation = Quaternion.Euler(0f, startAngle, 0f);
+        weaponHolder.gameObject.SetActive(true);
+        isMeleeing = false;
+        pivotPoint.gameObject.SetActive(false);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
 
@@ -186,7 +256,7 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         {
             ICost cost = hit.collider.GetComponent<ICost>();
             if (cost != null)
-            gameManager.instance.interactPromptPrice.text = cost.checkPrice().ToString("f0");
+                gameManager.instance.interactPromptPrice.text = cost.checkPrice().ToString("f0");
             gameManager.instance.interactPrompt.SetActive(cost != null && !hit.collider.CompareTag("Bought"));
         }
         else
@@ -288,7 +358,7 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         {
             ownedWeapons[i].SetActive(i == currentWeaponIndex);
         }
-        
+
     }
     public void AddExistingWeapon(GameObject weapon)
     {
@@ -297,8 +367,8 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         weapon.transform.localRotation = Quaternion.identity;
 
         ownedWeapons.Add(weapon);
-        currentWeaponIndex = ownedWeapons.Count -1;
-        for (int i = 0; i < ownedWeapons.Count; i++ )
+        currentWeaponIndex = ownedWeapons.Count - 1;
+        for (int i = 0; i < ownedWeapons.Count; i++)
         {
             ownedWeapons[i].SetActive(i == currentWeaponIndex);
         }
@@ -312,7 +382,7 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         ownedWeapons[currentWeaponIndex].SetActive(false);
         currentWeaponIndex = index;
         ownedWeapons[currentWeaponIndex].SetActive(true);
-        
+
         WeaponFire fire = ownedWeapons[currentWeaponIndex].GetComponent<WeaponFire>();
         if (fire != null && fire.weaponData != null)
         {

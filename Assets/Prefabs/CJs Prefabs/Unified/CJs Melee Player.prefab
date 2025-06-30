@@ -212,7 +212,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3167177698354646112}
-  - component: {fileID: 5770326781677744353}
   - component: {fileID: 2321298219449889988}
   - component: {fileID: 9143852773794844323}
   - component: {fileID: 6584819856928984569}
@@ -224,7 +223,7 @@ GameObject:
   - component: {fileID: 3424859141301013583}
   - component: {fileID: 7274222699846477101}
   m_Layer: 3
-  m_Name: unified PLAYER CJ (Melee)
+  m_Name: CJs Melee Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -246,42 +245,6 @@ Transform:
   - {fileID: 1574832744987457106}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 284.68298, z: 0}
---- !u!114 &5770326781677744353
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5138798637962295174}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ac2f2b3e2bceea48a4da26bfdcf14b3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  controller: {fileID: 8587242381195560811}
-  ignoreLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  speed: 5
-  sprintMod: 3
-  jumpVel: 12
-  jumpMax: 2
-  gravity: 35
-  HP: 10
-  armor: 0
-  armorValue: 0
-  medArmorValue: 0
-  heavyArmorValue: 0
-  armorMax: 10
-  ammoCount: {fileID: 0}
-  lookDistance: 10
-  interactRate: 0.5
-  weaponHolder: {fileID: 5185505859471329252}
-  anim: {fileID: 7274222699846477101}
-  meleeDist: 3
-  meleeDmg: 3
-  meleeCD: 1
-  pivotPoint: {fileID: 7360907331500813793}
 --- !u!114 &2321298219449889988
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -289,7 +252,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5138798637962295174}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 209013a9b19538b47ae9581edb1d26a5, type: 3}
   m_Name: 
@@ -313,6 +276,10 @@ MonoBehaviour:
   lookDistance: 10
   interactRate: 0.5
   weaponHolder: {fileID: 5185505859471329252}
+  meleeDist: 3
+  meleeDmg: 5
+  meleeCD: 0.75
+  pivotPoint: {fileID: 7360907331500813793}
 --- !u!114 &9143852773794844323
 MonoBehaviour:
   m_ObjectHideFlags: 0

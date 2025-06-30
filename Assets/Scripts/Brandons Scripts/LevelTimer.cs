@@ -53,7 +53,7 @@ public class LevelTimer : MonoBehaviour
     }
 
     // Reset the timer
-    void ResetTimer()
+    public void ResetTimer()
     { 
         levelTime = startingTime;
         isRunning = false;

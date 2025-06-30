@@ -87,6 +87,7 @@ public class gameManager : MonoBehaviour
             activateSpawners();
             menuActive = null;
             roundPaused = false;
+            levelTimer.GetComponent<LevelTimer>().ResetTimer();
             levelTimer.GetComponent<LevelTimer>().StartTimer();
         }
     }
@@ -133,7 +134,6 @@ public class gameManager : MonoBehaviour
         else if(gameGoalCount <= 0)
         {
             player.GetComponent<unifiedPlayerController>().resetHealth();
-            roundPaused = true;
             difficultySelection();
         }
     }
@@ -197,7 +197,6 @@ public class gameManager : MonoBehaviour
         {
             enemy.endRound();
         }
-        updateGameGoal(-gameGoalCount);
 
         DemonAI[] demonEnemies = FindObjectsByType<DemonAI>(FindObjectsSortMode.None);
 
