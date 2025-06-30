@@ -59,8 +59,7 @@ public class WeaponData : ScriptableObject
     public AmmoType AmmotType => ammoType;
     public float ReloadTime => reloadTime;
     public int MaxAmmo => maxAmmo;
-    [SerializeField] private bool hasInfiniteAmmo = false;
-    public bool HasInfiniteAmmo => hasInfiniteAmmo;
+
 
     [Header("Flamethrower")]
     [SerializeField] private bool isFlamethrower = false;
