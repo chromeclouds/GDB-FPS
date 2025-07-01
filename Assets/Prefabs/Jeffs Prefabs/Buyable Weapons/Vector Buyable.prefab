@@ -96,7 +96,6 @@ GameObject:
   m_Component:
   - component: {fileID: 810470015138928544}
   - component: {fileID: 8104774153525719363}
-  - component: {fileID: 2636017554365602778}
   - component: {fileID: 7127211984789582974}
   - component: {fileID: 7803710607195514411}
   m_Layer: 0
@@ -137,20 +136,6 @@ MonoBehaviour:
   weaponData: {fileID: 11400000, guid: 4a68d055e54a1c245a46fcf3075eb9bd, type: 2}
   weaponHeldPrefab: {fileID: 7352878829918341524, guid: b0c256c4a03369146a3df21cd3ea466d, type: 3}
   price: 100
---- !u!114 &2636017554365602778
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6034068621825075218}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9af61edce8b417d4fa058a9290feb9b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponPrefab: {fileID: 7352878829918341524, guid: b0c256c4a03369146a3df21cd3ea466d, type: 3}
-  weaponData: {fileID: 11400000, guid: 4a68d055e54a1c245a46fcf3075eb9bd, type: 2}
 --- !u!65 &7127211984789582974
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -166,7 +151,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
