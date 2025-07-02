@@ -13,7 +13,7 @@ public class SearchState : EnemyState
         ai.agent.SetDestination(ai.lastKnownPosition);
 
         idleIndex = Random.Range(1, 3); //idle1 or idle2
-        ai.animator.SetInteger("IdleIndex", idleIndex);
+        ai.animator.SetFloat("IdleIndex", (float)idleIndex);
         ai.animator.SetTrigger("RandomIndex");
     }
 

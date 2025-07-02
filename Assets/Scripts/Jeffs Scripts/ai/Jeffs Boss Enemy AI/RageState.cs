@@ -1,17 +1,18 @@
 using UnityEngine;
 
-public class ChaseState : EnemyState
+public class RageState : EnemyState
 {
-     
+    public RageState(enemyAI1 ai) : base(ai) { }
 
-    public ChaseState(enemyAI1 ai) : base(ai) { }
-    
     public override void Enter()
     {
         ai.animator.SetBool("isChasing", true);
         ai.animator.SetBool("isRunning", true);
+        ai.agent.speed *= 1.25f; //speed boost
+        Debug.Log("Boss Entering Rage State");
     }
 
+    
     public override void Update()
     {
         ai.attackTimer += Time.deltaTime;
@@ -20,21 +21,14 @@ public class ChaseState : EnemyState
         ai.animator.SetFloat("MoveX", localVelocity.x);
         ai.animator.SetFloat("MoveY", localVelocity.z);
 
-        if (ai.CanSeePlayer())
-        {
-            ai.agent.SetDestination(ai.player.position);
-            ai.lastKnownPosition = ai.player.position;
+        if (ai.player == null) return;
+        ai.agent.SetDestination(ai.player.position);
+        ai.FacePlayer();
 
-            
-            if (ai.agent.remainingDistance <= ai.attackRange)
-            {
-                ai.FacePlayer();
-                ai.SwitchState(new AttackState(ai));
-            }
-        }
-        else
+        float distance = Vector3.Distance(ai.transform.position, ai.player.position);
+        if (distance <= ai.attackRange)
         {
-            ai.SwitchState(new SearchState(ai));
+            ai.SwitchState(new AttackState(ai));
         }
     }
 
