@@ -103,23 +103,30 @@ public class enemyAI1 : MonoBehaviour, IDamage
 
     private void Die()
     {
+        if (isDead) return;
+
         isDead = true;
         agent.isStopped = true;
         animator.SetBool("isDead", true);
+        this.enabled = false;
+
+        //uncomment if you dont want body to stay
+        //Destroy(gameObject, 10f);
 
     }
 
-    public void ResetHit()
-    {
-        hammer.ResetHit();
-    }
     public void EnableHammerDamage()
     {
-        hammer.GetComponent<Collider>().enabled = true;
+        hammer.EnableDamage();
+    }
+    public void DisableHammerDamage()
+    {
+        hammer.DisableDamage();
     }
     public void SpawnVerticalSlash()
     {
-        Instantiate(rangedAttackPrefab, rangedAttackSpawn.position, rangedAttackSpawn.rotation);
+        GameObject slash = Instantiate(rangedAttackPrefab, rangedAttackSpawn.position, rangedAttackSpawn.rotation);
+
     }
 
     //used to randomly choose attack
