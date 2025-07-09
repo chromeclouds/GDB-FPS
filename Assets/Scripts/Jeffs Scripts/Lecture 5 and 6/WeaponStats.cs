@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu]
-
+//added to commit
 public class WeaponStats : ScriptableObject
 {
     public GameObject model;
