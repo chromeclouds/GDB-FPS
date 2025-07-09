@@ -31,6 +31,8 @@ public class gameManager : MonoBehaviour
     public GameObject playerSpawnPos;
     public GameObject interactPrompt;
     public TMP_Text interactPromptPrice;
+    public GameObject interactTorchPrompt;
+    public TMP_Text interactTorchName;
     public GameObject checkpointPopup;
     public GameObject levelTimer;
 

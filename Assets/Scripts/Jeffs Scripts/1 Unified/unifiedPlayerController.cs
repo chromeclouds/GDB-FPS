@@ -47,6 +47,7 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
     bool isMeleeing;
     bool isSprinting;
     int remainingDamage;
+    GameObject playerTorch;
     void Start()
     {
         HPOrig = HP;
@@ -255,13 +256,23 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, lookDistance, ~ignoreLayer))
         {
             ICost cost = hit.collider.GetComponent<ICost>();
+            torchHolder holder = hit.collider.GetComponent<torchHolder>();
             if (cost != null)
+            {
                 gameManager.instance.interactPromptPrice.text = cost.checkPrice().ToString("f0");
-            gameManager.instance.interactPrompt.SetActive(cost != null && !hit.collider.CompareTag("Bought"));
+                gameManager.instance.interactPrompt.SetActive(cost != null && !hit.collider.CompareTag("Bought"));
+            }
+            else if(holder != null)
+            {
+                if(holder.GetTorch() != null)
+                gameManager.instance.interactTorchName.text = holder.GetTorch().GetComponent<torchStats>().GetName();
+                gameManager.instance.interactTorchPrompt.SetActive(holder != null && holder.GetTorch() != null);
+            }
         }
         else
         {
             gameManager.instance.interactPrompt.SetActive(false);
+            gameManager.instance.interactTorchPrompt.SetActive(false);
         }
     }
 

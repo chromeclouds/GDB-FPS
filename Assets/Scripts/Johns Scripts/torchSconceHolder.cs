@@ -5,7 +5,7 @@ public class torchHolder : MonoBehaviour
     [SerializeField] private GameObject defaultTorch;
 
     public Transform torchLocation;
-    private GameObject currentTorch;
+    GameObject currentTorch;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -33,5 +33,10 @@ public class torchHolder : MonoBehaviour
 
         currentTorch.transform.SetParent(torchLocation);
         currentTorch.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+    }
+
+    public GameObject GetTorch()
+    {
+        return currentTorch;
     }
 }
