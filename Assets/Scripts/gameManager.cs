@@ -31,6 +31,9 @@ public class gameManager : MonoBehaviour
     public GameObject playerSpawnPos;
     public GameObject interactPrompt;
     public TMP_Text interactPromptPrice;
+    public GameObject interactTorchPrompt;
+    public TMP_Text interactTorchName;
+    public GameObject interactTorchPromptPlace;
     public GameObject checkpointPopup;
     public GameObject levelTimer;
 
@@ -43,6 +46,7 @@ public class gameManager : MonoBehaviour
     int currRound;
     int scoreMult;
     int spawnMult;
+    bool isHardMode;
     
 
    
@@ -105,6 +109,14 @@ public class gameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
     }
 
+    public void DifficultyChange(bool difficulty)
+    {
+        isHardMode = difficulty;
+    }
+    public bool GetDifficulty()
+    {
+        return isHardMode;
+    }
     public void stateUnpause()
     {
         if(roundPaused)
