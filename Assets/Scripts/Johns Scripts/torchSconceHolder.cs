@@ -33,5 +33,6 @@ public class torchHolder : MonoBehaviour
     {
         gameManager.instance.player.GetComponent<unifiedPlayerController>().hasTorch = false;
         defaultTorch.SetActive(true);
+        gameManager.instance.DifficultyChange(false);
     }
 }

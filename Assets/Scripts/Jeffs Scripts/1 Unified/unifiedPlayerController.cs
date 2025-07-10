@@ -262,6 +262,8 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
             {
                 gameManager.instance.interactPromptPrice.text = cost.checkPrice().ToString("f0");
                 gameManager.instance.interactPrompt.SetActive(cost != null && !hit.collider.CompareTag("Bought"));
+                gameManager.instance.interactTorchPrompt.SetActive(false);
+                gameManager.instance.interactTorchPromptPlace.SetActive(false);
             }
             else if(holder != null && !hasTorch)
             {
@@ -271,11 +273,15 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
                     gameManager.instance.interactTorchName.text = "Easy mode torch";
 
                 gameManager.instance.interactTorchPrompt.SetActive(holder != null && !hasTorch);
+                gameManager.instance.interactTorchPromptPlace.SetActive(false);
+                gameManager.instance.interactPrompt.SetActive(false);
             }
             else if(holder != null && hasTorch)
             {
                 if(holder.GetComponent<torchHolder>().GetDifficulty() == gameManager.instance.GetDifficulty())
                     gameManager.instance.interactTorchPromptPlace.SetActive(holder != null && hasTorch);
+                gameManager.instance.interactPrompt.SetActive(false);
+                gameManager.instance.interactTorchPrompt.SetActive(false);
             }
         }
         else
