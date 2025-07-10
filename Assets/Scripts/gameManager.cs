@@ -11,8 +11,6 @@ public class gameManager : MonoBehaviour
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
-    [SerializeField] GameObject startRoundPrompt;
-    [SerializeField] GameObject difficultyPrompt;
     [SerializeField] TMP_Text gameGoalCountText;
     [SerializeField] TMP_Text scoreText;
     [SerializeField] TMP_Text scoreWinText;
@@ -38,7 +36,6 @@ public class gameManager : MonoBehaviour
     public GameObject levelTimer;
 
     public bool isPaused;
-    bool roundPaused;
 
     float timescaleOrig;
 
@@ -56,6 +53,7 @@ public class gameManager : MonoBehaviour
     {
         instance = this;
         currRound = 0;
+        spawnMult = 1;
         player = GameObject.FindWithTag("Player");
         scoreText.text = wallet.ToString("f0");
         scoreWinText.text = wallet.ToString("f0");
@@ -64,7 +62,6 @@ public class gameManager : MonoBehaviour
         playerScript = player.GetComponent<playerController>();
         timescaleOrig = Time.timeScale;
         playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");
-        StartCoroutine(welcomeMessage());
     }
 
     // Update is called once per frame
@@ -83,24 +80,24 @@ public class gameManager : MonoBehaviour
                 stateUnpause(); 
             }
         }
-        if (startRoundPrompt.activeSelf && Input.GetButtonDown("Submit") && !isPaused)
-        {
-            startRoundPrompt.SetActive(false);
-            currRound++;
-            scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
-            activateSpawners();
-            menuActive = null;
-            roundPaused = false;
-            levelTimer.GetComponent<LevelTimer>().ResetTimer();
-            levelTimer.GetComponent<LevelTimer>().StartTimer();
-        }
+        //if (startRoundPrompt.activeSelf && Input.GetButtonDown("Submit") && !isPaused)
+        //{
+        //    startRoundPrompt.SetActive(false);
+        //    currRound++;
+        //    scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
+        //    activateSpawners();
+        //    menuActive = null;
+        //    roundPaused = false;
+        //    levelTimer.GetComponent<LevelTimer>().ResetTimer();
+        //    levelTimer.GetComponent<LevelTimer>().StartTimer();
+        //}
     }
 
-    IEnumerator welcomeMessage()
-    {
-        yield return new WaitForSeconds(0.1f);
-        difficultySelection();
-    }
+    //IEnumerator welcomeMessage()
+    //{
+    //    yield return new WaitForSeconds(0.1f);
+    //    difficultySelection();
+    //}
     public void statePause()
     {
         isPaused = !isPaused;
@@ -119,16 +116,12 @@ public class gameManager : MonoBehaviour
     }
     public void stateUnpause()
     {
-        if(roundPaused)
-            startRoundPrompt.SetActive(false);
         isPaused = !isPaused;
         Time.timeScale = timescaleOrig;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         menuActive.SetActive(false);
         menuActive = null;
-        if (roundPaused)
-            startRoundPrompt.SetActive(true);
     }
 
     public void updateGameGoal(int amount)
@@ -146,8 +139,19 @@ public class gameManager : MonoBehaviour
         else if(gameGoalCount <= 0)
         {
             player.GetComponent<unifiedPlayerController>().resetHealth();
-            difficultySelection();
         }
+    }
+
+    public void StartRound()
+    {
+        if (isHardMode) 
+            scoreMult = 2;
+        else scoreMult = 1;
+        activateSpawners();
+        currRound++;
+        scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
+        levelTimer.GetComponent<LevelTimer>().ResetTimer();
+        levelTimer.GetComponent<LevelTimer>().StartTimer();
     }
     
     void activateSpawners()
@@ -169,37 +173,37 @@ public class gameManager : MonoBehaviour
         menuActive.SetActive(true);
     }
 
-    public void difficultySelection()
-    {
-        statePause();
-        menuActive = difficultyPrompt;
-        difficultyPrompt.SetActive(true);
-    }
-    public void yes()
-    {
-        difficultyPrompt.SetActive(false);
-        scoreMult = 2;
-        spawnMult = 2;
-        wallet += (roundValue * scoreMult);
-        scoreText.text = wallet.ToString("f0");
-        scoreWinText.text = wallet.ToString("f0");
-        scoreLoseText.text = wallet.ToString("f0");
-        stateUnpause();
-        startRoundPrompt.SetActive(true);
-    }
+    //public void difficultySelection()
+    //{
+    //    statePause();
+    //    menuActive = difficultyPrompt;
+    //    difficultyPrompt.SetActive(true);
+    //}
+    //public void yes()
+    //{
+    //    difficultyPrompt.SetActive(false);
+    //    scoreMult = 2;
+    //    spawnMult = 2;
+    //    wallet += (roundValue * scoreMult);
+    //    scoreText.text = wallet.ToString("f0");
+    //    scoreWinText.text = wallet.ToString("f0");
+    //    scoreLoseText.text = wallet.ToString("f0");
+    //    stateUnpause();
+    //    startRoundPrompt.SetActive(true);
+    //}
 
-    public void no()
-    {
-        difficultyPrompt.SetActive(false);
-        scoreMult = 1;
-        spawnMult = 1;
-        wallet += (roundValue * scoreMult);
-        scoreText.text = wallet.ToString("f0");
-        scoreWinText.text = wallet.ToString("f0");
-        scoreLoseText.text = wallet.ToString("f0");
-        stateUnpause();
-        startRoundPrompt.SetActive(true);
-    }
+    //public void no()
+    //{
+    //    difficultyPrompt.SetActive(false);
+    //    scoreMult = 1;
+    //    spawnMult = 1;
+    //    wallet += (roundValue * scoreMult);
+    //    scoreText.text = wallet.ToString("f0");
+    //    scoreWinText.text = wallet.ToString("f0");
+    //    scoreLoseText.text = wallet.ToString("f0");
+    //    stateUnpause();
+    //    startRoundPrompt.SetActive(true);
+    //}
 
     public void endRound()
     {
@@ -235,10 +239,5 @@ public class gameManager : MonoBehaviour
         scoreText.text = wallet.ToString("f0");
         scoreWinText.text = wallet.ToString("f0");
         scoreLoseText.text = wallet.ToString("f0");
-    }
-
-    public void openDoor()
-    {
-
     }
 }

@@ -34,13 +34,4 @@ public class buttonFunctions : MonoBehaviour
         SceneManager.LoadScene(lvl);
         gameManager.instance.stateUnpause();
     }
-
-    public void yes()
-    {
-        gameManager.instance.yes();
-    }
-    public void no()
-    {
-        gameManager.instance.no();
-    }
 }
