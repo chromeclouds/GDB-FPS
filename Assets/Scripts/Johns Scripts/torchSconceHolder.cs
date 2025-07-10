@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class torchHolder : MonoBehaviour
 {
-    [SerializeField] GameObject defaultTorch;
+    [SerializeField] public GameObject defaultTorch;
     [SerializeField] private bool isHardMode;
 
     

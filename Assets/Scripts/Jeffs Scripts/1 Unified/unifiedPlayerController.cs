@@ -265,7 +265,7 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
                 gameManager.instance.interactTorchPrompt.SetActive(false);
                 gameManager.instance.interactTorchPromptPlace.SetActive(false);
             }
-            else if(holder != null && !hasTorch)
+            else if(holder != null && !hasTorch && holder.defaultTorch.activeSelf)
             {
                 if(holder.GetComponent<torchHolder>().GetDifficulty())
                     gameManager.instance.interactTorchName.text = "Hard mode torch";
@@ -276,7 +276,7 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
                 gameManager.instance.interactTorchPromptPlace.SetActive(false);
                 gameManager.instance.interactPrompt.SetActive(false);
             }
-            else if(holder != null && hasTorch)
+            else if(holder != null && hasTorch && !holder.defaultTorch.activeSelf)
             {
                 if(holder.GetComponent<torchHolder>().GetDifficulty() == gameManager.instance.GetDifficulty())
                     gameManager.instance.interactTorchPromptPlace.SetActive(holder != null && hasTorch);
@@ -301,9 +301,9 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
             torchHolder holder = hit.collider.GetComponent<torchHolder>();
             if (cost != null && !hit.collider.CompareTag("Bought"))
                 cost.buy();
-            else if (holder != null && !hasTorch)
+            else if (holder != null && !hasTorch && holder.defaultTorch.activeSelf)
                 gameManager.instance.DifficultyChange(holder.GivePlayerTorch());
-            else if (holder != null && hasTorch && holder.GetComponent<torchHolder>().GetDifficulty() == gameManager.instance.GetDifficulty())
+            else if (holder != null && hasTorch && holder.GetComponent<torchHolder>().GetDifficulty() == gameManager.instance.GetDifficulty() && !holder.defaultTorch.activeSelf)
                 holder.RetrieveTorch();
                 interactTime = 0;
         }
