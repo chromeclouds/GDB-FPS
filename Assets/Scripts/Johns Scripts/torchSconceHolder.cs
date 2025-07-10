@@ -3,17 +3,13 @@ using UnityEngine;
 public class torchHolder : MonoBehaviour
 {
     [SerializeField] private GameObject defaultTorch;
+    [SerializeField] private bool isHardMode;
 
-    public Transform torchLocation;
-    GameObject currentTorch;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if (defaultTorch != null)
-        {
-            GameObject spawnedTorch = Instantiate(defaultTorch);
-            placeTorch(spawnedTorch);
-        }
+        
     }
 
     // Update is called once per frame
@@ -22,21 +18,18 @@ public class torchHolder : MonoBehaviour
         
     }
 
-    void placeTorch(GameObject torch)
+    public bool GetDifficulty()
     {
-        if (currentTorch != null)
-        {
-            Destroy(currentTorch);
-        }
-
-        currentTorch = torch;
-
-        currentTorch.transform.SetParent(torchLocation);
-        currentTorch.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+        return isHardMode;
+    }
+    bool GivePlayerTorch()
+    {
+        defaultTorch.SetActive(false);
+        return isHardMode;
     }
 
-    public GameObject GetTorch()
+    void RetrieveTorch()
     {
-        return currentTorch;
+        defaultTorch.SetActive(true);
     }
 }

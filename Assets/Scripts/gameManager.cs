@@ -45,6 +45,7 @@ public class gameManager : MonoBehaviour
     int currRound;
     int scoreMult;
     int spawnMult;
+    bool isHardMode;
     
 
    
@@ -107,6 +108,10 @@ public class gameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
     }
 
+    public void DifficultyChange(bool difficulty)
+    {
+        isHardMode = difficulty;
+    }
     public void stateUnpause()
     {
         if(roundPaused)
