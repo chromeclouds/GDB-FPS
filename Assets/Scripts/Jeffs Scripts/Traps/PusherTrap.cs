@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PusherTrap : BaseTrap
+public class PusherTrap : MonoBehaviour
 {
     public Transform pusher;
     public Vector3 pushDirection = Vector3.forward;
@@ -16,7 +16,7 @@ public class PusherTrap : BaseTrap
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!isActive) return;
+        
         StartCoroutine(PushRoutine());
     }
 
