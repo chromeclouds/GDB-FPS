@@ -33,6 +33,7 @@ public class gameManager : MonoBehaviour
     public TMP_Text interactPromptPrice;
     public GameObject interactTorchPrompt;
     public TMP_Text interactTorchName;
+    public GameObject interactTorchPromptPlace;
     public GameObject checkpointPopup;
     public GameObject levelTimer;
 
@@ -111,6 +112,10 @@ public class gameManager : MonoBehaviour
     public void DifficultyChange(bool difficulty)
     {
         isHardMode = difficulty;
+    }
+    public bool GetDifficulty()
+    {
+        return isHardMode;
     }
     public void stateUnpause()
     {

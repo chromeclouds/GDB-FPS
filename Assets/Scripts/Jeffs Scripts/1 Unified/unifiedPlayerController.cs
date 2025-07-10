@@ -47,12 +47,13 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
     bool isMeleeing;
     bool isSprinting;
     int remainingDamage;
-    bool hasTorch;
+    public bool hasTorch;
     void Start()
     {
         HPOrig = HP;
         armorValue = armor;
         spawnPlayer();
+        hasTorch = false;
     }
 
     void Update()
@@ -271,11 +272,17 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
 
                 gameManager.instance.interactTorchPrompt.SetActive(holder != null && !hasTorch);
             }
+            else if(holder != null && hasTorch)
+            {
+                if(holder.GetComponent<torchHolder>().GetDifficulty() == gameManager.instance.GetDifficulty())
+                    gameManager.instance.interactTorchPromptPlace.SetActive(holder != null && hasTorch);
+            }
         }
         else
         {
             gameManager.instance.interactPrompt.SetActive(false);
             gameManager.instance.interactTorchPrompt.SetActive(false);
+            gameManager.instance.interactTorchPromptPlace.SetActive(false);
         }
     }
 
@@ -285,9 +292,14 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, lookDistance, ~ignoreLayer))
         {
             ICost cost = hit.collider.GetComponent<ICost>();
+            torchHolder holder = hit.collider.GetComponent<torchHolder>();
             if (cost != null && !hit.collider.CompareTag("Bought"))
                 cost.buy();
-            interactTime = 0;
+            else if (holder != null && !hasTorch)
+                gameManager.instance.DifficultyChange(holder.GivePlayerTorch());
+            else if (holder != null && hasTorch && holder.GetComponent<torchHolder>().GetDifficulty() == gameManager.instance.GetDifficulty())
+                holder.RetrieveTorch();
+                interactTime = 0;
         }
     }
 

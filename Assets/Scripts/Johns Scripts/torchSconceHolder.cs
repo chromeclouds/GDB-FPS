@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class torchHolder : MonoBehaviour
 {
-    [SerializeField] private GameObject defaultTorch;
+    [SerializeField] GameObject defaultTorch;
     [SerializeField] private bool isHardMode;
 
     
@@ -22,14 +22,16 @@ public class torchHolder : MonoBehaviour
     {
         return isHardMode;
     }
-    bool GivePlayerTorch()
+    public bool GivePlayerTorch()
     {
         defaultTorch.SetActive(false);
+        gameManager.instance.player.GetComponent<unifiedPlayerController>().hasTorch = true;
         return isHardMode;
     }
 
-    void RetrieveTorch()
+    public void RetrieveTorch()
     {
+        gameManager.instance.player.GetComponent<unifiedPlayerController>().hasTorch = false;
         defaultTorch.SetActive(true);
     }
 }
