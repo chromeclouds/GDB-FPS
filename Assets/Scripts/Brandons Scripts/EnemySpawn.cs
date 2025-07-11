@@ -10,11 +10,6 @@ public class EnemySpawn : MonoBehaviour
     [SerializeField] bool triggerMode;           // Wait for trigger to be called
     [SerializeField] Transform[] spawnPOS;
 
-    [SerializeField] GameObject lowlyDemonPrefab;
-    [SerializeField] GameObject skullPrefab;
-    [SerializeField] bool spawnSkullPairs;
-    [SerializeField] Transform[] patrolPathForSkulls;
-
     // Keeps track of how many enemies we've spawned so far
     int spawnCount;
 
@@ -48,7 +43,7 @@ public class EnemySpawn : MonoBehaviour
     // Spawns enemies one at a time with a delay between each
     IEnumerator SpawnEnemies(int spawns)
     {
-        // tells the script we're already spawning so it doesn t double up
+        // tells the script we're already spawning so it doesn’t double up
         isSpawning = true;
 
         // Loop until we've spawned the amount we want
@@ -56,40 +51,12 @@ public class EnemySpawn : MonoBehaviour
         {
             int arrayPOS = Random.Range(0, spawnPOS.Length);
 
-            if (spawnSkullPairs && skullPrefab != null && lowlyDemonPrefab != null)
-            {
-                // Spawn Skull
-                GameObject spawnedSkull = Instantiate(skullPrefab, spawnPOS[arrayPOS].position, spawnPOS[arrayPOS].rotation);
-
-                // Assign patrol points to SkullEnemyAI
-                SkullEnemyAI skullScript = spawnedSkull.GetComponent<SkullEnemyAI>();
-                if (skullScript != null && patrolPathForSkulls.Length > 0)
-                {
-                    skullScript.patrolPoints = patrolPathForSkulls;
-                }
-
-                // Spawn Lowly Demon nearby
-                Vector3 demonSpawnOffset = spawnPOS[arrayPOS].position + new Vector3(1.5f, 0, 0); // Offset a bit
-                GameObject spawnedDemon = Instantiate(lowlyDemonPrefab, demonSpawnOffset, spawnPOS[arrayPOS].rotation
-                );
-
-                // Link Demon to Skull
-                LectureEnemyAI demonScript = spawnedDemon.GetComponent<LectureEnemyAI>();
-                if (demonScript != null)
-                {
-                    demonScript.skullTarget = spawnedSkull.transform;
-                }
-            }
-            else
-            {
-                // Regular enemy spawn
-                Instantiate(enemyPrefab, spawnPOS[arrayPOS].position, spawnPOS[arrayPOS].rotation);
-            }
-
+            Instantiate(enemyPrefab, spawnPOS[arrayPOS].transform.position, spawnPOS[arrayPOS].transform.rotation);
             spawnCount++;
             yield return new WaitForSeconds(spawnIntreval);
         }
 
+        // Turn off the spawning flag so this can restart next time
         isSpawning = false;
         spawnCount = 0;
     }
