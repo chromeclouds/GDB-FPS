@@ -3,7 +3,7 @@ using System.Collections;
 using Unity.VisualScripting;
 
 public class EnemySpawn : MonoBehaviour
-{ 
+{
     [SerializeField] GameObject enemyPrefab;     // This is the enemy we're going to spawn
     [SerializeField] int spawnAmount;            // How many enemies we want to spawn total
     [SerializeField] float spawnIntreval;        // How long to wait between each spawn (in seconds)
@@ -13,6 +13,7 @@ public class EnemySpawn : MonoBehaviour
     [SerializeField] GameObject lowlyDemonPrefab;
     [SerializeField] GameObject skullPrefab;
     [SerializeField] bool spawnSkullPairs;
+    [SerializeField] Transform[] patrolPathForSkulls;
 
     // Keeps track of how many enemies we've spawned so far
     int spawnCount;
@@ -47,7 +48,7 @@ public class EnemySpawn : MonoBehaviour
     // Spawns enemies one at a time with a delay between each
     IEnumerator SpawnEnemies(int spawns)
     {
-        // tells the script we're already spawning so it doesn’t double up
+        // tells the script we're already spawning so it doesn t double up
         isSpawning = true;
 
         // Loop until we've spawned the amount we want
@@ -58,8 +59,14 @@ public class EnemySpawn : MonoBehaviour
             if (spawnSkullPairs && skullPrefab != null && lowlyDemonPrefab != null)
             {
                 // Spawn Skull
-                GameObject spawnedSkull = Instantiate(skullPrefab, spawnPOS[arrayPOS].position, spawnPOS[arrayPOS].rotation
-                );
+                GameObject spawnedSkull = Instantiate(skullPrefab, spawnPOS[arrayPOS].position, spawnPOS[arrayPOS].rotation);
+
+                // Assign patrol points to SkullEnemyAI
+                SkullEnemyAI skullScript = spawnedSkull.GetComponent<SkullEnemyAI>();
+                if (skullScript != null && patrolPathForSkulls.Length > 0)
+                {
+                    skullScript.patrolPoints = patrolPathForSkulls;
+                }
 
                 // Spawn Lowly Demon nearby
                 Vector3 demonSpawnOffset = spawnPOS[arrayPOS].position + new Vector3(1.5f, 0, 0); // Offset a bit

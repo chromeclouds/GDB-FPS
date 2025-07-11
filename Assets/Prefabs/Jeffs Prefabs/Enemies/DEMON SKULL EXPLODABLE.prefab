@@ -103,8 +103,8 @@ GameObject:
   - component: {fileID: 5777991854173517445}
   - component: {fileID: 5186894499607841854}
   - component: {fileID: 4965646888897997647}
-  m_Layer: 0
-  m_Name: DEMON2
+  m_Layer: 7
+  m_Name: DEMON SKULL EXPLODABLE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -118,14 +118,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7178253708947115014}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: -21.297539, y: 4, z: -83.16687}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalRotation: {x: -0.7069834, y: 0, z: 0, w: 0.7072302}
+  m_LocalPosition: {x: -21.297539, y: 1.61, z: -83.16687}
+  m_LocalScale: {x: 25, y: 25, z: 25}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6585657112330043376}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98, y: 0, z: 0}
 --- !u!114 &5777991854173517445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,10 +147,9 @@ MonoBehaviour:
   bulletDamage: 10
   patrolPoints:
   - {fileID: 0}
-  - {fileID: 0}
   wanderRadius: 3
   wanderInterval: 3
-  eyeBulletPrefab: {fileID: 2605596456829534252, guid: 939c8dea707a74b4fbd2b0181ab28294, type: 3}
+  eyeBulletPrefab: {fileID: 1214819348671191633, guid: 572e2e52e8405eb4fbc463dc58784f95, type: 3}
   shootPoint: {fileID: 5266297316719131858}
 --- !u!135 &5186894499607841854
 SphereCollider:
@@ -225,7 +224,7 @@ Transform:
   m_GameObject: {fileID: 7209983339582351312}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.0262, z: -0.0496}
+  m_LocalPosition: {x: 0, y: -0.013799997, z: -0.019600008}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

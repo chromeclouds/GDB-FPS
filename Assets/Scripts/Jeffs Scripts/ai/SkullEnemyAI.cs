@@ -59,7 +59,8 @@ public class SkullEnemyAI : MonoBehaviour, IDamage
             ChasePlayer();
             TryShoot();
         }
-        else if (isPatrolling && patrolPoints.Length >= 2)
+        // Changed from 2 to 1 since his only mission is blowing up the gate
+        else if (isPatrolling && patrolPoints.Length >= 1)
         {
             Patrol();
         }
@@ -126,6 +127,10 @@ public class SkullEnemyAI : MonoBehaviour, IDamage
     private bool PlayerInSight()
     {
         Vector3 toPlayer = player.position - transform.position;
+
+        // Minimum diutance before skull attacks player
+        if (Vector3.Distance(transform.position, player.position) > 20f) return false;
+
         float angle = Vector3.Angle(transform.forward, toPlayer);
 
         if (angle < fieldOfViewAngle * 0.5f && Vector3.Distance(transform.position, player.position) <= shootRange)

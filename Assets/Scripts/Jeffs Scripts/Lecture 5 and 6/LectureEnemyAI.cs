@@ -53,21 +53,23 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
             roamTime += Time.deltaTime;
 
         }
+        if (playerInRange && canSeePlayer())
+        {
+            return;
+        }
         if (playerInRange && !canSeePlayer())
         {
             roamCheck();
+            return;
         }
-        else if (isFollowingSkull)
+        if(!playerInRange && isFollowingSkull)
         {
             FollowSkull();
+            return;
         }
-        else
-        {
-            roamCheck();
-        }
+        roamCheck();
     }
 
-    //
     void FollowSkull()
     {
         if (skullTarget == null) return;
