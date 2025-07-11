@@ -1,7 +1,8 @@
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using System.Collections;
+using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class gameManager : MonoBehaviour
 {
@@ -11,8 +12,6 @@ public class gameManager : MonoBehaviour
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
-    [SerializeField] GameObject startRoundPrompt;
-    [SerializeField] GameObject difficultyPrompt;
     [SerializeField] TMP_Text gameGoalCountText;
     [SerializeField] TMP_Text scoreText;
     [SerializeField] TMP_Text scoreWinText;
@@ -29,6 +28,7 @@ public class gameManager : MonoBehaviour
     public GameObject player;
     public playerController playerScript;
     public GameObject playerSpawnPos;
+    public GameObject playerPortal;
     public GameObject interactPrompt;
     public TMP_Text interactPromptPrice;
     public GameObject interactTorchPrompt;
@@ -38,15 +38,16 @@ public class gameManager : MonoBehaviour
     public GameObject levelTimer;
 
     public bool isPaused;
-    bool roundPaused;
 
     float timescaleOrig;
 
     public int gameGoalCount;
     int currRound;
+    int currLevel;
     int scoreMult;
     int spawnMult;
     bool isHardMode;
+    bool isLoading;
     
 
    
@@ -54,8 +55,11 @@ public class gameManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
+        isLoading = false;
+        currLevel = 0;
         instance = this;
         currRound = 0;
+        spawnMult = 1;
         player = GameObject.FindWithTag("Player");
         scoreText.text = wallet.ToString("f0");
         scoreWinText.text = wallet.ToString("f0");
@@ -64,7 +68,10 @@ public class gameManager : MonoBehaviour
         playerScript = player.GetComponent<playerController>();
         timescaleOrig = Time.timeScale;
         playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");
-        StartCoroutine(welcomeMessage());
+        playerPortal = GameObject.FindWithTag("Portal");
+        playerPortal.SetActive(false);
+        DontDestroyOnLoad(player);
+        DontDestroyOnLoad(transform.root.gameObject);
     }
 
     // Update is called once per frame
@@ -83,24 +90,24 @@ public class gameManager : MonoBehaviour
                 stateUnpause(); 
             }
         }
-        if (startRoundPrompt.activeSelf && Input.GetButtonDown("Submit") && !isPaused)
-        {
-            startRoundPrompt.SetActive(false);
-            currRound++;
-            scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
-            activateSpawners();
-            menuActive = null;
-            roundPaused = false;
-            levelTimer.GetComponent<LevelTimer>().ResetTimer();
-            levelTimer.GetComponent<LevelTimer>().StartTimer();
-        }
+        //if (startRoundPrompt.activeSelf && Input.GetButtonDown("Submit") && !isPaused)
+        //{
+        //    startRoundPrompt.SetActive(false);
+        //    currRound++;
+        //    scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
+        //    activateSpawners();
+        //    menuActive = null;
+        //    roundPaused = false;
+        //    levelTimer.GetComponent<LevelTimer>().ResetTimer();
+        //    levelTimer.GetComponent<LevelTimer>().StartTimer();
+        //}
     }
 
-    IEnumerator welcomeMessage()
-    {
-        yield return new WaitForSeconds(0.1f);
-        difficultySelection();
-    }
+    //IEnumerator welcomeMessage()
+    //{
+    //    yield return new WaitForSeconds(0.1f);
+    //    difficultySelection();
+    //}
     public void statePause()
     {
         isPaused = !isPaused;
@@ -119,16 +126,12 @@ public class gameManager : MonoBehaviour
     }
     public void stateUnpause()
     {
-        if(roundPaused)
-            startRoundPrompt.SetActive(false);
         isPaused = !isPaused;
         Time.timeScale = timescaleOrig;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         menuActive.SetActive(false);
         menuActive = null;
-        if (roundPaused)
-            startRoundPrompt.SetActive(true);
     }
 
     public void updateGameGoal(int amount)
@@ -139,15 +142,68 @@ public class gameManager : MonoBehaviour
         if(gameGoalCount <= 0 && currRound == rounds)
         {
             //you win
-            statePause();
-            menuActive = menuWin;
-            menuActive.SetActive(true);
+            //statePause();
+            //menuActive = menuWin;
+            //menuActive.SetActive(true);
+            levelTimer.GetComponent<LevelTimer>().ResetTimer();
+            playerPortal.SetActive(true);
         }
         else if(gameGoalCount <= 0)
         {
             player.GetComponent<unifiedPlayerController>().resetHealth();
-            difficultySelection();
+            levelTimer.GetComponent<LevelTimer>().ResetTimer();
         }
+    }
+
+    public void LoadNextLevel()
+    {
+        if (!isLoading)
+        {
+            isLoading = !isLoading;
+            player.GetComponent<unifiedPlayerController>().resetHealth();
+            levelTimer.GetComponent<LevelTimer>().ResetTimer();
+            currRound = 0;
+            currLevel += 1;
+            SceneManager.LoadScene(currLevel);
+            StartCoroutine(newScene());
+        }
+    }
+    IEnumerator newScene()
+    {
+        yield return new WaitForSeconds(0.3f);
+        scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
+        playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");
+        player.GetComponent<unifiedPlayerController>().spawnPlayer();
+        player.GetComponent<unifiedPlayerController>().hasTorch = false;
+        playerPortal = null;
+        if (currLevel < SceneManager.sceneCountInBuildSettings - 1)
+        {
+            playerPortal = GameObject.FindWithTag("Portal");
+            playerPortal.SetActive(false);
+        }
+        isLoading = !isLoading;
+    }
+
+    public void WinGame()
+    {
+        //you win
+        statePause();
+        menuActive = menuWin;
+        menuActive.SetActive(true);
+    }
+    public void StartRound()
+    {
+        if (currRound == rounds)
+            return;
+        if (isHardMode) 
+            scoreMult = 2;
+        else scoreMult = 1;
+        activateSpawners();
+        currRound++;
+        increaseWallet(roundValue);
+        scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
+        levelTimer.GetComponent<LevelTimer>().ResetTimer();
+        levelTimer.GetComponent<LevelTimer>().StartTimer();
     }
     
     void activateSpawners()
@@ -169,37 +225,37 @@ public class gameManager : MonoBehaviour
         menuActive.SetActive(true);
     }
 
-    public void difficultySelection()
-    {
-        statePause();
-        menuActive = difficultyPrompt;
-        difficultyPrompt.SetActive(true);
-    }
-    public void yes()
-    {
-        difficultyPrompt.SetActive(false);
-        scoreMult = 2;
-        spawnMult = 2;
-        wallet += (roundValue * scoreMult);
-        scoreText.text = wallet.ToString("f0");
-        scoreWinText.text = wallet.ToString("f0");
-        scoreLoseText.text = wallet.ToString("f0");
-        stateUnpause();
-        startRoundPrompt.SetActive(true);
-    }
+    //public void difficultySelection()
+    //{
+    //    statePause();
+    //    menuActive = difficultyPrompt;
+    //    difficultyPrompt.SetActive(true);
+    //}
+    //public void yes()
+    //{
+    //    difficultyPrompt.SetActive(false);
+    //    scoreMult = 2;
+    //    spawnMult = 2;
+    //    wallet += (roundValue * scoreMult);
+    //    scoreText.text = wallet.ToString("f0");
+    //    scoreWinText.text = wallet.ToString("f0");
+    //    scoreLoseText.text = wallet.ToString("f0");
+    //    stateUnpause();
+    //    startRoundPrompt.SetActive(true);
+    //}
 
-    public void no()
-    {
-        difficultyPrompt.SetActive(false);
-        scoreMult = 1;
-        spawnMult = 1;
-        wallet += (roundValue * scoreMult);
-        scoreText.text = wallet.ToString("f0");
-        scoreWinText.text = wallet.ToString("f0");
-        scoreLoseText.text = wallet.ToString("f0");
-        stateUnpause();
-        startRoundPrompt.SetActive(true);
-    }
+    //public void no()
+    //{
+    //    difficultyPrompt.SetActive(false);
+    //    scoreMult = 1;
+    //    spawnMult = 1;
+    //    wallet += (roundValue * scoreMult);
+    //    scoreText.text = wallet.ToString("f0");
+    //    scoreWinText.text = wallet.ToString("f0");
+    //    scoreLoseText.text = wallet.ToString("f0");
+    //    stateUnpause();
+    //    startRoundPrompt.SetActive(true);
+    //}
 
     public void endRound()
     {
@@ -235,10 +291,5 @@ public class gameManager : MonoBehaviour
         scoreText.text = wallet.ToString("f0");
         scoreWinText.text = wallet.ToString("f0");
         scoreLoseText.text = wallet.ToString("f0");
-    }
-
-    public void openDoor()
-    {
-
     }
 }
