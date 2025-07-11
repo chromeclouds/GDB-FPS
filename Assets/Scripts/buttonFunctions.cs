@@ -10,7 +10,25 @@ public class buttonFunctions : MonoBehaviour
 
     public void restart()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.MoveGameObjectToScene(gameManager.instance.player, SceneManager.GetActiveScene());
+        SceneManager.MoveGameObjectToScene(gameManager.instance.transform.root.gameObject, SceneManager.GetActiveScene());
+        SceneManager.LoadScene(0);
+        gameManager.instance.stateUnpause();
+    }
+    public void restartRound()
+    {
+        //if(SceneManager.GetActiveScene().buildIndex == 0)
+        //{
+
+        //}
+        //gameManager.instance.player.GetComponent<unifiedPlayerController>().resetHealth();
+        //gameManager.instance.levelTimer.GetComponent<LevelTimer>().ResetTimer();
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        //gameManager.instance.stateUnpause();
+    }
+    public void Continue()
+    {
+        gameManager.instance.player.GetComponent<unifiedPlayerController>().resetHealth();
         gameManager.instance.stateUnpause();
     }
 
