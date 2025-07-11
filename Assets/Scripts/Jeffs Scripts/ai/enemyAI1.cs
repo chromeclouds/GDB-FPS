@@ -5,31 +5,54 @@ using Unity.VisualScripting;
 using System.ComponentModel;
 
 public class enemyAI1 : MonoBehaviour, IDamage
-{
-    [Header("AI Components")]
+{ 
+    [Header("Navigation")]
     public NavMeshAgent agent;
     public Transform[] waypoints;
-    public Transform headPos;
     public Transform player;
-    public Animator animator;
-   
+    public float lookRadius = 15f;
+    public float attackRange = 3f;
 
-    [Header("Stats")]
-    public int HP;
-    public int FOV = 90;
-    public float faceTargetSpeed = 5f;
-    public float attackRange = 2f;
-    public float attackCooldown = 1.5f;
-    public int meleeDamage = 10;
-    public float attackTimer;
-    private int attackCount = 0;
+    [Header("Health")]
+    public int maxHP = 100;
+    public int currentHP;
+    private bool isDead = false;
+    private bool isRaging = false;
+    public float rageThreshold = 25f;
 
+    [Header("Combat")]
+    public float attackCooldown = 2f;
+    [HideInInspector] public float attackTimer = 0f;
     [HideInInspector] public Vector3 lastKnownPosition;
 
+    [Header("Animation")]
+    public Animator animator;
+    public HammerHitbox hammer;
+    public GameObject rangedAttackPrefab;
+    public Transform rangedAttackSpawn;
+
     private EnemyState currentState;
-    private SkinnedMeshRenderer[] renderers;
-    private Color[] originalColors;
     
+    void Start()
+    {
+        currentHP = maxHP;
+        agent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
+        if (player == null)
+            player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        SwitchState(new PatrolState(this));
+    }
+
+    void Update()
+    {
+        Vector3 localVelocity = transform.InverseTransformDirection(agent.velocity);
+        animator.SetFloat("MoveX", localVelocity.x);
+        animator.SetFloat("MoveY", localVelocity.z);
+        animator.SetFloat("MoveSpeed", agent.velocity.magnitude);
+
+        if (isDead) return;
+        currentState?.Update();
+    }
 
     public void SwitchState(EnemyState newState)
     {
@@ -38,80 +61,91 @@ public class enemyAI1 : MonoBehaviour, IDamage
         currentState.Enter();
     }
 
-    void Start()
-    {
-        //grab all skinned mesh renderers 
-        renderers = GetComponentsInChildren<SkinnedMeshRenderer>();
-        originalColors = new Color[renderers.Length];
-
-        for (int i = 0; i < renderers.Length; i++)
-        {
-            originalColors[i] = renderers[i].material.color;
-        }
-
-        if (player == null)
-        {
-            GameObject p = GameObject.FindWithTag("Player");
-            if (p != null)
-                player = p.transform;
-        }
-        animator.SetInteger("IdleIndex", 3);
-        gameManager.instance.updateGameGoal(1);
-        SwitchState(new PatrolState(this));
-    }
-
-    void Update()
-    {
-        attackTimer += Time.deltaTime;
-        currentState?.Update();
-    }
-
     public bool CanSeePlayer()
     {
-        Vector3 dir = player.position - headPos.position;
-        float angle = Vector3.Angle(dir, transform.forward);
-
-        if (angle < FOV)
-        {
-            RaycastHit hit;
-            if (Physics.Raycast(headPos.position, dir, out hit))
-            {
-                if (hit.collider.CompareTag("Player"))
-                    return true;
-            }
-        }
-        return false;
+        if (player == null) return false;
+        float dist = Vector3.Distance(transform.position, player.position);
+        return dist <= lookRadius;
     }
+
 
     public void FacePlayer()
     {
-        Vector3 dir = player.position - transform.position;
-        dir.y = 0;
-        Quaternion rot = Quaternion.LookRotation(dir);
-        transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * faceTargetSpeed);
+        if (player == null) return;
+
+        Vector3 direction = (player.position - transform.position).normalized;
+        direction.y = 0;
+        transform.rotation = Quaternion.LookRotation(direction);
     }
 
     public void takeDamage(int amount)
     {
-        HP -= amount;
-        if (HP <= 0)
+        if (isDead) return;
+        currentHP -= amount;
+
+        //stagger
+        animator.SetTrigger("isDamaged");
+        animator.SetInteger("DamageIndex", amount >= 15 ? 2 : 1);
+
+        if(currentHP <= rageThreshold && !isRaging)
         {
-            animator.SetBool("isDead", true);
-            Destroy(gameObject, 3f);
-            gameManager.instance.updateGameGoal(-1);
+            isRaging = true;
+            agent.speed *= 1.5f; //increase speed
+            Debug.Log("boss is enraged");
+
         }
-        else
+
+        if (currentHP <= 0)
         {
-            animator.SetBool("isDamaged", true);
-
-            animator.SetInteger("TakingDamageType", amount >= 5 ? 2 : 1);
-            StartCoroutine(ResetDamageAnimation());
-
-            lastKnownPosition = player.position;
-            SwitchState(new ChaseState(this));
+            Die();
         }
     }
 
+    private void Die()
+    {
+        if (isDead) return;
+
+        isDead = true;
+        agent.isStopped = true;
+        animator.SetBool("isDead", true);
+        this.enabled = false;
+
+        //uncomment if you dont want body to stay
+        //Destroy(gameObject, 10f);
+
+    }
+
+    public void EnableHammerDamage()
+    {
+        hammer.EnableDamage();
+    }
+    public void DisableHammerDamage()
+    {
+        hammer.DisableDamage();
+    }
+    public void SpawnVerticalSlash()
+    {
+        GameObject slash = Instantiate(rangedAttackPrefab, rangedAttackSpawn.position, rangedAttackSpawn.rotation);
+
+    }
+
+    //used to randomly choose attack
+    public int GetBestAttackIndex()
+    {
+        float yDiff = player.position.y - transform.position.y;
+        if (yDiff > 1.5f)
+            return 3; //high attack3
+        if (Random.value > 0.5f)
+            return 1; //side swing attack1
+        else
+            return 2; //ranged upward attack2
+    }
+
+
+}
+
+//old code from old broken attempt at the boss
+/*
     IEnumerator ResetDamageAnimation()
     {
         yield return new WaitForSeconds(0.5f);
@@ -237,4 +271,4 @@ public class enemyAI1 : MonoBehaviour, IDamage
             }
         }
     }
-}
+    */

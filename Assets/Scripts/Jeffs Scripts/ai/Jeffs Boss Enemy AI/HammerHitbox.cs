@@ -3,14 +3,16 @@ using UnityEngine;
 public class HammerHitbox : MonoBehaviour
 {
     public int damage = 1;
+    private bool canDamage = false;
     private bool hasHit = false;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!hasHit && other.CompareTag("Player"))
+        if (!canDamage || hasHit) return;
+        if (other.CompareTag("Player"))
         {
             IDamage dmg = other.GetComponent<IDamage>();
-            if (dmg != null )
+            if (dmg != null)
             {
                 dmg.takeDamage(damage);
                 hasHit = true;
@@ -18,8 +20,15 @@ public class HammerHitbox : MonoBehaviour
         }
     }
 
-    public void ResetHit()
+    public void EnableDamage()
     {
+        canDamage = true;
         hasHit = false;
     }
+
+    public void DisableDamage()
+    {
+        canDamage = false;
+    }
+    
 }

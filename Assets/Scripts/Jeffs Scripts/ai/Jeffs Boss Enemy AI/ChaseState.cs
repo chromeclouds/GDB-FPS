@@ -16,6 +16,10 @@ public class ChaseState : EnemyState
     {
         ai.attackTimer += Time.deltaTime;
 
+        Vector3 localVelocity = ai.transform.InverseTransformDirection(ai.agent.velocity);
+        ai.animator.SetFloat("MoveX", localVelocity.x);
+        ai.animator.SetFloat("MoveY", localVelocity.z);
+
         if (ai.CanSeePlayer())
         {
             ai.agent.SetDestination(ai.player.position);

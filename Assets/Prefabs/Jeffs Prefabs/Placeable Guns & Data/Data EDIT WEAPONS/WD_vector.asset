@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Vector 45
   fireRate: 0.1
-  damage: 1
+  damage: 10
   bulletSpeed: 100
   bulletPrefab: {fileID: 6255843267276114019, guid: eb4250e6b764fd845b889fe3cc6ea8ab, type: 3}
   spreadAngle: 0.5
@@ -32,6 +32,7 @@ MonoBehaviour:
   ammoType: 0
   reloadTime: 0.8
   maxAmmo: 30
+  hasInfiniteAmmo: 0
   isFlamethrower: 0
   overheatTime: 5
   cooldownTime: 3
