@@ -28,6 +28,7 @@ public class WeaponADS : MonoBehaviour
             if (Input.GetButton("Fire2")) //right click
             {
                 isAiming = true;
+                
             }
             else
             {
