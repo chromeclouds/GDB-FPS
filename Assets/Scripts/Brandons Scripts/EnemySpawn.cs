@@ -8,7 +8,11 @@ public class EnemySpawn : MonoBehaviour
     [SerializeField] int spawnAmount;            // How many enemies we want to spawn total
     [SerializeField] float spawnIntreval;        // How long to wait between each spawn (in seconds)
     [SerializeField] bool triggerMode;           // Wait for trigger to be called
-    [SerializeField] Transform[] spawnPOS;        
+    [SerializeField] Transform[] spawnPOS;
+
+    [SerializeField] GameObject lowlyDemonPrefab;
+    [SerializeField] GameObject skullPrefab;
+    [SerializeField] bool spawnSkullPairs;
 
     // Keeps track of how many enemies we've spawned so far
     int spawnCount;
@@ -51,12 +55,34 @@ public class EnemySpawn : MonoBehaviour
         {
             int arrayPOS = Random.Range(0, spawnPOS.Length);
 
-            Instantiate(enemyPrefab, spawnPOS[arrayPOS].transform.position, spawnPOS[arrayPOS].transform.rotation);
+            if (spawnSkullPairs && skullPrefab != null && lowlyDemonPrefab != null)
+            {
+                // Spawn Skull
+                GameObject spawnedSkull = Instantiate(skullPrefab, spawnPOS[arrayPOS].position, spawnPOS[arrayPOS].rotation
+                );
+
+                // Spawn Lowly Demon nearby
+                Vector3 demonSpawnOffset = spawnPOS[arrayPOS].position + new Vector3(1.5f, 0, 0); // Offset a bit
+                GameObject spawnedDemon = Instantiate(lowlyDemonPrefab, demonSpawnOffset, spawnPOS[arrayPOS].rotation
+                );
+
+                // Link Demon to Skull
+                LectureEnemyAI demonScript = spawnedDemon.GetComponent<LectureEnemyAI>();
+                if (demonScript != null)
+                {
+                    demonScript.skullTarget = spawnedSkull.transform;
+                }
+            }
+            else
+            {
+                // Regular enemy spawn
+                Instantiate(enemyPrefab, spawnPOS[arrayPOS].position, spawnPOS[arrayPOS].rotation);
+            }
+
             spawnCount++;
             yield return new WaitForSeconds(spawnIntreval);
         }
 
-        // Turn off the spawning flag so this can restart next time
         isSpawning = false;
         spawnCount = 0;
     }

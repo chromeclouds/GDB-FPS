@@ -7,7 +7,7 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
     [SerializeField] NavMeshAgent agent;
     [SerializeField] Transform headPOS;
     [SerializeField] int HP;
-    [SerializeField] int factTargetSpeed;
+    [SerializeField] int faceTargetSpeed;
     [SerializeField] int roamDist;
     [SerializeField] int roamstopTime;
     [SerializeField] Transform shootPos;
@@ -19,6 +19,8 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
     [SerializeField] Animator anim;
     [SerializeField] Collider swordCol;
 
+    [SerializeField] public Transform skullTarget;
+
     Color colorOrig;
 
     float shootTimer;
@@ -27,13 +29,16 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
     float stoppingDistOrig;
     bool playerInRange;
 
+    bool isFollowingSkull => skullTarget != null;
+
     Vector3 playerDir;
     Vector3 startingPos;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         colorOrig = model.material.color;
-        //gameManager.instance.updateGameGoal(1);
+        
         startingPos = transform.position;
         stoppingDistOrig = agent.stoppingDistance;
 
@@ -52,12 +57,31 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
         {
             roamCheck();
         }
-        else if (!playerInRange)
+        else if (isFollowingSkull)
+        {
+            FollowSkull();
+        }
+        else
         {
             roamCheck();
         }
     }
 
+    //
+    void FollowSkull()
+    {
+        if (skullTarget == null) return;
+
+        agent.SetDestination(skullTarget.position);
+        faceTarget(skullTarget.position);
+    }
+
+    void faceTarget(Vector3 targetPos)
+    {
+        Vector3 dir = targetPos - transform.position;
+        Quaternion rot = Quaternion.LookRotation(new Vector3(dir.x, 0, dir.z));
+        transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * faceTargetSpeed);
+    }
     void setAnimations()
     {
         float agentSpeedCur = agent.velocity.normalized.magnitude;
@@ -124,7 +148,7 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
     void faceTarget()
     {
         Quaternion rot = Quaternion.LookRotation(new Vector3(playerDir.x, 0, playerDir.z));
-        transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * factTargetSpeed);//Change direction over time
+        transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * faceTargetSpeed);//Change direction over time
     }
 
     private void OnTriggerEnter(Collider other)
