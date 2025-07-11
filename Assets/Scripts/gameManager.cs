@@ -193,7 +193,7 @@ public class gameManager : MonoBehaviour
     }
     public void StartRound()
     {
-        if (currRound == rounds)
+        if (currRound == rounds || gameGoalCount > 0)
             return;
         if (isHardMode) 
             scoreMult = 2;
