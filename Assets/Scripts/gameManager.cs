@@ -1,7 +1,8 @@
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using System.Collections;
+using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class gameManager : MonoBehaviour
 {
@@ -27,6 +28,7 @@ public class gameManager : MonoBehaviour
     public GameObject player;
     public playerController playerScript;
     public GameObject playerSpawnPos;
+    public GameObject playerPortal;
     public GameObject interactPrompt;
     public TMP_Text interactPromptPrice;
     public GameObject interactTorchPrompt;
@@ -41,9 +43,11 @@ public class gameManager : MonoBehaviour
 
     public int gameGoalCount;
     int currRound;
+    int currLevel;
     int scoreMult;
     int spawnMult;
     bool isHardMode;
+    bool isLoading;
     
 
    
@@ -51,6 +55,8 @@ public class gameManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
+        isLoading = false;
+        currLevel = 0;
         instance = this;
         currRound = 0;
         spawnMult = 1;
@@ -62,6 +68,10 @@ public class gameManager : MonoBehaviour
         playerScript = player.GetComponent<playerController>();
         timescaleOrig = Time.timeScale;
         playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");
+        playerPortal = GameObject.FindWithTag("Portal");
+        playerPortal.SetActive(false);
+        DontDestroyOnLoad(player);
+        DontDestroyOnLoad(transform.root.gameObject);
     }
 
     // Update is called once per frame
@@ -132,23 +142,65 @@ public class gameManager : MonoBehaviour
         if(gameGoalCount <= 0 && currRound == rounds)
         {
             //you win
-            statePause();
-            menuActive = menuWin;
-            menuActive.SetActive(true);
+            //statePause();
+            //menuActive = menuWin;
+            //menuActive.SetActive(true);
+            levelTimer.GetComponent<LevelTimer>().ResetTimer();
+            playerPortal.SetActive(true);
         }
         else if(gameGoalCount <= 0)
         {
             player.GetComponent<unifiedPlayerController>().resetHealth();
+            levelTimer.GetComponent<LevelTimer>().ResetTimer();
         }
     }
 
+    public void LoadNextLevel()
+    {
+        if (!isLoading)
+        {
+            isLoading = !isLoading;
+            player.GetComponent<unifiedPlayerController>().resetHealth();
+            levelTimer.GetComponent<LevelTimer>().ResetTimer();
+            currRound = 0;
+            currLevel += 1;
+            SceneManager.LoadScene(currLevel);
+            StartCoroutine(newScene());
+        }
+    }
+    IEnumerator newScene()
+    {
+        yield return new WaitForSeconds(0.3f);
+        scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
+        playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");
+        player.GetComponent<unifiedPlayerController>().spawnPlayer();
+        player.GetComponent<unifiedPlayerController>().hasTorch = false;
+        playerPortal = null;
+        if (currLevel < SceneManager.sceneCountInBuildSettings - 1)
+        {
+            playerPortal = GameObject.FindWithTag("Portal");
+            playerPortal.SetActive(false);
+        }
+        isLoading = !isLoading;
+    }
+
+    public void WinGame()
+    {
+        //you win
+        statePause();
+        menuActive = menuWin;
+        menuActive.SetActive(true);
+    }
     public void StartRound()
     {
+        if (currRound == rounds)
+            return;
         if (isHardMode) 
             scoreMult = 2;
         else scoreMult = 1;
         activateSpawners();
         currRound++;
+        increaseWallet(roundValue);
         scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
         levelTimer.GetComponent<LevelTimer>().ResetTimer();
         levelTimer.GetComponent<LevelTimer>().StartTimer();
