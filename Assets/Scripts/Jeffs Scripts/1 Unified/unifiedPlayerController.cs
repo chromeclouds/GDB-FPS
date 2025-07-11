@@ -39,6 +39,9 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
     [SerializeField] float meleeCD;
     [SerializeField] GameObject pivotPoint;
 
+    [Header("Animator")]
+    [SerializeField] Animator anim;
+
     Vector3 moveDir;
     Vector3 playerVel;
     int jumpCount;
@@ -48,6 +51,7 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
     bool isSprinting;
     int remainingDamage;
     public bool hasTorch;
+
     void Start()
     {
         HPOrig = HP;
@@ -97,6 +101,17 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         if (Input.GetButtonDown("Melee") && meleeCDTimer > meleeCD)
         {
             melee();
+            PlayMelee();
+        }
+
+        if (Input.GetButtonDown("Fire2"))
+        {
+            SetAiming(true);
+        }
+
+        if (Input.GetButtonUp("Fire2"))
+        {
+            SetAiming(false);
         }
     }
 
@@ -415,6 +430,8 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         currentWeaponIndex = index;
         ownedWeapons[currentWeaponIndex].SetActive(true);
 
+        UpdateWeaponAnimation();
+
         WeaponFire fire = ownedWeapons[currentWeaponIndex].GetComponent<WeaponFire>();
         if (fire != null && fire.weaponData != null)
         {
@@ -459,5 +476,37 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         if (armorValue > armorMax)
             armorValue = armorMax;
         updatePlayerUI();
+    }
+
+    void UpdateWeaponAnimation()
+    {
+        GameObject weapon = GetCurrentHeldWeapon();
+
+        int weaponType = 0;
+
+        if (weapon != null)
+        {
+            string tag = weapon.tag;
+
+            if (tag == "Pistol")
+                weaponType = 1;
+
+            else if (tag == "Shotgun")
+                weaponType = 2;
+
+            else if (tag == "Rifle")
+                weaponType = 3;
+        }
+        anim.SetInteger("WeaponType", weaponType);
+    }
+
+    void SetAiming(bool aiming)
+    {
+        anim.SetBool("IsAiming", aiming);
+    }
+
+    void PlayMelee()
+    {
+        anim.SetTrigger("Melee");
     }
 }
