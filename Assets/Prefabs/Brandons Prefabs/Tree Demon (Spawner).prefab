@@ -168,7 +168,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5380069487440036852}
-  - component: {fileID: 2665923591880228893}
   - component: {fileID: 5778934671602386982}
   m_Layer: 0
   m_Name: Trunk
@@ -189,32 +188,9 @@ Transform:
   m_LocalPosition: {x: 0.042680755, y: 1.0028515, z: 0.15708208}
   m_LocalScale: {x: 73.652115, y: 73.652115, z: 73.652115}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 7729036319053873940}
+  m_Children: []
   m_Father: {fileID: 6270731816389907048}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2665923591880228893
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 720847811046038065}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd5b7f8b4b0d0a64ab82bd3d2cef4569, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 8264106210931889935, guid: 8365d70774efebd46bd06d6af7cff287, type: 3}
-  spawnAmount: 2
-  spawnIntreval: 0
-  triggerMode: 1
-  spawnPOS:
-  - {fileID: 5380069487440036852}
-  lowlyDemonPrefab: {fileID: 0}
-  skullPrefab: {fileID: 0}
-  spawnSkullPairs: 0
-  patrolPathForSkulls: []
 --- !u!137 &5778934671602386982
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
@@ -614,6 +590,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6270731816389907048}
   - component: {fileID: 8794165198515951846}
+  - component: {fileID: 3029431738239328515}
   - component: {fileID: 8551873295176252828}
   - component: {fileID: 6970452103674528728}
   - component: {fileID: 6851292265694078375}
@@ -624,7 +601,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6270731816389907048
 Transform:
   m_ObjectHideFlags: 0
@@ -670,6 +647,29 @@ MonoBehaviour:
   scoreValue: 100
   anim: {fileID: 8551873295176252828}
   swordCol: {fileID: 0}
+--- !u!114 &3029431738239328515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1644428441327535268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e55130a8664b1ac42b63705006e67b55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skullPrefab: {fileID: 7178253708947115014, guid: 275cf60d041a47e418dc1eaef0774d9b, type: 3}
+  lowlyDemonPrefab: {fileID: 8264106210931889935, guid: 8365d70774efebd46bd06d6af7cff287, type: 3}
+  patrolPoints:
+  - {fileID: 0}
+  spawnLimit: 99
+  infiniteSpawning: 1
+  initialSpawnDelayMin: 0
+  initialSpawnDelayMax: 10
+  spawnIntervalMin: 18
+  spawnIntervalMax: 26
+  gateTarget: {fileID: 0}
 --- !u!95 &8551873295176252828
 Animator:
   serializedVersion: 7
@@ -3292,117 +3292,3 @@ Transform:
   - {fileID: 8826630665299324600}
   m_Father: {fileID: 6154255332829535868}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &3949028962233982787
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 5380069487440036852}
-    m_Modifications:
-    - target: {fileID: 5712027875025483414, guid: b46a430a57b47fd40b6bea650dead1ce, type: 3}
-      propertyPath: enemyPrefab
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5712027875025483414, guid: b46a430a57b47fd40b6bea650dead1ce, type: 3}
-      propertyPath: skullPrefab
-      value: 
-      objectReference: {fileID: 7178253708947115014, guid: 275cf60d041a47e418dc1eaef0774d9b, type: 3}
-    - target: {fileID: 5712027875025483414, guid: b46a430a57b47fd40b6bea650dead1ce, type: 3}
-      propertyPath: spawnAmount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5712027875025483414, guid: b46a430a57b47fd40b6bea650dead1ce, type: 3}
-      propertyPath: triggerMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5712027875025483414, guid: b46a430a57b47fd40b6bea650dead1ce, type: 3}
-      propertyPath: spawnIntreval
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5712027875025483414, guid: b46a430a57b47fd40b6bea650dead1ce, type: 3}
-      propertyPath: spawnSkullPairs
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5712027875025483414, guid: b46a430a57b47fd40b6bea650dead1ce, type: 3}
-      propertyPath: lowlyDemonPrefab
-      value: 
-      objectReference: {fileID: 8264106210931889935, guid: 8365d70774efebd46bd06d6af7cff287, type: 3}
-    - target: {fileID: 5712027875025483414, guid: b46a430a57b47fd40b6bea650dead1ce, type: 3}
-      propertyPath: spawnPOS.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5712027875025483414, guid: b46a430a57b47fd40b6bea650dead1ce, type: 3}
-      propertyPath: 'spawnPOS.Array.data[0]'
-      value: 
-      objectReference: {fileID: 6527581565657183283}
-    - target: {fileID: 5712027875025483414, guid: b46a430a57b47fd40b6bea650dead1ce, type: 3}
-      propertyPath: patrolPathForSkulls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6741547243425438807, guid: b46a430a57b47fd40b6bea650dead1ce, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.013577343
-      objectReference: {fileID: 0}
-    - target: {fileID: 6741547243425438807, guid: b46a430a57b47fd40b6bea650dead1ce, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.013577345
-      objectReference: {fileID: 0}
-    - target: {fileID: 6741547243425438807, guid: b46a430a57b47fd40b6bea650dead1ce, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.013577345
-      objectReference: {fileID: 0}
-    - target: {fileID: 6741547243425438807, guid: b46a430a57b47fd40b6bea650dead1ce, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6741547243425438807, guid: b46a430a57b47fd40b6bea650dead1ce, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6741547243425438807, guid: b46a430a57b47fd40b6bea650dead1ce, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6741547243425438807, guid: b46a430a57b47fd40b6bea650dead1ce, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071067
-      objectReference: {fileID: 0}
-    - target: {fileID: 6741547243425438807, guid: b46a430a57b47fd40b6bea650dead1ce, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 6741547243425438807, guid: b46a430a57b47fd40b6bea650dead1ce, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6741547243425438807, guid: b46a430a57b47fd40b6bea650dead1ce, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6741547243425438807, guid: b46a430a57b47fd40b6bea650dead1ce, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6741547243425438807, guid: b46a430a57b47fd40b6bea650dead1ce, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6741547243425438807, guid: b46a430a57b47fd40b6bea650dead1ce, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8438130993525792029, guid: b46a430a57b47fd40b6bea650dead1ce, type: 3}
-      propertyPath: m_Name
-      value: Enemy Spawner (Non Trigger)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: b46a430a57b47fd40b6bea650dead1ce, type: 3}
---- !u!4 &7729036319053873940 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6741547243425438807, guid: b46a430a57b47fd40b6bea650dead1ce, type: 3}
-  m_PrefabInstance: {fileID: 3949028962233982787}
-  m_PrefabAsset: {fileID: 0}

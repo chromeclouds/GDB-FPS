@@ -20,6 +20,7 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
     [SerializeField] Collider swordCol;
 
     [SerializeField] public Transform skullTarget;
+    [SerializeField] private Vector3 followOffset = Vector3.zero;
 
     Color colorOrig;
 
@@ -70,12 +71,18 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
         roamCheck();
     }
 
+    public void SetFollowOffset(Vector3 offset)
+    {
+        followOffset = offset;
+    }
+
     void FollowSkull()
     {
         if (skullTarget == null) return;
 
-        agent.SetDestination(skullTarget.position);
-        faceTarget(skullTarget.position);
+        Vector3 targetPos = skullTarget.position + followOffset;
+        agent.SetDestination(targetPos);
+        faceTarget(targetPos);
     }
 
     void faceTarget(Vector3 targetPos)

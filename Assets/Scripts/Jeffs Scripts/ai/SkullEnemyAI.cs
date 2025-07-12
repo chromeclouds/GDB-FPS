@@ -35,6 +35,9 @@ public class SkullEnemyAI : MonoBehaviour, IDamage
 
     private Transform player;
 
+    // Flag to prevent the AI from running logic before being initialized with patrol points
+    private bool hasSetup = false;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
@@ -44,7 +47,8 @@ public class SkullEnemyAI : MonoBehaviour, IDamage
 
     void Update()
     {
-        if (isDead || player == null) return;
+        // Exit early if the AI hasn't been initialized, is dead, or the player reference is missing
+        if (!hasSetup || isDead || player == null) return;
 
         //apply floating motion using sine wave
         Vector3 newPos = startPosition;
@@ -171,5 +175,12 @@ public class SkullEnemyAI : MonoBehaviour, IDamage
             isDead = true;
             Destroy(gameObject);
         }
+    }
+
+    // Called by TreePatrolSpawner right after the Skull is instantiated
+    public void Setup(Transform[] patrolPoints)
+    {
+        this.patrolPoints = patrolPoints;  // Assign the path the Skull will follow
+        hasSetup = true;                   // Mark that it's ready to run AI logic
     }
 }

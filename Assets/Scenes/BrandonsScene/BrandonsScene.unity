@@ -391,6 +391,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 23a729cfa4c94d040b683187b2a8a1a0, type: 3}
+--- !u!4 &704695105 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5097695028471692300, guid: 02ad0e50fe933914ba32d52fe7fee984, type: 3}
+  m_PrefabInstance: {fileID: 1061529697}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &718031698
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -568,9 +573,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Gate Door
       objectReference: {fileID: 0}
+    - target: {fileID: 1209811113321839609, guid: 02ad0e50fe933914ba32d52fe7fee984, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5097695028471692300, guid: 02ad0e50fe933914ba32d52fe7fee984, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 40.70794
+      value: 85.95794
       objectReference: {fileID: 0}
     - target: {fileID: 5097695028471692300, guid: 02ad0e50fe933914ba32d52fe7fee984, type: 3}
       propertyPath: m_LocalPosition.y
@@ -578,7 +587,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5097695028471692300, guid: 02ad0e50fe933914ba32d52fe7fee984, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -15.22433
+      value: 70.27567
       objectReference: {fileID: 0}
     - target: {fileID: 5097695028471692300, guid: 02ad0e50fe933914ba32d52fe7fee984, type: 3}
       propertyPath: m_LocalRotation.w
@@ -874,6 +883,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tree Demon (Spawner)
       objectReference: {fileID: 0}
+    - target: {fileID: 3029431738239328515, guid: 440ebae28d019c4408717ae488b85668, type: 3}
+      propertyPath: gateTarget
+      value: 
+      objectReference: {fileID: 704695105}
+    - target: {fileID: 3029431738239328515, guid: 440ebae28d019c4408717ae488b85668, type: 3}
+      propertyPath: 'patrolPoints.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1061529699}
     - target: {fileID: 6270731816389907048, guid: 440ebae28d019c4408717ae488b85668, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.7
@@ -914,10 +931,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8757522144166570453, guid: 440ebae28d019c4408717ae488b85668, type: 3}
-      propertyPath: 'patrolPathForSkulls.Array.data[0]'
-      value: 
-      objectReference: {fileID: 1061529699}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
