@@ -9144,9 +9144,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1086027111}
     m_Modifications:
+    - target: {fileID: 783261215701536421, guid: 8c1be39929a231b4a929a0c32f0f6ec6, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 857855248387888152, guid: 8c1be39929a231b4a929a0c32f0f6ec6, type: 3}
       propertyPath: m_Name
       value: unified PLAYER ZACK
+      objectReference: {fileID: 0}
+    - target: {fileID: 857855248387888152, guid: 8c1be39929a231b4a929a0c32f0f6ec6, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 857855248387888152, guid: 8c1be39929a231b4a929a0c32f0f6ec6, type: 3}
       propertyPath: m_IsActive
@@ -9191,6 +9199,22 @@ PrefabInstance:
     - target: {fileID: 3074668959281943432, guid: 8c1be39929a231b4a929a0c32f0f6ec6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6644325733384925558, guid: 8c1be39929a231b4a929a0c32f0f6ec6, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7019397721789649728, guid: 8c1be39929a231b4a929a0c32f0f6ec6, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7347399307419816633, guid: 8c1be39929a231b4a929a0c32f0f6ec6, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8459556919868130333, guid: 8c1be39929a231b4a929a0c32f0f6ec6, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10925,7 +10949,7 @@ GameObject:
   m_Component:
   - component: {fileID: 675213566}
   - component: {fileID: 675213567}
-  m_Layer: 15
+  m_Layer: 3
   m_Name: Gun Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13537,10 +13561,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 842541358}
-  - component: {fileID: 842541361}
   - component: {fileID: 842541360}
   - component: {fileID: 842541359}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: MiniMapCamera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -13625,22 +13648,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!114 &842541361
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 842541357}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6d9157beeac5d54e8f0dfe9d25bcfc9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sens: 300
-  lockVertmin: -90
-  lockVertmax: 90
-  invertY: 0
 --- !u!4 &844389745 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2762412174695314222, guid: 4d308051ac7744e4f97574dc6298e965, type: 3}
@@ -25830,7 +25837,7 @@ GameObject:
   - component: {fileID: 1566111896}
   - component: {fileID: 1566111898}
   - component: {fileID: 1566111897}
-  m_Layer: 15
+  m_Layer: 3
   m_Name: Gun Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
