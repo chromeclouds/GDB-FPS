@@ -3,7 +3,15 @@ using UnityEngine.SceneManagement;
 
 public class buttonFunctions : MonoBehaviour
 {
-   public void resume()
+    public void newGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+    public void showCaseLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+    }
+    public void resume()
     {
         gameManager.instance.stateUnpause();
     }
@@ -17,14 +25,26 @@ public class buttonFunctions : MonoBehaviour
     }
     public void restartRound()
     {
-        //if(SceneManager.GetActiveScene().buildIndex == 0)
-        //{
+        //LectureEnemyAI[] enemies = FindObjectsByType<LectureEnemyAI>(FindObjectsSortMode.None);
 
+        //foreach (var enemy in enemies)
+        //{
+        //    enemy.de
         //}
-        //gameManager.instance.player.GetComponent<unifiedPlayerController>().resetHealth();
-        //gameManager.instance.levelTimer.GetComponent<LevelTimer>().ResetTimer();
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        //gameManager.instance.stateUnpause();
+
+        //DemonAI[] demonEnemies = FindObjectsByType<DemonAI>(FindObjectsSortMode.None);
+
+        //foreach (var singleDemon in demonEnemies)
+        //{
+        //    Destroy(singleDemon);
+        //}
+        gameManager.instance.levelTimer.GetComponent<LevelTimer>().ResetTimer();
+        gameManager.instance.gameGoalCount = 0; 
+        gameManager.instance.updateGameGoalText(0);
+        gameManager.instance.player.GetComponent<unifiedPlayerController>().spawnPlayer();
+        gameManager.instance.restartRound();
+        gameManager.instance.playerIsOutside = false;
+        gameManager.instance.stateUnpause();
     }
     public void Continue()
     {

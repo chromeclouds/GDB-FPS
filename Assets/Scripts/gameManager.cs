@@ -57,7 +57,7 @@ public class gameManager : MonoBehaviour
     void Awake()
     {
         isLoading = false;
-        currLevel = 0;
+        currLevel = SceneManager.GetActiveScene().buildIndex;
         instance = this;
         currRound = 0;
         spawnMult = 1;
@@ -135,12 +135,24 @@ public class gameManager : MonoBehaviour
         menuActive = null;
     }
 
+    public void updateGameGoalText(int count)
+    {
+        gameGoalCountText.text = count.ToString("f0");
+    }
+
+    public void restartRound()
+    {
+        currRound -= 1;
+        if (currLevel != SceneManager.sceneCountInBuildSettings - 1)
+            scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
+        else scoreRound.text = "Final";
+    }
     public void updateGameGoal(int amount)
     {
         gameGoalCount += amount;
-        gameGoalCountText.text = gameGoalCount.ToString("f0");
+        updateGameGoalText(gameGoalCount);
 
-        if(gameGoalCount <= 0 && currRound == rounds)
+        if (gameGoalCount <= 0 && currRound == rounds)
         {
             //you win
             //statePause();

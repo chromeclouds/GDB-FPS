@@ -16,11 +16,6 @@ public class mainMenuManager : MonoBehaviour
         currMenu.SetActive(true);
     }
 
-    void Update()
-    {
-
-    }
-
     public void main()
     {
         currMenu.SetActive(false);
@@ -30,7 +25,7 @@ public class mainMenuManager : MonoBehaviour
 
     public void newGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
     public void options()
     {
@@ -51,6 +46,11 @@ public class mainMenuManager : MonoBehaviour
 #else
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
+    }
+    
+    public void showCaseLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
 
 }
