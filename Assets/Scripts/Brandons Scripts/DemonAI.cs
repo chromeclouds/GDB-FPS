@@ -104,13 +104,13 @@ public class DemonAI : MonoBehaviour, IDamage, IOpen
         playerDir = gameManager.instance.player.transform.position - headPOS.position;
         angleToPlayer = Vector3.Angle(playerDir, transform.forward);
         Debug.DrawRay(headPOS.position, playerDir);
-        
+
         RaycastHit hit;
         if (Physics.Raycast(headPOS.position, playerDir, out hit))
         {
             if (angleToPlayer < FOV && hit.collider.CompareTag("Player"))
             {
-                
+
                 shootTimer += Time.deltaTime;
 
                 // Calculate the current distance between the enemy and the player
