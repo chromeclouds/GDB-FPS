@@ -1,9 +1,16 @@
 using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
 
 public class SecretDoorController : MonoBehaviour
 {
     public int heartsRequired = 2;
+    public GameObject doorMesh;
+    public GameObject popupUI;
+    public float popupDuration = 3f;
+
     private bool isOpen = false;
+
 
     private void OnEnable()
     {
@@ -13,7 +20,8 @@ public class SecretDoorController : MonoBehaviour
 
     private void OnDisable()
     {
-        HeartTrackerManager.Instance.HeartUpdate -= CheckUnlock;
+        if (HeartTrackerManager.Instance != null)
+            HeartTrackerManager.Instance.HeartUpdate -= CheckUnlock;
 
     }
 
@@ -28,6 +36,17 @@ public class SecretDoorController : MonoBehaviour
     }
     private void OpenDoor()
     {
-        gameObject.SetActive(false);
+        if (popupUI != null)
+            StartCoroutine(ShowPopup());
+        if (doorMesh != null)
+            doorMesh.SetActive(false);
+        
+    }
+
+    private IEnumerator ShowPopup()
+    {
+        popupUI.SetActive(true);
+        yield return new WaitForSeconds(popupDuration);
+        popupUI.SetActive(false);
     }
 }
