@@ -69,7 +69,7 @@ public class HomingAOEProjectile : MonoBehaviour
             }
         }
 
-        // Fallback: explode on anything solid (non-trigger)
+        // Fallback explode on anything solid (non-trigger)
         if (!other.isTrigger)
         {
             Explode();
