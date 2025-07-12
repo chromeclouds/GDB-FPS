@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
+using System.Collections;
 
 public class mainMenuManager : MonoBehaviour
 {
@@ -25,7 +26,7 @@ public class mainMenuManager : MonoBehaviour
 
     public void newGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        StartCoroutine(loadNewGame());
     }
     public void options()
     {
@@ -50,7 +51,18 @@ public class mainMenuManager : MonoBehaviour
     
     public void showCaseLevel()
     {
+        StartCoroutine(loadShowCase());
+    }
+
+    IEnumerator loadShowCase()
+    {
+        yield return new WaitForSeconds(100f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+    }
+    IEnumerator loadNewGame()
+    {
+        yield return new WaitForSeconds(100f);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
 }

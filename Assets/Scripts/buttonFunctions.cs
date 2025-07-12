@@ -6,11 +6,11 @@ public class buttonFunctions : MonoBehaviour
 {
     public void newGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        StartCoroutine(loadNewGame());
     }
     public void showCaseLevel()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+        StartCoroutine(loadShowCase());
     }
     public void resume()
     {
@@ -22,7 +22,7 @@ public class buttonFunctions : MonoBehaviour
         SceneManager.MoveGameObjectToScene(gameManager.instance.player, SceneManager.GetActiveScene());
         SceneManager.MoveGameObjectToScene(gameManager.instance.transform.root.gameObject, SceneManager.GetActiveScene());
         gameManager.instance.resetTime();
-        SceneManager.LoadScene(0);
+        StartCoroutine(loadRestart());
     }
     public void restartRound()
     {
@@ -55,12 +55,10 @@ public class buttonFunctions : MonoBehaviour
 
     public void quit()
     {
-    #if !UNITY_EDITOR
-            Application.Quit();
-    #else 
-            UnityEditor.EditorApplication.isPlaying = false;
-    #endif
+        gameManager.instance.resetTime();
+        StartCoroutine(quitGame());
     }
+
 
     public void respawnPlayer()
     {
@@ -74,9 +72,28 @@ public class buttonFunctions : MonoBehaviour
         gameManager.instance.stateUnpause();
     }
 
-    IEnumerator UnPause()
+    IEnumerator loadShowCase()
     {
-        yield return 0.3f;
-        gameManager.instance.stateUnpause();
+        yield return new WaitForSeconds(0.3f);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+    }
+    IEnumerator loadNewGame()
+    {
+        yield return new WaitForSeconds(0.3f);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+    IEnumerator loadRestart()
+    {
+        yield return new WaitForSeconds(0.3f);
+        SceneManager.LoadScene(0);
+    }
+    IEnumerator quitGame()
+    {
+        yield return new WaitForSeconds(0.3f);
+#if !UNITY_EDITOR
+            Application.Quit();
+#else
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
     }
 }

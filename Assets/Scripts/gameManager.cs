@@ -58,6 +58,9 @@ public class gameManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
+
+        menuMusic.GetComponent<AudioSource>().Play();
+        menuMusic.GetComponent<AudioSource>().Pause();
         isLoading = false;
         currLevel = SceneManager.GetActiveScene().buildIndex;
         instance = this;
@@ -114,8 +117,8 @@ public class gameManager : MonoBehaviour
     //}
     public void statePause()
     {
-        levelMusic.SetActive(false);
-        menuMusic.SetActive(true);
+        levelMusic.GetComponent<AudioSource>().Pause();
+        menuMusic.GetComponent<AudioSource>().UnPause();
         isPaused = !isPaused;
         Time.timeScale = 0;
         Cursor.visible = true;
@@ -138,8 +141,8 @@ public class gameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         menuActive.SetActive(false);
         menuActive = null;
-        menuMusic.SetActive(false);
-        levelMusic.SetActive(true);
+        menuMusic.GetComponent<AudioSource>().Pause();
+        levelMusic.GetComponent<AudioSource>().UnPause();
     }
 
     public void resetTime()
@@ -229,10 +232,12 @@ public class gameManager : MonoBehaviour
             scoreMult = 2;
         else scoreMult = 1;
         activateSpawners();
-        currRound++;
         increaseWallet(roundValue);
         if (currLevel != SceneManager.sceneCountInBuildSettings - 1)
+        {
+            currRound++;
             scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
+        }
         else scoreRound.text = "Final";
         levelTimer.GetComponent<LevelTimer>().ResetTimer();
         levelTimer.GetComponent<LevelTimer>().StartTimer();
@@ -305,6 +310,8 @@ public class gameManager : MonoBehaviour
             singleDemon.endRound();
         }
         updateGameGoal(-gameGoalCount);
+        if(wallet < 0)
+            youLose();
     }
     public int walletAmount()
     {
