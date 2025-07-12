@@ -41,6 +41,7 @@ public class gameManager : MonoBehaviour
 
     float timescaleOrig;
 
+    public bool playerIsOutside;
     public int gameGoalCount;
     int currRound;
     int currLevel;
@@ -171,7 +172,9 @@ public class gameManager : MonoBehaviour
     IEnumerator newScene()
     {
         yield return new WaitForSeconds(0.3f);
-        scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
+        if (currLevel != SceneManager.sceneCountInBuildSettings - 1)
+            scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
+        else scoreRound.text = "Final";
         playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");
         player.GetComponent<unifiedPlayerController>().spawnPlayer();
         player.GetComponent<unifiedPlayerController>().hasTorch = false;
@@ -201,7 +204,9 @@ public class gameManager : MonoBehaviour
         activateSpawners();
         currRound++;
         increaseWallet(roundValue);
-        scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
+        if (currLevel != SceneManager.sceneCountInBuildSettings - 1)
+            scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
+        else scoreRound.text = "Final";
         levelTimer.GetComponent<LevelTimer>().ResetTimer();
         levelTimer.GetComponent<LevelTimer>().StartTimer();
     }
