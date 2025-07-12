@@ -131,7 +131,8 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
         NavMeshHit hit;
         if (NavMesh.SamplePosition(randPos, out hit, roamDist, NavMesh.AllAreas))
         {
-            agent.SetDestination(hit.position);
+            Vector3 offset = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
+            agent.SetDestination(hit.position + offset);
         }
     }
 
@@ -145,7 +146,8 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
         NavMeshHit hit;
         if (NavMesh.SamplePosition(randPos, out hit, radius, NavMesh.AllAreas))
         {
-            agent.SetDestination(hit.position);
+            Vector3 offset = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
+            agent.SetDestination(hit.position + offset);
         }
     }
 

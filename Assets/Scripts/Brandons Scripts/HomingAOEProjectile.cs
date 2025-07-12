@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class HomingAOEProjectile : MonoBehaviour
+public class HomingAOEProjectile : MonoBehaviour, IDamage
 {
     [SerializeField] Rigidbody rb;
 
@@ -39,42 +39,49 @@ public class HomingAOEProjectile : MonoBehaviour
             rb.linearVelocity = newDir * homingSpeed;
         }
     }
-
-    void OnTriggerEnter(Collider other)
+    public void takeDamage(int amount)
     {
-        if (hasExploded) return;
-
-        // Explode if shot
-        if (other.CompareTag("PlayerProjectile"))
-        {
-            Explode();
-            return;
-        }
-
-        // Explode if it hits the ground/floor
-        if (other.gameObject.layer == LayerMask.NameToLayer("Ground"))
-        {
-            Explode();
-            return;
-        }
-
-        // Explode if it hits the player, but only if it's not grazing their upper collider
-        if (other.CompareTag("Player"))
-        {
-            float verticalDistance = transform.position.y - other.bounds.center.y;
-            if (verticalDistance < 1.0f) // adjust as needed
-            {
-                Explode();
-                return;
-            }
-        }
-
-        // Fallback explode on anything solid (non-trigger)
-        if (!other.isTrigger)
+        if (!hasExploded)
         {
             Explode();
         }
     }
+
+    //void OnTriggerEnter(Collider other)
+    //{
+    //    if (hasExploded) return;
+
+    //    // Explode if shot
+    //    if (other.CompareTag("PlayerProjectile"))
+    //    {
+    //        Explode();
+    //        return;
+    //    }
+
+    //    // Explode if it hits the ground/floor
+    //    if (other.gameObject.layer == LayerMask.NameToLayer("Ground"))
+    //    {
+    //        Explode();
+    //        return;
+    //    }
+
+    //    // Explode if it hits the player, but only if it's not grazing their upper collider
+    //    if (other.CompareTag("Player"))
+    //    {
+    //        float verticalDistance = transform.position.y - other.bounds.center.y;
+    //        if (verticalDistance < 1.0f) // adjust as needed
+    //        {
+    //            Explode();
+    //            return;
+    //        }
+    //    }
+
+    //    // Fallback explode on anything solid (non-trigger)
+    //    if (!other.isTrigger)
+    //    {
+    //        Explode();
+    //    }
+    //}
     void OnCollisionEnter(Collision collision)
     {
         if (hasExploded) return;
