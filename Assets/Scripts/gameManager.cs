@@ -12,6 +12,8 @@ public class gameManager : MonoBehaviour
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
+    [SerializeField] GameObject levelMusic;
+    [SerializeField] GameObject menuMusic;
     [SerializeField] TMP_Text gameGoalCountText;
     [SerializeField] TMP_Text scoreText;
     [SerializeField] TMP_Text scoreWinText;
@@ -70,6 +72,7 @@ public class gameManager : MonoBehaviour
         timescaleOrig = Time.timeScale;
         playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");
         playerPortal = GameObject.FindWithTag("Portal");
+        levelMusic = GameObject.FindWithTag("Level Music");
         playerPortal.SetActive(false);
         DontDestroyOnLoad(player);
         DontDestroyOnLoad(transform.root.gameObject);
@@ -111,6 +114,8 @@ public class gameManager : MonoBehaviour
     //}
     public void statePause()
     {
+        levelMusic.SetActive(false);
+        menuMusic.SetActive(true);
         isPaused = !isPaused;
         Time.timeScale = 0;
         Cursor.visible = true;
@@ -133,6 +138,13 @@ public class gameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         menuActive.SetActive(false);
         menuActive = null;
+        menuMusic.SetActive(false);
+        levelMusic.SetActive(true);
+    }
+
+    public void resetTime()
+    {
+        Time.timeScale = timescaleOrig;
     }
 
     public void updateGameGoalText(int count)
@@ -177,6 +189,7 @@ public class gameManager : MonoBehaviour
             levelTimer.GetComponent<LevelTimer>().ResetTimer();
             currRound = 0;
             currLevel += 1;
+            levelMusic.SetActive(false);
             SceneManager.LoadScene(currLevel);
             StartCoroutine(newScene());
         }
@@ -188,6 +201,7 @@ public class gameManager : MonoBehaviour
             scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
         else scoreRound.text = "Final";
         playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");
+        playerSpawnPos = GameObject.FindWithTag("Level Music");
         player.GetComponent<unifiedPlayerController>().spawnPlayer();
         player.GetComponent<unifiedPlayerController>().hasTorch = false;
         playerPortal = null;
@@ -196,6 +210,7 @@ public class gameManager : MonoBehaviour
             playerPortal = GameObject.FindWithTag("Portal");
             playerPortal.SetActive(false);
         }
+        levelMusic.SetActive(true);
         isLoading = !isLoading;
     }
 

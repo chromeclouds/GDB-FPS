@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -20,8 +21,8 @@ public class buttonFunctions : MonoBehaviour
     {
         SceneManager.MoveGameObjectToScene(gameManager.instance.player, SceneManager.GetActiveScene());
         SceneManager.MoveGameObjectToScene(gameManager.instance.transform.root.gameObject, SceneManager.GetActiveScene());
+        gameManager.instance.resetTime();
         SceneManager.LoadScene(0);
-        gameManager.instance.stateUnpause();
     }
     public void restartRound()
     {
@@ -70,6 +71,12 @@ public class buttonFunctions : MonoBehaviour
     public void loadLevel(int lvl)
     {
         SceneManager.LoadScene(lvl);
+        gameManager.instance.stateUnpause();
+    }
+
+    IEnumerator UnPause()
+    {
+        yield return 0.3f;
         gameManager.instance.stateUnpause();
     }
 }
