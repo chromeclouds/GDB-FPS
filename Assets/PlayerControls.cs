@@ -234,7 +234,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""id"": ""f63b9dc2-c2a3-44db-b04f-b3586876bf07"",
                     ""path"": ""<Gamepad>/rightStick"",
                     ""interactions"": """",
-                    ""processors"": ""StickDeadzone"",
+                    ""processors"": ""StickDeadzone(min=0.1,max=1)"",
                     ""groups"": """",
                     ""action"": ""Look"",
                     ""isComposite"": false,
