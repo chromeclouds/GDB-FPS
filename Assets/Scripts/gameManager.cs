@@ -178,15 +178,19 @@ public class gameManager : MonoBehaviour
             //statePause();
             //menuActive = menuWin;
             //menuActive.SetActive(true);
+
             levelTimer.GetComponent<LevelTimer>().ResetTimer();
             playerPortal.SetActive(true);
             mainDoor.GetComponent<door>().Open();
+            ClearLevel();
         }
         else if(gameGoalCount <= 0)
         {
+            ClearLevel();
             player.GetComponent<unifiedPlayerController>().resetHealth();
             levelTimer.GetComponent<LevelTimer>().ResetTimer();
             mainDoor.GetComponent<door>().Open();
+            ClearLevel();
         }
     }
 
@@ -202,6 +206,37 @@ public class gameManager : MonoBehaviour
             levelMusic.SetActive(false);
             SceneManager.LoadScene(currLevel);
             StartCoroutine(newScene());
+        }
+    }
+
+    public void ClearLevel()
+    {
+        LectureEnemyAI[] enemies = FindObjectsByType<LectureEnemyAI>(FindObjectsSortMode.None);
+
+        foreach (var enemy in enemies)
+        {
+            enemy.kill();
+        }
+
+        DemonAI[] demonEnemies = FindObjectsByType<DemonAI>(FindObjectsSortMode.None);
+
+        foreach (var singleDemon in demonEnemies)
+        {
+            singleDemon.kill();
+        }
+
+        HellBornDemonAI[] hellBornEnemies = FindObjectsByType<HellBornDemonAI>(FindObjectsSortMode.None);
+
+        foreach (var singleHellBorn in hellBornEnemies)
+        {
+            singleHellBorn.kill();
+        }
+
+        SkullEnemyAI[] skullEnemies = FindObjectsByType<SkullEnemyAI>(FindObjectsSortMode.None);
+
+        foreach (var singleSkull in skullEnemies)
+        {
+            singleSkull.kill();
         }
     }
     IEnumerator newScene()
