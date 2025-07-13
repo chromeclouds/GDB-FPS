@@ -305,37 +305,45 @@ public class gameManager : MonoBehaviour
 
     public void endRound()
     {
-        LectureEnemyAI[] enemies = FindObjectsByType<LectureEnemyAI>(FindObjectsSortMode.None);
-
-        foreach (var enemy in enemies)
+        if (currLevel != SceneManager.sceneCountInBuildSettings - 1)
         {
-            enemy.endRound();
+            LectureEnemyAI[] enemies = FindObjectsByType<LectureEnemyAI>(FindObjectsSortMode.None);
+
+            foreach (var enemy in enemies)
+            {
+                enemy.endRound();
+            }
+
+            DemonAI[] demonEnemies = FindObjectsByType<DemonAI>(FindObjectsSortMode.None);
+
+            foreach (var singleDemon in demonEnemies)
+            {
+                singleDemon.endRound();
+            }
+
+            HellBornDemonAI[] hellBornEnemies = FindObjectsByType<HellBornDemonAI>(FindObjectsSortMode.None);
+
+            foreach (var singleHellBorn in hellBornEnemies)
+            {
+                singleHellBorn.endRound();
+            }
+
+            SkullEnemyAI[] skullEnemies = FindObjectsByType<SkullEnemyAI>(FindObjectsSortMode.None);
+
+            foreach (var singleSkull in skullEnemies)
+            {
+                singleSkull.kill();
+            }
+            updateGameGoal(-gameGoalCount);
+            mainDoor.GetComponent<door>().Open();
+            if (wallet < 0)
+                youLose();
         }
-
-        DemonAI[] demonEnemies = FindObjectsByType<DemonAI>(FindObjectsSortMode.None);
-
-        foreach (var singleDemon in demonEnemies)
+        else
         {
-            singleDemon.endRound();
-        }
-
-        HellBornDemonAI[] hellBornEnemies = FindObjectsByType<HellBornDemonAI>(FindObjectsSortMode.None);
-
-        foreach (var singleHellBorn in hellBornEnemies)
-        {
-            singleHellBorn.endRound();
-        }
-
-        SkullEnemyAI[] skullEnemies = FindObjectsByType<SkullEnemyAI>(FindObjectsSortMode.None);
-
-        foreach (var singleSkull in skullEnemies)
-        {
-            singleSkull.kill();
-        }
-        updateGameGoal(-gameGoalCount);
-        mainDoor.GetComponent<door>().Open();
-        if(wallet < 0)
             youLose();
+        }
+        
     }
     public int walletAmount()
     {
