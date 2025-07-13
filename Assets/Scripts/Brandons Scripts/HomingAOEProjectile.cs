@@ -47,41 +47,6 @@ public class HomingAOEProjectile : MonoBehaviour, IDamage
         }
     }
 
-    //void OnTriggerEnter(Collider other)
-    //{
-    //    if (hasExploded) return;
-
-    //    // Explode if shot
-    //    if (other.CompareTag("PlayerProjectile"))
-    //    {
-    //        Explode();
-    //        return;
-    //    }
-
-    //    // Explode if it hits the ground/floor
-    //    if (other.gameObject.layer == LayerMask.NameToLayer("Ground"))
-    //    {
-    //        Explode();
-    //        return;
-    //    }
-
-    //    // Explode if it hits the player, but only if it's not grazing their upper collider
-    //    if (other.CompareTag("Player"))
-    //    {
-    //        float verticalDistance = transform.position.y - other.bounds.center.y;
-    //        if (verticalDistance < 1.0f) // adjust as needed
-    //        {
-    //            Explode();
-    //            return;
-    //        }
-    //    }
-
-    //    // Fallback explode on anything solid (non-trigger)
-    //    if (!other.isTrigger)
-    //    {
-    //        Explode();
-    //    }
-    //}
     void OnCollisionEnter(Collision collision)
     {
         if (hasExploded) return;
@@ -94,7 +59,13 @@ public class HomingAOEProjectile : MonoBehaviour, IDamage
         hasExploded = true;
 
         if (explosionVFX != null)
-            Instantiate(explosionVFX, transform.position, Quaternion.identity);
+        {
+            GameObject vfxInstance = Instantiate(explosionVFX, transform.position, Quaternion.identity);
+            var ps = vfxInstance.GetComponent<ParticleSystem>();
+            if (ps != null)
+                ps.Play();
+            Destroy(vfxInstance, ps.main.duration);
+        }
 
         Collider[] hits = Physics.OverlapSphere(transform.position, aoeRadius, aoeDamageMask);
 

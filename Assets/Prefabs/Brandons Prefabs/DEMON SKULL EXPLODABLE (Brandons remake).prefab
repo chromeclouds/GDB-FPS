@@ -51,9 +51,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gateTarget: {fileID: 5097695028471692300, guid: 02ad0e50fe933914ba32d52fe7fee984, type: 3}
-  explosionEffect: {fileID: 0}
+  explosionEffect: {fileID: 358637981425055526, guid: 8eb503696b886e04faff8fc0f480d473, type: 3}
   explodeDistance: 1
   damageToGate: 25
+  lowlyDemons: []
 --- !u!195 &5617818890637119170
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -91,7 +92,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3

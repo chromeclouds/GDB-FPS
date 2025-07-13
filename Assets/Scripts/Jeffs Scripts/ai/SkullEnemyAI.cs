@@ -61,7 +61,8 @@ public class SkullEnemyAI : MonoBehaviour
 
         if (explosionEffect != null)
         {
-            Instantiate(explosionEffect, transform.position, Quaternion.identity);
+            GameObject vfx = Instantiate(explosionEffect, transform.position, Quaternion.identity);
+            Destroy(vfx, 1.5f); // Clean up explosion effect after playing
         }
 
         Destroy(gameObject);
