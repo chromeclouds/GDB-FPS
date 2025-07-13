@@ -3131,7 +3131,7 @@ MonoBehaviour:
   agent: {fileID: 5189097544477640531}
   headPOS: {fileID: 4089242809194763620}
   HP: 5
-  factTargetSpeed: 80
+  faceTargetSpeed: 0
   roamDist: 5
   roamstopTime: 3
   shootPos: {fileID: 4766965111461451995}
@@ -3142,6 +3142,8 @@ MonoBehaviour:
   scoreValue: 100
   anim: {fileID: 1997977769708809049}
   swordCol: {fileID: 0}
+  skullTarget: {fileID: 0}
+  followOffset: {x: 0, y: 0, z: 0}
 --- !u!195 &5189097544477640531
 NavMeshAgent:
   m_ObjectHideFlags: 0
