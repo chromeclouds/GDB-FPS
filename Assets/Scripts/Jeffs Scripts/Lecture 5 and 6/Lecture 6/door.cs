@@ -14,8 +14,10 @@ public class door : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        IOpen open = other.GetComponent<IOpen>();
+        // Only open the door for the player
+        if (!other.CompareTag("Player")) return;
 
+        IOpen open = other.GetComponent<IOpen>();
         if (open != null)
         {
             doorModel.SetActive(false);

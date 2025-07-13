@@ -66,7 +66,7 @@ public class TreePatrolSpawner : MonoBehaviour
         SkullEnemyAI skullAI = skull.GetComponent<SkullEnemyAI>();
         if (skullAI != null)
         {
-            skullAI.Setup(patrolPoints);
+            skullAI.AssignGateTarget(gateTarget);
         }
 
         // Spawn Lowly Demon followers
@@ -79,12 +79,12 @@ public class TreePatrolSpawner : MonoBehaviour
             for (int i = 0; i < 2; i++)
             {
                 Vector3 spawnPosition = spawnPos + positionOffsets[i];
-                StartCoroutine(SpawnFollowerWithDelay(skull.transform, spawnPosition, spawnRot, followOffsets[i]));
+                StartCoroutine(SpawnFollowerWithDelay(skull.transform, skullAI, spawnPosition, spawnRot, followOffsets[i]));
             }
         }
     }
 
-    IEnumerator SpawnFollowerWithDelay(Transform skullTransform, Vector3 pos, Quaternion rot, Vector3 followOffset)
+    IEnumerator SpawnFollowerWithDelay(Transform skullTransform, SkullEnemyAI skullAI, Vector3 pos, Quaternion rot, Vector3 followOffset)
     {
         yield return new WaitForSeconds(0.05f);
 
@@ -94,6 +94,9 @@ public class TreePatrolSpawner : MonoBehaviour
         {
             demonAI.skullTarget = skullTransform;
             demonAI.SendMessage("SetFollowOffset", followOffset, SendMessageOptions.DontRequireReceiver);
+
+            if (skullAI != null)
+                skullAI.lowlyDemons.Add(demonAI); // This is the key line!
         }
     }
 

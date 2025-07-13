@@ -601,7 +601,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6270731816389907048
 Transform:
   m_ObjectHideFlags: 0
@@ -659,17 +659,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e55130a8664b1ac42b63705006e67b55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skullPrefab: {fileID: 7178253708947115014, guid: 275cf60d041a47e418dc1eaef0774d9b, type: 3}
+  skullPrefab: {fileID: 4858361898581144930, guid: 32eb3f6df6d50e443bc3e1b572898c9f, type: 3}
   lowlyDemonPrefab: {fileID: 8264106210931889935, guid: 8365d70774efebd46bd06d6af7cff287, type: 3}
   patrolPoints:
-  - {fileID: 0}
+  - {fileID: 7097633943757351534, guid: 97da69eb2dd7b794a84aced8cd95e7a4, type: 3}
   spawnLimit: 99
   infiniteSpawning: 1
   initialSpawnDelayMin: 0
   initialSpawnDelayMax: 10
   spawnIntervalMin: 18
   spawnIntervalMax: 26
-  gateTarget: {fileID: 0}
+  gateTarget: {fileID: 5097695028471692300, guid: 02ad0e50fe933914ba32d52fe7fee984, type: 3}
 --- !u!95 &8551873295176252828
 Animator:
   serializedVersion: 7

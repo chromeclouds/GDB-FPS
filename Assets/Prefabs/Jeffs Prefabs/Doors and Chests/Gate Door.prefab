@@ -9,12 +9,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5097695028471692300}
+  - component: {fileID: 806118605536150366}
   - component: {fileID: 7005411437925291707}
   - component: {fileID: 1533210330441819156}
   - component: {fileID: 3976065995339370916}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: Gate Door
-  m_TagString: Untagged
+  m_TagString: Gate Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -33,9 +34,23 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 649045353230324858}
-  - {fileID: 4730472106126242807}
+  - {fileID: 1969903444881907241}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &806118605536150366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1209811113321839609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10f08474cfa97794da4fb92e70a205fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  destructionEffect: {fileID: 0}
 --- !u!65 &7005411437925291707
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -51,7 +66,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -222,7 +237,7 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
---- !u!1001 &2583341218979453337
+--- !u!1001 &8730611369002955847
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -279,8 +294,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 97da69eb2dd7b794a84aced8cd95e7a4, type: 3}
---- !u!4 &4730472106126242807 stripped
+--- !u!4 &1969903444881907241 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7097633943757351534, guid: 97da69eb2dd7b794a84aced8cd95e7a4, type: 3}
-  m_PrefabInstance: {fileID: 2583341218979453337}
+  m_PrefabInstance: {fileID: 8730611369002955847}
   m_PrefabAsset: {fileID: 0}

@@ -138,19 +138,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4222bd4f63ec02a40991fe9c305b80f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPatrolling: 1
   speed: 3
   health: 50
-  fireRate: 1
-  shootRange: 150
-  fieldOfViewAngle: 100
-  bulletDamage: 10
-  patrolPoints:
-  - {fileID: 0}
-  wanderRadius: 3
-  wanderInterval: 3
-  eyeBulletPrefab: {fileID: 1214819348671191633, guid: 572e2e52e8405eb4fbc463dc58784f95, type: 3}
-  shootPoint: {fileID: 5266297316719131858}
+  explosionRadius: 5
+  explosionDamage: 50
+  damageLayers:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!135 &5186894499607841854
 SphereCollider:
   m_ObjectHideFlags: 0
