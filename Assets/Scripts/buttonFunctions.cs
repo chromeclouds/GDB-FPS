@@ -26,31 +26,59 @@ public class buttonFunctions : MonoBehaviour
     }
     public void restartRound()
     {
-        //LectureEnemyAI[] enemies = FindObjectsByType<LectureEnemyAI>(FindObjectsSortMode.None);
+        if(gameManager.instance.walletAmount() - 200 >= 0)
+        {
+            gameManager.instance.reduceWallet(200);
+            LectureEnemyAI[] enemies = FindObjectsByType<LectureEnemyAI>(FindObjectsSortMode.None);
 
-        //foreach (var enemy in enemies)
-        //{
-        //    enemy.de
-        //}
+            foreach (var enemy in enemies)
+            {
+                enemy.kill();
+            }
 
-        //DemonAI[] demonEnemies = FindObjectsByType<DemonAI>(FindObjectsSortMode.None);
+            DemonAI[] demonEnemies = FindObjectsByType<DemonAI>(FindObjectsSortMode.None);
 
-        //foreach (var singleDemon in demonEnemies)
-        //{
-        //    Destroy(singleDemon);
-        //}
-        gameManager.instance.levelTimer.GetComponent<LevelTimer>().ResetTimer();
-        gameManager.instance.gameGoalCount = 0; 
-        gameManager.instance.updateGameGoalText(0);
-        gameManager.instance.player.GetComponent<unifiedPlayerController>().spawnPlayer();
-        gameManager.instance.restartRound();
-        gameManager.instance.playerIsOutside = false;
-        gameManager.instance.stateUnpause();
+            foreach (var singleDemon in demonEnemies)
+            {
+                singleDemon.kill();
+            }
+
+            HellBornDemonAI[] hellBornEnemies = FindObjectsByType<HellBornDemonAI>(FindObjectsSortMode.None);
+
+            foreach (var singleHellBorn in hellBornEnemies)
+            {
+                singleHellBorn.kill();
+            }
+
+            SkullEnemyAI[] skullEnemies = FindObjectsByType<SkullEnemyAI>(FindObjectsSortMode.None);
+
+            foreach (var singleSkull in skullEnemies)
+            {
+                singleSkull.kill();
+            }
+            gameManager.instance.levelTimer.GetComponent<LevelTimer>().ResetTimer();
+            gameManager.instance.gameGoalCount = 0;
+            gameManager.instance.updateGameGoalText(0);
+            gameManager.instance.player.GetComponent<unifiedPlayerController>().spawnPlayer();
+            gameManager.instance.restartRound();
+            gameManager.instance.playerIsOutside = false;
+            gameManager.instance.mainDoor.GetComponent<door>().Open();
+            gameManager.instance.stateUnpause();
+
+        }
     }
     public void Continue()
     {
-        gameManager.instance.player.GetComponent<unifiedPlayerController>().resetHealth();
-        gameManager.instance.stateUnpause();
+        if(gameManager.instance.walletAmount() - 500 >= 0)
+        {
+            gameManager.instance.reduceWallet(500);
+            gameManager.instance.player.GetComponent<unifiedPlayerController>().resetHealth();
+            gameManager.instance.stateUnpause();
+        }
+        else
+        {
+
+        }
     }
 
     public void quit()

@@ -3,7 +3,7 @@ using UnityEngine;
 public class RoundStartTrigger : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -15,6 +15,7 @@ public class RoundStartTrigger : MonoBehaviour
         if(!gameManager.instance.playerIsOutside && player.hasTorch)
         {
             gameManager.instance.StartRound();
+            gameManager.instance.mainDoor.GetComponent<door>().Close();
         }
         gameManager.instance.playerIsOutside = true;
     }

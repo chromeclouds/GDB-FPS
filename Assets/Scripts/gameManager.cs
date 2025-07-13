@@ -31,6 +31,7 @@ public class gameManager : MonoBehaviour
     public playerController playerScript;
     public GameObject playerSpawnPos;
     public GameObject playerPortal;
+    public GameObject mainDoor;
     public GameObject interactPrompt;
     public TMP_Text interactPromptPrice;
     public GameObject interactTorchPrompt;
@@ -67,6 +68,7 @@ public class gameManager : MonoBehaviour
         currRound = 0;
         spawnMult = 1;
         player = GameObject.FindWithTag("Player");
+        mainDoor = GameObject.FindWithTag("Gate Door");
         scoreText.text = wallet.ToString("f0");
         scoreWinText.text = wallet.ToString("f0");
         scoreLoseText.text = wallet.ToString("f0");
@@ -311,6 +313,20 @@ public class gameManager : MonoBehaviour
         foreach (var singleDemon in demonEnemies)
         {
             singleDemon.endRound();
+        }
+
+        HellBornDemonAI[] hellBornEnemies = FindObjectsByType<HellBornDemonAI>(FindObjectsSortMode.None);
+
+        foreach (var singleHellBorn in hellBornEnemies)
+        {
+            singleHellBorn.endRound();
+        }
+
+        SkullEnemyAI[] skullEnemies = FindObjectsByType<SkullEnemyAI>(FindObjectsSortMode.None);
+
+        foreach (var singleSkull in skullEnemies)
+        {
+            singleSkull.kill();
         }
         updateGameGoal(-gameGoalCount);
         if(wallet < 0)

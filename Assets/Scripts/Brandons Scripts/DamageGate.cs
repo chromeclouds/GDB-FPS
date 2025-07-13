@@ -3,7 +3,6 @@ using UnityEngine;
 public class Gate : MonoBehaviour
 {
     [SerializeField] private int maxHealth = 100;
-    [SerializeField] private GameObject destructionEffect;
 
     private int currentHealth;
 
@@ -24,11 +23,9 @@ public class Gate : MonoBehaviour
 
     void DestroyGate()
     {
-        if (destructionEffect != null)
-        {
-            Instantiate(destructionEffect, transform.position, Quaternion.identity);
-        }
 
-        Destroy(gameObject);
+        //Destroy(gameObject);
+        gameObject.GetComponent<door>().Open();
+
     }
 }
