@@ -38,6 +38,7 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
     [SerializeField] int meleeDmg;
     [SerializeField] float meleeCD;
     [SerializeField] GameObject pivotPoint;
+    [SerializeField] private Transform meleeHolder;
 
     [Header("Animator")]
     [SerializeField] Animator anim;
@@ -51,6 +52,8 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
     bool isSprinting;
     int remainingDamage;
     public bool hasTorch;
+
+    private GameObject currentMeleeWeapon;
 
     void Start()
     {
@@ -101,7 +104,6 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         if (Input.GetButtonDown("Melee") && meleeCDTimer > meleeCD)
         {
             melee();
-            PlayMelee();
         }
 
         if (Input.GetButtonDown("Fire2"))
@@ -147,20 +149,35 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         weaponHolder.gameObject.SetActive(false);
         StartCoroutine(MeleeAnim());
 
-        RaycastHit hit;
-        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, meleeDist, ~ignoreLayer))
-        {
-            IDamage dmg = hit.collider.GetComponent<IDamage>();
-            if (dmg != null)
-            {
-                dmg.takeDamage(meleeDmg);
-            }
-        }
+       // RaycastHit hit;
+        //if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, meleeDist, ~ignoreLayer))
+        //{
+          //  IDamage dmg = hit.collider.GetComponent<IDamage>();
+          //  if (dmg != null)
+           // {
+            //    dmg.takeDamage(meleeDmg);
+            //}
+       // }
+    }
+
+    public void PickupMeleeWeapon(MeleeWeaponData data)
+    {
+        if (currentMeleeWeapon == null) Destroy(meleeHolder.gameObject.transform.GetChild(0)?.gameObject);
+        else Debug.Log("Replacing existing melee weapon: " + currentMeleeWeapon.name);
+
+        if (currentMeleeWeapon != null) Destroy(currentMeleeWeapon);
+
+        currentMeleeWeapon = Instantiate(data.heldPrefab, meleeHolder.gameObject.transform);
+        currentMeleeWeapon.transform.localPosition = data.heldPosition;
+        currentMeleeWeapon.transform.localEulerAngles = data.heldRotation;
+
+        //var heldScript = currentMeleeWeapon.GetComponent<MeleeWeaponHeld>();
+        //heldScript.weaponData = data;
     }
 
     IEnumerator MeleeAnim()
     {
-        float duration = 0.15f;
+        float duration = 0.3f;
         float elapsed = 0f;
 
         float startAngle = -45f;
