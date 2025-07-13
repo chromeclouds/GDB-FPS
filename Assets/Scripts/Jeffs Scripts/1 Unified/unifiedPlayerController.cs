@@ -38,6 +38,10 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
     [SerializeField] int meleeDmg;
     [SerializeField] float meleeCD;
     [SerializeField] GameObject pivotPoint;
+    [SerializeField] private Transform meleeHolder;
+
+    [Header("Animator")]
+    [SerializeField] Animator anim;
 
     Vector3 moveDir;
     Vector3 playerVel;
@@ -48,6 +52,9 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
     bool isSprinting;
     int remainingDamage;
     public bool hasTorch;
+
+    private GameObject currentMeleeWeapon;
+
     void Start()
     {
         HPOrig = HP;
@@ -98,6 +105,16 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         {
             melee();
         }
+
+        if (Input.GetButtonDown("Fire2"))
+        {
+            SetAiming(true);
+        }
+
+        if (Input.GetButtonUp("Fire2"))
+        {
+            SetAiming(false);
+        }
     }
 
     void sprint()
@@ -132,20 +149,35 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         weaponHolder.gameObject.SetActive(false);
         StartCoroutine(MeleeAnim());
 
-        RaycastHit hit;
-        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, meleeDist, ~ignoreLayer))
-        {
-            IDamage dmg = hit.collider.GetComponent<IDamage>();
-            if (dmg != null)
-            {
-                dmg.takeDamage(meleeDmg);
-            }
-        }
+       // RaycastHit hit;
+        //if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, meleeDist, ~ignoreLayer))
+        //{
+          //  IDamage dmg = hit.collider.GetComponent<IDamage>();
+          //  if (dmg != null)
+           // {
+            //    dmg.takeDamage(meleeDmg);
+            //}
+       // }
+    }
+
+    public void PickupMeleeWeapon(MeleeWeaponData data)
+    {
+        if (currentMeleeWeapon == null) Destroy(meleeHolder.gameObject.transform.GetChild(0)?.gameObject);
+        else Debug.Log("Replacing existing melee weapon: " + currentMeleeWeapon.name);
+
+        if (currentMeleeWeapon != null) Destroy(currentMeleeWeapon);
+
+        currentMeleeWeapon = Instantiate(data.heldPrefab, meleeHolder.gameObject.transform);
+        currentMeleeWeapon.transform.localPosition = data.heldPosition;
+        currentMeleeWeapon.transform.localEulerAngles = data.heldRotation;
+
+        //var heldScript = currentMeleeWeapon.GetComponent<MeleeWeaponHeld>();
+        //heldScript.weaponData = data;
     }
 
     IEnumerator MeleeAnim()
     {
-        float duration = 0.15f;
+        float duration = 0.3f;
         float elapsed = 0f;
 
         float startAngle = -45f;
@@ -415,6 +447,8 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         currentWeaponIndex = index;
         ownedWeapons[currentWeaponIndex].SetActive(true);
 
+        UpdateWeaponAnimation();
+
         WeaponFire fire = ownedWeapons[currentWeaponIndex].GetComponent<WeaponFire>();
         if (fire != null && fire.weaponData != null)
         {
@@ -459,5 +493,37 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         if (armorValue > armorMax)
             armorValue = armorMax;
         updatePlayerUI();
+    }
+
+    void UpdateWeaponAnimation()
+    {
+        GameObject weapon = GetCurrentHeldWeapon();
+
+        int weaponType = 0;
+
+        if (weapon != null)
+        {
+            string tag = weapon.tag;
+
+            if (tag == "Pistol")
+                weaponType = 1;
+
+            else if (tag == "Shotgun")
+                weaponType = 2;
+
+            else if (tag == "Rifle")
+                weaponType = 3;
+        }
+        anim.SetInteger("WeaponType", weaponType);
+    }
+
+    void SetAiming(bool aiming)
+    {
+        anim.SetBool("IsAiming", aiming);
+    }
+
+    void PlayMelee()
+    {
+        anim.SetTrigger("Melee");
     }
 }

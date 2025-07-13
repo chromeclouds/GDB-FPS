@@ -7,7 +7,7 @@ public class SkullRotate : MonoBehaviour
     public float frequency = 1f;
 
     private Vector3 startPos;
-    public Transform player;
+    //public Transform player;
     public float faceTargetSpeed = 5f;
     private void Start()
     {
@@ -22,7 +22,7 @@ public class SkullRotate : MonoBehaviour
     }
     public void FacePlayer()
     {
-        Vector3 dir = player.position - transform.position;
+        Vector3 dir = gameManager.instance.player.transform.position - transform.position;
         dir.y = 0;
         Quaternion rot = Quaternion.LookRotation(dir);
  
