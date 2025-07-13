@@ -45,7 +45,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 0}
-  spawnAmount: 3
-  spawnIntreval: 5
-  spawnPoint: {fileID: 6741547243425438807}
+  spawnAmount: 1
+  spawnIntreval: 0
   triggerMode: 0
+  spawnPOS: []
+  lowlyDemonPrefab: {fileID: 8264106210931889935, guid: 8365d70774efebd46bd06d6af7cff287, type: 3}
+  skullPrefab: {fileID: 7178253708947115014, guid: 275cf60d041a47e418dc1eaef0774d9b, type: 3}
+  spawnSkullPairs: 0
+  patrolPathForSkulls:
+  - {fileID: 7097633943757351534, guid: 97da69eb2dd7b794a84aced8cd95e7a4, type: 3}

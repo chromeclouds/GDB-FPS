@@ -4,21 +4,22 @@ public class door : MonoBehaviour
 {
 
     [SerializeField] GameObject doorModel;
+    private MeshRenderer meshRenderer;
 
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        meshRenderer = doorModel.GetComponent<MeshRenderer>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        IOpen open = other.GetComponent<IOpen>();
+        // Only open the door for the player
+        if (!other.CompareTag("Player")) return;
 
-        if (open != null)
+        IOpen open = other.GetComponent<IOpen>();
+        if (open != null && meshRenderer != null)
         {
-            doorModel.SetActive(false);
+            meshRenderer.enabled = false;
         }
         //commented out zacks edit just to get door to open for time being.
         //this needs to be set up so that doors are locked during rounds
@@ -33,21 +34,14 @@ public class door : MonoBehaviour
         }
         */
     }
-
     private void OnTriggerExit(Collider other)
     {
-        
+        if (!other.CompareTag("Player")) return;
 
         IOpen open = other.GetComponent<IOpen>();
-        if(open!= null)
+        if (open != null && meshRenderer != null)
         {
-            doorModel.SetActive(true);
+            meshRenderer.enabled = true;
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

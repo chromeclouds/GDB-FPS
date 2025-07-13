@@ -13484,7 +13484,7 @@ PrefabInstance:
     - target: {fileID: 3078348318119527215, guid: 3b7196957b49b3c46aaaa43a72572224, type: 3}
       propertyPath: m_NavMeshData
       value: 
-      objectReference: {fileID: 23800000, guid: 3c559c8e84c4e54409d78569d3a70606, type: 2}
+      objectReference: {fileID: 23800000, guid: 4a8d56f596dfa924fa96dd3171715788, type: 2}
     - target: {fileID: 4325162461817808800, guid: 3b7196957b49b3c46aaaa43a72572224, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -34367,6 +34367,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Gate Door
       objectReference: {fileID: 0}
+    - target: {fileID: 1633266247550286740, guid: 02ad0e50fe933914ba32d52fe7fee984, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5097695028471692300, guid: 02ad0e50fe933914ba32d52fe7fee984, type: 3}
       propertyPath: m_LocalPosition.x
       value: 117.42363
@@ -34406,6 +34410,10 @@ PrefabInstance:
     - target: {fileID: 5097695028471692300, guid: 02ad0e50fe933914ba32d52fe7fee984, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7005411437925291707, guid: 02ad0e50fe933914ba32d52fe7fee984, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -34660,6 +34668,86 @@ PrefabInstance:
     - target: {fileID: 681552863902363979, guid: 6e60a1a28f46a7b44a16f558484f9157, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626961527115324459, guid: 6e60a1a28f46a7b44a16f558484f9157, type: 3}
+      propertyPath: patrolPathForSkulls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626961527115324459, guid: 6e60a1a28f46a7b44a16f558484f9157, type: 3}
+      propertyPath: 'patrolPathForSkulls.Array.data[0]'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3678878854259182269, guid: 6e60a1a28f46a7b44a16f558484f9157, type: 3}
+      propertyPath: patrolPathForSkulls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3678878854259182269, guid: 6e60a1a28f46a7b44a16f558484f9157, type: 3}
+      propertyPath: 'patrolPathForSkulls.Array.data[0]'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3859594070939940570, guid: 6e60a1a28f46a7b44a16f558484f9157, type: 3}
+      propertyPath: patrolPathForSkulls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3859594070939940570, guid: 6e60a1a28f46a7b44a16f558484f9157, type: 3}
+      propertyPath: 'patrolPathForSkulls.Array.data[0]'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4881660009555242652, guid: 6e60a1a28f46a7b44a16f558484f9157, type: 3}
+      propertyPath: patrolPathForSkulls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4881660009555242652, guid: 6e60a1a28f46a7b44a16f558484f9157, type: 3}
+      propertyPath: 'patrolPathForSkulls.Array.data[0]'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5357991890922987170, guid: 6e60a1a28f46a7b44a16f558484f9157, type: 3}
+      propertyPath: patrolPathForSkulls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5357991890922987170, guid: 6e60a1a28f46a7b44a16f558484f9157, type: 3}
+      propertyPath: 'patrolPathForSkulls.Array.data[0]'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248325671302511924, guid: 6e60a1a28f46a7b44a16f558484f9157, type: 3}
+      propertyPath: enemyPrefab
+      value: 
+      objectReference: {fileID: 1644428441327535268, guid: 440ebae28d019c4408717ae488b85668, type: 3}
+    - target: {fileID: 7248325671302511924, guid: 6e60a1a28f46a7b44a16f558484f9157, type: 3}
+      propertyPath: gateTransform
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248325671302511924, guid: 6e60a1a28f46a7b44a16f558484f9157, type: 3}
+      propertyPath: patrolPathForSkulls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248325671302511924, guid: 6e60a1a28f46a7b44a16f558484f9157, type: 3}
+      propertyPath: 'patrolPathForSkulls.Array.data[0]'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7460160798510826637, guid: 6e60a1a28f46a7b44a16f558484f9157, type: 3}
+      propertyPath: patrolPathForSkulls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7460160798510826637, guid: 6e60a1a28f46a7b44a16f558484f9157, type: 3}
+      propertyPath: 'patrolPathForSkulls.Array.data[0]'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7634594764414188583, guid: 6e60a1a28f46a7b44a16f558484f9157, type: 3}
+      propertyPath: patrolPathForSkulls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7634594764414188583, guid: 6e60a1a28f46a7b44a16f558484f9157, type: 3}
+      propertyPath: 'patrolPathForSkulls.Array.data[0]'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8006762155251938660, guid: 6e60a1a28f46a7b44a16f558484f9157, type: 3}
+      propertyPath: patrolPathForSkulls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8006762155251938660, guid: 6e60a1a28f46a7b44a16f558484f9157, type: 3}
+      propertyPath: 'patrolPathForSkulls.Array.data[0]'
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8498665481616180887, guid: 6e60a1a28f46a7b44a16f558484f9157, type: 3}
       propertyPath: m_Name
