@@ -2319,7 +2319,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3531195039821396542}
-  - component: {fileID: 7255160135690944356}
+  - component: {fileID: 4367532927693957541}
   - component: {fileID: 1138666334568754226}
   - component: {fileID: 977348267971343899}
   - component: {fileID: 3114740033948628455}
@@ -2349,7 +2349,7 @@ Transform:
   - {fileID: 4291578990236208344}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7255160135690944356
+--- !u!114 &4367532927693957541
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2358,24 +2358,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 8803542014139876150}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17d406270777ed646944f574c673c3d1, type: 3}
+  m_Script: {fileID: 11500000, guid: 8fc60195881980e4a84eb160a222910e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   model: {fileID: 1825233827414251803}
   agent: {fileID: 1138666334568754226}
   headPOS: {fileID: 4781635586952746413}
-  HP: 10
-  factTargetSpeed: 80
-  roamDist: 5
-  roamstopTime: 3
   shootPos: {fileID: 5064080036038250654}
   bullet: {fileID: 2605596456829534252, guid: 939c8dea707a74b4fbd2b0181ab28294, type: 3}
-  shootRate: 2
-  animSpeedTrans: 8
-  FOV: 80
-  scoreValue: 100
   anim: {fileID: 7477942674466384243}
   swordCol: {fileID: 0}
+  HP: 10
+  shootRate: 2
+  factTargetSpeed: 80
+  roamDist: 5
+  roamStopTime: 2
+  FOV: 80
+  animSpeedTrans: 8
+  scoreValue: 100
+  lineOfSightMask:
+    serializedVersion: 2
+    m_Bits: 540672
 --- !u!195 &1138666334568754226
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2392,7 +2395,7 @@ NavMeshAgent:
   m_AngularSpeed: 120
   m_StoppingDistance: 20
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 0
+  m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 0

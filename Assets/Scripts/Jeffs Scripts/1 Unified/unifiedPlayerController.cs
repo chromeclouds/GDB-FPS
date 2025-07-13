@@ -38,6 +38,10 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
     [SerializeField] int meleeDmg;
     [SerializeField] float meleeCD;
     [SerializeField] GameObject pivotPoint;
+    [SerializeField] private Transform meleeHolder;
+
+    [Header("Animator")]
+    [SerializeField] Animator anim;
 
     Vector3 moveDir;
     Vector3 playerVel;
@@ -47,11 +51,16 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
     bool isMeleeing;
     bool isSprinting;
     int remainingDamage;
+    public bool hasTorch;
+
+    private GameObject currentMeleeWeapon;
+
     void Start()
     {
         HPOrig = HP;
         armorValue = armor;
         spawnPlayer();
+        hasTorch = false;
     }
 
     void Update()
@@ -96,6 +105,16 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         {
             melee();
         }
+
+        if (Input.GetButtonDown("Fire2"))
+        {
+            SetAiming(true);
+        }
+
+        if (Input.GetButtonUp("Fire2"))
+        {
+            SetAiming(false);
+        }
     }
 
     void sprint()
@@ -130,20 +149,35 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         weaponHolder.gameObject.SetActive(false);
         StartCoroutine(MeleeAnim());
 
-        RaycastHit hit;
-        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, meleeDist, ~ignoreLayer))
-        {
-            IDamage dmg = hit.collider.GetComponent<IDamage>();
-            if (dmg != null)
-            {
-                dmg.takeDamage(meleeDmg);
-            }
-        }
+       // RaycastHit hit;
+        //if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, meleeDist, ~ignoreLayer))
+        //{
+          //  IDamage dmg = hit.collider.GetComponent<IDamage>();
+          //  if (dmg != null)
+           // {
+            //    dmg.takeDamage(meleeDmg);
+            //}
+       // }
+    }
+
+    public void PickupMeleeWeapon(MeleeWeaponData data)
+    {
+        if (currentMeleeWeapon == null) Destroy(meleeHolder.gameObject.transform.GetChild(0)?.gameObject);
+        else Debug.Log("Replacing existing melee weapon: " + currentMeleeWeapon.name);
+
+        if (currentMeleeWeapon != null) Destroy(currentMeleeWeapon);
+
+        currentMeleeWeapon = Instantiate(data.heldPrefab, meleeHolder.gameObject.transform);
+        currentMeleeWeapon.transform.localPosition = data.heldPosition;
+        currentMeleeWeapon.transform.localEulerAngles = data.heldRotation;
+
+        //var heldScript = currentMeleeWeapon.GetComponent<MeleeWeaponHeld>();
+        //heldScript.weaponData = data;
     }
 
     IEnumerator MeleeAnim()
     {
-        float duration = 0.15f;
+        float duration = 0.3f;
         float elapsed = 0f;
 
         float startAngle = -45f;
@@ -255,13 +289,38 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, lookDistance, ~ignoreLayer))
         {
             ICost cost = hit.collider.GetComponent<ICost>();
+            torchHolder holder = hit.collider.GetComponent<torchHolder>();
             if (cost != null)
+            {
                 gameManager.instance.interactPromptPrice.text = cost.checkPrice().ToString("f0");
-            gameManager.instance.interactPrompt.SetActive(cost != null && !hit.collider.CompareTag("Bought"));
+                gameManager.instance.interactPrompt.SetActive(cost != null && !hit.collider.CompareTag("Bought"));
+                gameManager.instance.interactTorchPrompt.SetActive(false);
+                gameManager.instance.interactTorchPromptPlace.SetActive(false);
+            }
+            else if(holder != null && !hasTorch && holder.defaultTorch.activeSelf)
+            {
+                if(holder.GetComponent<torchHolder>().GetDifficulty())
+                    gameManager.instance.interactTorchName.text = "Hard mode torch";
+                else
+                    gameManager.instance.interactTorchName.text = "Easy mode torch";
+
+                gameManager.instance.interactTorchPrompt.SetActive(holder != null && !hasTorch);
+                gameManager.instance.interactTorchPromptPlace.SetActive(false);
+                gameManager.instance.interactPrompt.SetActive(false);
+            }
+            else if(holder != null && hasTorch && !holder.defaultTorch.activeSelf)
+            {
+                if(holder.GetComponent<torchHolder>().GetDifficulty() == gameManager.instance.GetDifficulty())
+                    gameManager.instance.interactTorchPromptPlace.SetActive(holder != null && hasTorch);
+                gameManager.instance.interactPrompt.SetActive(false);
+                gameManager.instance.interactTorchPrompt.SetActive(false);
+            }
         }
         else
         {
             gameManager.instance.interactPrompt.SetActive(false);
+            gameManager.instance.interactTorchPrompt.SetActive(false);
+            gameManager.instance.interactTorchPromptPlace.SetActive(false);
         }
     }
 
@@ -271,9 +330,14 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, lookDistance, ~ignoreLayer))
         {
             ICost cost = hit.collider.GetComponent<ICost>();
+            torchHolder holder = hit.collider.GetComponent<torchHolder>();
             if (cost != null && !hit.collider.CompareTag("Bought"))
                 cost.buy();
-            interactTime = 0;
+            else if (holder != null && !hasTorch && holder.defaultTorch.activeSelf)
+                gameManager.instance.DifficultyChange(holder.GivePlayerTorch());
+            else if (holder != null && hasTorch && holder.GetComponent<torchHolder>().GetDifficulty() == gameManager.instance.GetDifficulty() && !holder.defaultTorch.activeSelf)
+                holder.RetrieveTorch();
+                interactTime = 0;
         }
     }
 
@@ -383,6 +447,8 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         currentWeaponIndex = index;
         ownedWeapons[currentWeaponIndex].SetActive(true);
 
+        UpdateWeaponAnimation();
+
         WeaponFire fire = ownedWeapons[currentWeaponIndex].GetComponent<WeaponFire>();
         if (fire != null && fire.weaponData != null)
         {
@@ -427,5 +493,37 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         if (armorValue > armorMax)
             armorValue = armorMax;
         updatePlayerUI();
+    }
+
+    void UpdateWeaponAnimation()
+    {
+        GameObject weapon = GetCurrentHeldWeapon();
+
+        int weaponType = 0;
+
+        if (weapon != null)
+        {
+            string tag = weapon.tag;
+
+            if (tag == "Pistol")
+                weaponType = 1;
+
+            else if (tag == "Shotgun")
+                weaponType = 2;
+
+            else if (tag == "Rifle")
+                weaponType = 3;
+        }
+        anim.SetInteger("WeaponType", weaponType);
+    }
+
+    void SetAiming(bool aiming)
+    {
+        anim.SetBool("IsAiming", aiming);
+    }
+
+    void PlayMelee()
+    {
+        anim.SetTrigger("Melee");
     }
 }
