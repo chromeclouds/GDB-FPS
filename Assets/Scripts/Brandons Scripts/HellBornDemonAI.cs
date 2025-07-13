@@ -21,6 +21,8 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
     [SerializeField] int animSpeedTrans = 5;
     [SerializeField] int scoreValue = 10;
 
+    [SerializeField] private LayerMask lineOfSightMask;
+
     Color colorOrig;
     float shootTimer;
     float roamTime;
