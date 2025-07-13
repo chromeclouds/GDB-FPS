@@ -195,6 +195,11 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
             StartCoroutine(flashRed());
         }
     }
+
+    public void kill()
+    {
+        Destroy(gameObject);
+    }
     public void endRound()
     {
         gameManager.instance.reduceWallet(scoreValue);
