@@ -8,6 +8,7 @@ public class insideDetector : MonoBehaviour
     void Start()
     {
         gameManager.instance.playerIsOutside = false;
+        if (gameManager.instance.mainDoor != null)
         gameManager.instance.mainDoor.GetComponent<door>().Open();
     }
 
@@ -15,6 +16,7 @@ public class insideDetector : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         gameManager.instance.playerIsOutside = false;
-        gameManager.instance.mainDoor.GetComponent<door>().Open();
+        if (gameManager.instance.mainDoor != null)
+            gameManager.instance.mainDoor.GetComponent<door>().Open();
     }
 }

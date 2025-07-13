@@ -22,6 +22,7 @@ public class buttonFunctions : MonoBehaviour
         SceneManager.MoveGameObjectToScene(gameManager.instance.player, SceneManager.GetActiveScene());
         SceneManager.MoveGameObjectToScene(gameManager.instance.transform.root.gameObject, SceneManager.GetActiveScene());
         gameManager.instance.resetTime();
+        gameManager.instance.isPaused = true;
         StartCoroutine(loadRestart());
     }
     public void restartRound()
@@ -84,6 +85,7 @@ public class buttonFunctions : MonoBehaviour
     public void quit()
     {
         gameManager.instance.resetTime();
+        gameManager.instance.isPaused = true;
         StartCoroutine(quitGame());
     }
 

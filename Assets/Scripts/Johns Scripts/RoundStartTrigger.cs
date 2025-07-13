@@ -15,7 +15,6 @@ public class RoundStartTrigger : MonoBehaviour
         if(!gameManager.instance.playerIsOutside && player.hasTorch)
         {
             gameManager.instance.StartRound();
-            gameManager.instance.mainDoor.GetComponent<door>().Close();
         }
         gameManager.instance.playerIsOutside = true;
     }

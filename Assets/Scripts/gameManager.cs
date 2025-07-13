@@ -180,11 +180,13 @@ public class gameManager : MonoBehaviour
             //menuActive.SetActive(true);
             levelTimer.GetComponent<LevelTimer>().ResetTimer();
             playerPortal.SetActive(true);
+            mainDoor.GetComponent<door>().Open();
         }
         else if(gameGoalCount <= 0)
         {
             player.GetComponent<unifiedPlayerController>().resetHealth();
             levelTimer.GetComponent<LevelTimer>().ResetTimer();
+            mainDoor.GetComponent<door>().Open();
         }
     }
 
@@ -209,7 +211,8 @@ public class gameManager : MonoBehaviour
             scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
         else scoreRound.text = "Final";
         playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");
-        playerSpawnPos = GameObject.FindWithTag("Level Music");
+        levelMusic = GameObject.FindWithTag("Level Music");
+        mainDoor = GameObject.FindWithTag("Gate Door");
         player.GetComponent<unifiedPlayerController>().spawnPlayer();
         player.GetComponent<unifiedPlayerController>().hasTorch = false;
         playerPortal = null;
@@ -238,6 +241,7 @@ public class gameManager : MonoBehaviour
         else scoreMult = 1;
         activateSpawners();
         increaseWallet(roundValue);
+        gameManager.instance.mainDoor.GetComponent<door>().Close();
         if (currLevel != SceneManager.sceneCountInBuildSettings - 1)
         {
             currRound++;
@@ -329,6 +333,7 @@ public class gameManager : MonoBehaviour
             singleSkull.kill();
         }
         updateGameGoal(-gameGoalCount);
+        mainDoor.GetComponent<door>().Open();
         if(wallet < 0)
             youLose();
     }
