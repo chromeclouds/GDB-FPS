@@ -3,7 +3,7 @@ using UnityEngine;
 public class MeleeWeaponHeld : MonoBehaviour
 {
     public MeleeWeaponData weaponData;
-    public GameObject AttackPoint;
+    public Transform AttackPoint;
     public float attackCooldown = 1f;
     [SerializeField] GameObject pivotPoint;
     public Transform weaponHolder;
@@ -30,8 +30,8 @@ public class MeleeWeaponHeld : MonoBehaviour
     void Attack()
     {
 
-        // TODO: Add attack animation here
-        Collider[] hitEnemies = Physics.OverlapSphere(AttackPoint.transform.position, 1.5f);
+         //TODO: Add attack animation here
+        Collider[] hitEnemies = Physics.OverlapSphere(AttackPoint.position, 1.5f);
         foreach (var enemy in hitEnemies)
         {
             if (enemy.TryGetComponent<IDamage>(out var damageable))
@@ -44,6 +44,6 @@ public class MeleeWeaponHeld : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         if (AttackPoint != null)
-        Gizmos.DrawWireSphere(AttackPoint.transform.position, 1.5f);
+        Gizmos.DrawWireSphere(AttackPoint.position, 1.5f);
     }
 }
