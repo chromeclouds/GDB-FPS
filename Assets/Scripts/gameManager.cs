@@ -12,6 +12,8 @@ public class gameManager : MonoBehaviour
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
+    [SerializeField] GameObject levelMusic;
+    [SerializeField] GameObject menuMusic;
     [SerializeField] TMP_Text gameGoalCountText;
     [SerializeField] TMP_Text scoreText;
     [SerializeField] TMP_Text scoreWinText;
@@ -41,6 +43,7 @@ public class gameManager : MonoBehaviour
 
     float timescaleOrig;
 
+    public bool playerIsOutside;
     public int gameGoalCount;
     int currRound;
     int currLevel;
@@ -55,8 +58,11 @@ public class gameManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
+
+        menuMusic.GetComponent<AudioSource>().Play();
+        menuMusic.GetComponent<AudioSource>().Pause();
         isLoading = false;
-        currLevel = 0;
+        currLevel = SceneManager.GetActiveScene().buildIndex;
         instance = this;
         currRound = 0;
         spawnMult = 1;
@@ -69,6 +75,7 @@ public class gameManager : MonoBehaviour
         timescaleOrig = Time.timeScale;
         playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");
         playerPortal = GameObject.FindWithTag("Portal");
+        levelMusic = GameObject.FindWithTag("Level Music");
         playerPortal.SetActive(false);
         DontDestroyOnLoad(player);
         DontDestroyOnLoad(transform.root.gameObject);
@@ -110,6 +117,8 @@ public class gameManager : MonoBehaviour
     //}
     public void statePause()
     {
+        levelMusic.GetComponent<AudioSource>().Pause();
+        menuMusic.GetComponent<AudioSource>().UnPause();
         isPaused = !isPaused;
         Time.timeScale = 0;
         Cursor.visible = true;
@@ -132,14 +141,33 @@ public class gameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         menuActive.SetActive(false);
         menuActive = null;
+        menuMusic.GetComponent<AudioSource>().Pause();
+        levelMusic.GetComponent<AudioSource>().UnPause();
     }
 
+    public void resetTime()
+    {
+        Time.timeScale = timescaleOrig;
+    }
+
+    public void updateGameGoalText(int count)
+    {
+        gameGoalCountText.text = count.ToString("f0");
+    }
+
+    public void restartRound()
+    {
+        currRound -= 1;
+        if (currLevel != SceneManager.sceneCountInBuildSettings - 1)
+            scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
+        else scoreRound.text = "Final";
+    }
     public void updateGameGoal(int amount)
     {
         gameGoalCount += amount;
-        gameGoalCountText.text = gameGoalCount.ToString("f0");
+        updateGameGoalText(gameGoalCount);
 
-        if(gameGoalCount <= 0 && currRound == rounds)
+        if (gameGoalCount <= 0 && currRound == rounds)
         {
             //you win
             //statePause();
@@ -164,6 +192,7 @@ public class gameManager : MonoBehaviour
             levelTimer.GetComponent<LevelTimer>().ResetTimer();
             currRound = 0;
             currLevel += 1;
+            levelMusic.SetActive(false);
             SceneManager.LoadScene(currLevel);
             StartCoroutine(newScene());
         }
@@ -171,8 +200,11 @@ public class gameManager : MonoBehaviour
     IEnumerator newScene()
     {
         yield return new WaitForSeconds(0.3f);
-        scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
+        if (currLevel != SceneManager.sceneCountInBuildSettings - 1)
+            scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
+        else scoreRound.text = "Final";
         playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");
+        playerSpawnPos = GameObject.FindWithTag("Level Music");
         player.GetComponent<unifiedPlayerController>().spawnPlayer();
         player.GetComponent<unifiedPlayerController>().hasTorch = false;
         playerPortal = null;
@@ -181,6 +213,7 @@ public class gameManager : MonoBehaviour
             playerPortal = GameObject.FindWithTag("Portal");
             playerPortal.SetActive(false);
         }
+        levelMusic.SetActive(true);
         isLoading = !isLoading;
     }
 
@@ -193,15 +226,19 @@ public class gameManager : MonoBehaviour
     }
     public void StartRound()
     {
-        if (currRound == rounds)
+        if (currRound == rounds || gameGoalCount > 0)
             return;
         if (isHardMode) 
             scoreMult = 2;
         else scoreMult = 1;
         activateSpawners();
-        currRound++;
         increaseWallet(roundValue);
-        scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
+        if (currLevel != SceneManager.sceneCountInBuildSettings - 1)
+        {
+            currRound++;
+            scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
+        }
+        else scoreRound.text = "Final";
         levelTimer.GetComponent<LevelTimer>().ResetTimer();
         levelTimer.GetComponent<LevelTimer>().StartTimer();
     }
@@ -273,6 +310,8 @@ public class gameManager : MonoBehaviour
             singleDemon.endRound();
         }
         updateGameGoal(-gameGoalCount);
+        if(wallet < 0)
+            youLose();
     }
     public int walletAmount()
     {
