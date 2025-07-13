@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1159320037251937876}
   - component: {fileID: 6300378947321559299}
   - component: {fileID: 3790743946172562201}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Enemy Temp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48,7 +48,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   model: {fileID: 6300378947321559299}
+  agent: {fileID: 0}
+  headPos: {fileID: 0}
   HP: 3
+  scoreValue: 0
+  faceTargetSpeed: 0
+  FOV: 0
+  shootPos: {fileID: 0}
+  bullet: {fileID: 0}
+  shootRate: 0
 --- !u!33 &1159320037251937876
 MeshFilter:
   m_ObjectHideFlags: 0
