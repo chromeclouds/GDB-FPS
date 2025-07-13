@@ -63,6 +63,11 @@ public class DemonAI : MonoBehaviour, IDamage, IOpen
         }
     }
 
+    public void kill()
+    {
+        Destroy(gameObject);
+    }
+
     void setAnimations()
     {
         float agentSpeedCur = agent.velocity.normalized.magnitude;

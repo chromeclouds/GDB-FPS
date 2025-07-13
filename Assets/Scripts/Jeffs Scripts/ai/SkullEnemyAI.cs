@@ -29,6 +29,11 @@ public class SkullEnemyAI : MonoBehaviour
         if (hasExploded || gateTarget == null) return;
     }
 
+    public void kill()
+    {
+        Destroy(gameObject);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (hasExploded) return;

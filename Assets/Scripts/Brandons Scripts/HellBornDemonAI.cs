@@ -62,6 +62,11 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
             agent.velocity = Vector3.zero;
     }
 
+    public void kill()
+    {
+        Destroy(gameObject);
+    }
+
     void SetAnimations()
     {
         float agentSpeed = agent.velocity.normalized.magnitude;

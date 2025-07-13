@@ -71,6 +71,11 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
         roamCheck();
     }
 
+    public void kill()
+    {
+        Destroy(gameObject);
+    }
+
     public void SetFollowOffset(Vector3 offset)
     {
         followOffset = offset;
