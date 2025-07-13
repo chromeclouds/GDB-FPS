@@ -85,7 +85,7 @@ public class buttonFunctions : MonoBehaviour
     IEnumerator loadRestart()
     {
         yield return new WaitForSeconds(0.3f);
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
     }
     IEnumerator quitGame()
     {

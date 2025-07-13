@@ -77,8 +77,11 @@ public class gameManager : MonoBehaviour
         playerPortal = GameObject.FindWithTag("Portal");
         levelMusic = GameObject.FindWithTag("Level Music");
         playerPortal.SetActive(false);
-        DontDestroyOnLoad(player);
-        DontDestroyOnLoad(transform.root.gameObject);
+        if(SceneManager.GetActiveScene().buildIndex != 0)
+        {
+            DontDestroyOnLoad(player);
+            DontDestroyOnLoad(transform.root.gameObject);
+        }
     }
 
     // Update is called once per frame
