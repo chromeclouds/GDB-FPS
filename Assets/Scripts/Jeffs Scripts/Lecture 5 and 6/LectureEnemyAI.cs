@@ -71,11 +71,6 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
         roamCheck();
     }
 
-    public void kill()
-    {
-        Destroy(gameObject);
-    }
-
     public void SetFollowOffset(Vector3 offset)
     {
         followOffset = offset;
@@ -200,6 +195,7 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
     {
         Destroy(gameObject);
     }
+
     public void endRound()
     {
         gameManager.instance.reduceWallet(scoreValue);
