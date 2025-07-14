@@ -26,6 +26,7 @@ public class Gate : MonoBehaviour
 
         //Destroy(gameObject);
         gameObject.GetComponent<door>().Open();
+        gameManager.instance.youLose();
 
     }
 }
