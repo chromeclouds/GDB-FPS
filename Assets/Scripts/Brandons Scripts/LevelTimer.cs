@@ -56,6 +56,9 @@ public class LevelTimer : MonoBehaviour
     public void ResetTimer()
     { 
         levelTime = startingTime;
+        int minutes = Mathf.FloorToInt(levelTime / 60f);
+        int seconds = Mathf.FloorToInt(levelTime % 60f);
+        timer.text = string.Format("{0:00}:{1:00}", minutes, seconds);
         isRunning = false;
     }
 }
