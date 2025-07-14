@@ -79,17 +79,17 @@ public class buttonFunctions : MonoBehaviour
     IEnumerator loadShowCase()
     {
         yield return new WaitForSeconds(0.3f);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
     IEnumerator loadNewGame()
     {
         yield return new WaitForSeconds(0.3f);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
     }
     IEnumerator loadRestart()
     {
         yield return new WaitForSeconds(0.3f);
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(0);
     }
     IEnumerator quitGame()
     {
