@@ -238,6 +238,13 @@ public class gameManager : MonoBehaviour
         {
             singleSkull.kill();
         }
+
+        enemyAI1[] Bosses = FindObjectsByType<enemyAI1>(FindObjectsSortMode.None);
+
+        foreach (var singleboss in Bosses)
+        {
+            singleboss.kill();
+        }
     }
     IEnumerator newScene()
     {
