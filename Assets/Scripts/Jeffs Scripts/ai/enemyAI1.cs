@@ -78,6 +78,11 @@ public class enemyAI1 : MonoBehaviour, IDamage
         transform.rotation = Quaternion.LookRotation(direction);
     }
 
+    public void kill()
+    {
+        Destroy(gameObject);
+    }
+
     public void takeDamage(int amount)
     {
         if (isDead) return;
@@ -109,6 +114,8 @@ public class enemyAI1 : MonoBehaviour, IDamage
         agent.isStopped = true;
         animator.SetBool("isDead", true);
         this.enabled = false;
+
+        gameManager.instance.WinGame();
 
         //uncomment if you dont want body to stay
         //Destroy(gameObject, 10f);

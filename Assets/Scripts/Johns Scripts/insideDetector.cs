@@ -15,6 +15,7 @@ public class insideDetector : MonoBehaviour
     // Update is called once per frame
     private void OnTriggerEnter(Collider other)
     {
+        if (other.CompareTag("Player"))
         gameManager.instance.playerIsOutside = false;
         if (gameManager.instance.mainDoor != null)
             gameManager.instance.mainDoor.GetComponent<door>().Open();
