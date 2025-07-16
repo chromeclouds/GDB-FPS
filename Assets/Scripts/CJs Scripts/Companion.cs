@@ -4,7 +4,6 @@ using UnityEngine.AI;
 public class Companion : MonoBehaviour, IOpen
 {
     [SerializeField] NavMeshAgent agent;
-    [SerializeField] Transform player;
     [SerializeField] Transform shootPos;
     [SerializeField] GameObject bullet;
 
@@ -15,10 +14,15 @@ public class Companion : MonoBehaviour, IOpen
     Vector3 dest;
 
     private float atkTimer;
+    private Transform player;
 
     // Update is called once per frame
     void Update()
     {
+        if (player == null)
+        {
+            player = gameManager.instance.player.transform;
+        }
         dest = player.position;
         agent.destination = dest;
 
