@@ -1,0 +1,89 @@
+commit f695d2218c80e3dc4015aee95062add404703756
+Author: Brandon Eich <brandoneich93@gmail.com>
+Date:   Sun Jul 13 11:04:22 2025 -0700
+
+    Finilized Prefabs and ensured everyting worked with the latest pull
+
+commit b6cc764514ed3913cd938e54ac1984e535bedb9f
+Author: Brandon Eich <brandoneich93@gmail.com>
+Date:   Sun Jul 13 02:51:11 2025 -0700
+
+    Got rid of duplicate code
+
+commit 6516fa1629f08d8a9e5970c8cd202b1cdf183b65
+Author: Brandon Eich <brandoneich93@gmail.com>
+Date:   Sun Jul 13 02:46:07 2025 -0700
+
+    Some asset
+
+commit 5b2ab2a0afbc9f3d29fa4a788fbb1c9e85b5cb69
+Author: Brandon Eich <brandoneich93@gmail.com>
+Date:   Sun Jul 13 02:43:04 2025 -0700
+
+    Added Explosion and AOE visual effects to Projectile and Skull Demon, also think I fixed the gate appearing after the player passes through it, unless I messed it up and fixed it again
+
+commit f594740c429110e8feb40aaeb701e89164899681
+Author: Brandon Eich <brandoneich93@gmail.com>
+Date:   Sun Jul 13 01:22:36 2025 -0700
+
+    Added layer check so Hellborn doesn't see player through walls or objects
+
+commit cfa591e14d461ddf17aced645725801806d13e34
+Author: Brandon Eich <brandoneich93@gmail.com>
+Date:   Sun Jul 13 01:14:48 2025 -0700
+
+    Added void kill function to all of my enemyAi scripts per Johns request
+
+commit 788196a51cb6238415ffe9f74b016da9f4920758
+Author: Brandon Eich <brandoneich93@gmail.com>
+Date:   Sun Jul 13 01:12:04 2025 -0700
+
+    Got a ton done, modified the Gate a bit to allow for destruction
+
+commit b98a3565a4d032c31038a787d0b07dae9978ab9b
+Author: Brandon Eich <brandoneich93@gmail.com>
+Date:   Sat Jul 12 15:18:36 2025 -0700
+
+    Finished the projectile functionality, also found some irregularites in the hellborn demons roam and search behavior, fixed it.
+
+commit 54db3d361a39430450e0d2b43cac7864e8a6416c
+Author: Brandon Eich <brandoneich93@gmail.com>
+Date:   Sat Jul 12 13:40:08 2025 -0700
+
+    Small edit forgot to save for projectile
+
+commit 8f8409e5dcfca27889fcb4aa621718937a77078d
+Author: Brandon Eich <brandoneich93@gmail.com>
+Date:   Sat Jul 12 13:39:30 2025 -0700
+
+    Created New projectile
+
+commit 7f4a4b2b0f7be486367a0ccc2a1949307047098f
+Author: Brandon Eich <brandoneich93@gmail.com>
+Date:   Fri Jul 11 21:17:08 2025 -0700
+
+    Created new spawning script for Demon Trees
+
+commit 9ffa8d447fc895211863d4fa48975a9106782ab9
+Author: Brandon Eich <brandoneich93@gmail.com>
+Date:   Fri Jul 11 16:52:03 2025 -0700
+
+    Walked back the code on the EnemeySpawner for something more effeicent
+
+commit 468a589a9a7013dac2b60208bea9a3416f6681c2
+Author: Brandon Eich <brandoneich93@gmail.com>
+Date:   Fri Jul 11 16:24:08 2025 -0700
+
+    Added working patrol behavior to follow Skull, tested and correct in build scene, currently Skull needs adjustments to pathing to patrol point correctly, stopping for now to work on other tasks
+
+commit 6eaba750dd92dd95e3384569d2e53d3c5d8bce00
+Author: Brandon Eich <BCEich@student.fullsail.edu>
+Date:   Thu Jul 10 20:06:46 2025 -0700
+
+    Added in code that has the lowly demon spawn offset of the skull and patrols forward with him. They attach using prefabs so only chosen demons patrol, other lowly demons act as normal
+
+commit 74f2150550c31b2e04489e901f042ebe25f3c571
+Author: Brandon Eich <BCEich@student.fullsail.edu>
+Date:   Wed Jul 9 18:15:24 2025 -0700
+
+    Updated DemonAI
