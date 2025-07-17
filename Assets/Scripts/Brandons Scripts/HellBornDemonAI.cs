@@ -10,7 +10,6 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
     [SerializeField] Transform shootPos;
     [SerializeField] GameObject bullet;
     [SerializeField] Animator anim;
-    [SerializeField] Collider swordCol;
 
     [SerializeField] int HP = 100;
     [SerializeField] float shootRate = 2f;
@@ -20,6 +19,9 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
     [SerializeField] float FOV = 70f;
     [SerializeField] int animSpeedTrans = 5;
     [SerializeField] int scoreValue = 10;
+
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip floatingSound;
 
     [SerializeField] private LayerMask lineOfSightMask;
 
@@ -37,6 +39,13 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
         stoppingDistOrig = agent.stoppingDistance;
         colorOrig = model.material.color;
         roamTime = roamStopTime + 1f; // force roam start
+
+        if (floatingSound != null && audioSource != null)
+        {
+            audioSource.clip = floatingSound;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
     }
 
     void Update()
@@ -190,17 +199,5 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
     {
         gameManager.instance.reduceWallet(scoreValue);
         Destroy(gameObject);
-    }
-
-    public void swordColOn()
-    {
-        if (swordCol)
-            swordCol.enabled = true;
-    }
-
-    public void swordColOff()
-    {
-        if (swordCol)
-            swordCol.enabled = false;
     }
 }
