@@ -3980,8 +3980,8 @@ GameObject:
   - component: {fileID: 8049615855286761359}
   - component: {fileID: 1127351324860324695}
   m_Layer: 5
-  m_Name: Secret Door Popup
-  m_TagString: Untagged
+  m_Name: SecretDoorPopupUI
+  m_TagString: SecretPopup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6197,6 +6197,7 @@ MonoBehaviour:
   playerScript: {fileID: 0}
   playerSpawnPos: {fileID: 0}
   playerPortal: {fileID: 0}
+  mainDoor: {fileID: 0}
   interactPrompt: {fileID: 6780532267961467589}
   interactPromptPrice: {fileID: 3870507852414316174}
   interactTorchPrompt: {fileID: 6935020074685839084}
@@ -6204,6 +6205,8 @@ MonoBehaviour:
   interactTorchPromptPlace: {fileID: 8017047783763124295}
   checkpointPopup: {fileID: 2382763044194317545}
   levelTimer: {fileID: 2219804143670575039}
+  heartCountText: {fileID: 1604811859996334282}
+  secretDoorPopupUI: {fileID: 3308017181739018867}
   isPaused: 0
   playerIsOutside: 0
   gameGoalCount: 0

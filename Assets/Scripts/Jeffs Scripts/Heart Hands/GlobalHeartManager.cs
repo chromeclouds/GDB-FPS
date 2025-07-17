@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+
 
 public class GlobalHeartManager : MonoBehaviour
 {
@@ -11,11 +11,17 @@ public class GlobalHeartManager : MonoBehaviour
     private int destroyedHearts = 0;
 
     private List<HeartDestructible> registeredHearts = new List<HeartDestructible>();
-    private TMP_Text uiText;
+
+    public delegate void OnHeartDestroyed();
+    public event OnHeartDestroyed HeartDestroyedEvent;
 
     private void Awake()
     {
-        if (Instance != null && Instance != this) Destroy(gameObject);
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+
+        }
         else
         {
             Instance = this;
@@ -25,9 +31,7 @@ public class GlobalHeartManager : MonoBehaviour
 
     private void Start()
     {
-        //should find ui text dynamically
-     //   uiText = gameManager.instance?.gameGoalCount;
-     //   UpdateUIText();
+        UpdateUI();
     }
 
     public void RegisterHeart(HeartDestructible heart)
@@ -36,28 +40,30 @@ public class GlobalHeartManager : MonoBehaviour
         {
             registeredHearts.Add(heart);
             totalHearts++;
-     //       UpdateUIText();
+            UpdateUI();
         }
     }
+
 
     public void RegisterHeartDestroyed(HeartDestructible heart)
     {
         if (registeredHearts.Contains(heart))
         {
             destroyedHearts++;
-       //     UpdateUIText();
+            UpdateUI();
+            HeartDestroyedEvent?.Invoke();
         }
     }
 
-    public int getDestroyedCount() => destroyedHearts;
+    public int GetDestroyedCount() => destroyedHearts;
     public int GetTotalHearts() => totalHearts;
 
-   /* private void UpdateUIText()
+    private void UpdateUI()
     {
-        if (uiText == null)
-            uiText = gameManager.instance?.gameGoalCount;
-        if (uiText != null)
-            uiText.text = $"{destroyedHearts}/{totalHearts}";
+        if (gameManager.instance != null && gameManager.instance.heartCountText != null)
+        {
+            gameManager.instance.heartCountText.text = $"{destroyedHearts}/{totalHearts}";
+        }
     }
-   */
+   
 }

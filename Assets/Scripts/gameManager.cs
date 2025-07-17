@@ -41,6 +41,7 @@ public class gameManager : MonoBehaviour
     public GameObject levelTimer;
 
     public TMP_Text heartCountText;
+    [SerializeField] public GameObject secretDoorPopupUI;
 
     public bool isPaused;
 
