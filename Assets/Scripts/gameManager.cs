@@ -38,6 +38,11 @@ public class gameManager : MonoBehaviour
     public TMP_Text interactTorchName;
     public GameObject interactTorchPromptPlace;
     public GameObject checkpointPopup;
+    public GameObject preFirstRoundPopup;
+    public GameObject roundEndPopup;
+    public GameObject finalRoundEndPopup;
+    public GameObject finalLevelPopup;
+    public GameObject gateAttackedPopup;
     public GameObject levelTimer;
 
     public bool isPaused;
