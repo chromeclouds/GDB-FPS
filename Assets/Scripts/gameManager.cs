@@ -44,6 +44,7 @@ public class gameManager : MonoBehaviour
     public GameObject finalRoundEndPopup;
     public GameObject finalLevelPopup;
     public GameObject gateAttackedPopup;
+    public GameObject tutorialPopup;
     public GameObject levelTimer;
 
     public bool isPaused;
@@ -91,6 +92,7 @@ public class gameManager : MonoBehaviour
             DontDestroyOnLoad(player);
             DontDestroyOnLoad(transform.root.gameObject);
         //}
+        StartCoroutine(startUpMenu());
     }
 
     // Update is called once per frame
@@ -270,7 +272,7 @@ public class gameManager : MonoBehaviour
     }
     IEnumerator newScene()
     {
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.1f);
         playerPortal = null;
         // Checks if the new level is the final level
         if (currLevel != SceneManager.sceneCountInBuildSettings - 1)
@@ -301,6 +303,15 @@ public class gameManager : MonoBehaviour
         prompt.SetActive(true);
         yield return new WaitForSeconds(2.0f);
         prompt.SetActive(false);
+    }
+
+    IEnumerator startUpMenu()
+    {
+        //yield return new WaitForSeconds(0.001f);
+        yield return null;
+        statePause();
+        menuActive = tutorialPopup;
+        menuActive.SetActive(true);
     }
     IEnumerator flashGatePrompt()
     {
