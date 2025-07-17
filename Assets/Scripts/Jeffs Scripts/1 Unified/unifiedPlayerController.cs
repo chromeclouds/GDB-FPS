@@ -236,7 +236,8 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
     }
     public void takeDamage(int amount)
     {
-
+        if (gameManager.instance.GetDifficulty())
+            amount *= 2;
 
         updatePlayerUI();
         StartCoroutine(damageFlash());

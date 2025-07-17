@@ -31,6 +31,7 @@ public class gameManager : MonoBehaviour
     public playerController playerScript;
     public GameObject playerSpawnPos;
     public GameObject playerPortal;
+    public GameObject mainDoor;
     public GameObject interactPrompt;
     public TMP_Text interactPromptPrice;
     public GameObject interactTorchPrompt;
@@ -67,6 +68,7 @@ public class gameManager : MonoBehaviour
         currRound = 0;
         spawnMult = 1;
         player = GameObject.FindWithTag("Player");
+        mainDoor = GameObject.FindWithTag("Gate Door");
         scoreText.text = wallet.ToString("f0");
         scoreWinText.text = wallet.ToString("f0");
         scoreLoseText.text = wallet.ToString("f0");
@@ -77,8 +79,11 @@ public class gameManager : MonoBehaviour
         playerPortal = GameObject.FindWithTag("Portal");
         levelMusic = GameObject.FindWithTag("Level Music");
         playerPortal.SetActive(false);
-        DontDestroyOnLoad(player);
-        DontDestroyOnLoad(transform.root.gameObject);
+        if(SceneManager.GetActiveScene().buildIndex != 0)
+        {
+            DontDestroyOnLoad(player);
+            DontDestroyOnLoad(transform.root.gameObject);
+        }
     }
 
     // Update is called once per frame
@@ -173,13 +178,19 @@ public class gameManager : MonoBehaviour
             //statePause();
             //menuActive = menuWin;
             //menuActive.SetActive(true);
+
             levelTimer.GetComponent<LevelTimer>().ResetTimer();
             playerPortal.SetActive(true);
+            mainDoor.GetComponent<door>().Open();
+            ClearLevel();
         }
         else if(gameGoalCount <= 0)
         {
+            ClearLevel();
             player.GetComponent<unifiedPlayerController>().resetHealth();
             levelTimer.GetComponent<LevelTimer>().ResetTimer();
+            mainDoor.GetComponent<door>().Open();
+            ClearLevel();
         }
     }
 
@@ -197,6 +208,44 @@ public class gameManager : MonoBehaviour
             StartCoroutine(newScene());
         }
     }
+
+    public void ClearLevel()
+    {
+        LectureEnemyAI[] enemies = FindObjectsByType<LectureEnemyAI>(FindObjectsSortMode.None);
+
+        foreach (var enemy in enemies)
+        {
+            enemy.kill();
+        }
+
+        DemonAI[] demonEnemies = FindObjectsByType<DemonAI>(FindObjectsSortMode.None);
+
+        foreach (var singleDemon in demonEnemies)
+        {
+            singleDemon.kill();
+        }
+
+        HellBornDemonAI[] hellBornEnemies = FindObjectsByType<HellBornDemonAI>(FindObjectsSortMode.None);
+
+        foreach (var singleHellBorn in hellBornEnemies)
+        {
+            singleHellBorn.kill();
+        }
+
+        SkullEnemyAI[] skullEnemies = FindObjectsByType<SkullEnemyAI>(FindObjectsSortMode.None);
+
+        foreach (var singleSkull in skullEnemies)
+        {
+            singleSkull.kill();
+        }
+
+        enemyAI1[] Bosses = FindObjectsByType<enemyAI1>(FindObjectsSortMode.None);
+
+        foreach (var singleboss in Bosses)
+        {
+            singleboss.kill();
+        }
+    }
     IEnumerator newScene()
     {
         yield return new WaitForSeconds(0.3f);
@@ -204,7 +253,8 @@ public class gameManager : MonoBehaviour
             scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
         else scoreRound.text = "Final";
         playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");
-        playerSpawnPos = GameObject.FindWithTag("Level Music");
+        levelMusic = GameObject.FindWithTag("Level Music");
+        mainDoor = GameObject.FindWithTag("Gate Door");
         player.GetComponent<unifiedPlayerController>().spawnPlayer();
         player.GetComponent<unifiedPlayerController>().hasTorch = false;
         playerPortal = null;
@@ -233,6 +283,7 @@ public class gameManager : MonoBehaviour
         else scoreMult = 1;
         activateSpawners();
         increaseWallet(roundValue);
+        gameManager.instance.mainDoor.GetComponent<door>().Close();
         if (currLevel != SceneManager.sceneCountInBuildSettings - 1)
         {
             currRound++;
@@ -296,22 +347,45 @@ public class gameManager : MonoBehaviour
 
     public void endRound()
     {
-        LectureEnemyAI[] enemies = FindObjectsByType<LectureEnemyAI>(FindObjectsSortMode.None);
-
-        foreach (var enemy in enemies)
+        if (currLevel != SceneManager.sceneCountInBuildSettings - 1)
         {
-            enemy.endRound();
+            LectureEnemyAI[] enemies = FindObjectsByType<LectureEnemyAI>(FindObjectsSortMode.None);
+
+            foreach (var enemy in enemies)
+            {
+                enemy.endRound();
+            }
+
+            DemonAI[] demonEnemies = FindObjectsByType<DemonAI>(FindObjectsSortMode.None);
+
+            foreach (var singleDemon in demonEnemies)
+            {
+                singleDemon.endRound();
+            }
+
+            HellBornDemonAI[] hellBornEnemies = FindObjectsByType<HellBornDemonAI>(FindObjectsSortMode.None);
+
+            foreach (var singleHellBorn in hellBornEnemies)
+            {
+                singleHellBorn.endRound();
+            }
+
+            SkullEnemyAI[] skullEnemies = FindObjectsByType<SkullEnemyAI>(FindObjectsSortMode.None);
+
+            foreach (var singleSkull in skullEnemies)
+            {
+                singleSkull.kill();
+            }
+            updateGameGoal(-gameGoalCount);
+            mainDoor.GetComponent<door>().Open();
+            if (wallet < 0)
+                youLose();
         }
-
-        DemonAI[] demonEnemies = FindObjectsByType<DemonAI>(FindObjectsSortMode.None);
-
-        foreach (var singleDemon in demonEnemies)
+        else
         {
-            singleDemon.endRound();
-        }
-        updateGameGoal(-gameGoalCount);
-        if(wallet < 0)
             youLose();
+        }
+        
     }
     public int walletAmount()
     {

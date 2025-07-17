@@ -22,40 +22,44 @@ public class buttonFunctions : MonoBehaviour
         SceneManager.MoveGameObjectToScene(gameManager.instance.player, SceneManager.GetActiveScene());
         SceneManager.MoveGameObjectToScene(gameManager.instance.transform.root.gameObject, SceneManager.GetActiveScene());
         gameManager.instance.resetTime();
+        gameManager.instance.isPaused = true;
         StartCoroutine(loadRestart());
     }
     public void restartRound()
     {
-        //LectureEnemyAI[] enemies = FindObjectsByType<LectureEnemyAI>(FindObjectsSortMode.None);
+        if(gameManager.instance.walletAmount() - 200 >= 0)
+        {
+            gameManager.instance.reduceWallet(200);
+            gameManager.instance.ClearLevel();
+            gameManager.instance.levelTimer.GetComponent<LevelTimer>().ResetTimer();
+            gameManager.instance.gameGoalCount = 0;
+            gameManager.instance.updateGameGoalText(0);
+            gameManager.instance.player.GetComponent<unifiedPlayerController>().spawnPlayer();
+            gameManager.instance.restartRound();
+            gameManager.instance.playerIsOutside = false;
+            gameManager.instance.mainDoor.GetComponent<door>().Open();
+            gameManager.instance.stateUnpause();
 
-        //foreach (var enemy in enemies)
-        //{
-        //    enemy.de
-        //}
-
-        //DemonAI[] demonEnemies = FindObjectsByType<DemonAI>(FindObjectsSortMode.None);
-
-        //foreach (var singleDemon in demonEnemies)
-        //{
-        //    Destroy(singleDemon);
-        //}
-        gameManager.instance.levelTimer.GetComponent<LevelTimer>().ResetTimer();
-        gameManager.instance.gameGoalCount = 0; 
-        gameManager.instance.updateGameGoalText(0);
-        gameManager.instance.player.GetComponent<unifiedPlayerController>().spawnPlayer();
-        gameManager.instance.restartRound();
-        gameManager.instance.playerIsOutside = false;
-        gameManager.instance.stateUnpause();
+        }
     }
     public void Continue()
     {
-        gameManager.instance.player.GetComponent<unifiedPlayerController>().resetHealth();
-        gameManager.instance.stateUnpause();
+        if(gameManager.instance.walletAmount() - 500 >= 0)
+        {
+            gameManager.instance.reduceWallet(500);
+            gameManager.instance.player.GetComponent<unifiedPlayerController>().resetHealth();
+            gameManager.instance.stateUnpause();
+        }
+        else
+        {
+
+        }
     }
 
     public void quit()
     {
         gameManager.instance.resetTime();
+        gameManager.instance.isPaused = true;
         StartCoroutine(quitGame());
     }
 
@@ -75,12 +79,12 @@ public class buttonFunctions : MonoBehaviour
     IEnumerator loadShowCase()
     {
         yield return new WaitForSeconds(0.3f);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
     IEnumerator loadNewGame()
     {
         yield return new WaitForSeconds(0.3f);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
     }
     IEnumerator loadRestart()
     {
