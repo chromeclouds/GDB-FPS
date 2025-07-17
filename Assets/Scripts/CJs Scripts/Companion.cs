@@ -4,9 +4,10 @@ using UnityEngine.AI;
 public class Companion : MonoBehaviour, IOpen
 {
     [SerializeField] NavMeshAgent agent;
-    [SerializeField] Transform player;
     [SerializeField] Transform shootPos;
     [SerializeField] GameObject bullet;
+    [SerializeField] Animator anim;
+    [SerializeField] AudioClip attackSound;
 
     public float atkRange;
     public float atkCD;
@@ -15,10 +16,21 @@ public class Companion : MonoBehaviour, IOpen
     Vector3 dest;
 
     private float atkTimer;
+    private Transform player;
+    private AudioSource audioSource;
+
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     // Update is called once per frame
     void Update()
     {
+        if (player == null)
+        {
+            player = gameManager.instance.player.transform;
+        }
         dest = player.position;
         agent.destination = dest;
 
@@ -33,6 +45,7 @@ public class Companion : MonoBehaviour, IOpen
                 FaceTarget(closestEnemy);
                 if (atkTimer <= 0f)
                 {
+                    
                     shoot(closestEnemy.position, closestEnemy);
                     atkTimer = atkCD;
                 }
@@ -65,6 +78,9 @@ public class Companion : MonoBehaviour, IOpen
 
     void shoot(Vector3 targetPos, Transform target)
     {
+        anim.SetTrigger("Attack");
+        audioSource.clip = attackSound;
+        audioSource.Play();
         Vector3 targetAimPoint = targetPos + Vector3.up * 1.5f;
 
         Vector3 direction = (targetAimPoint - shootPos.position).normalized;
