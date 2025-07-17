@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class WeaponFire : MonoBehaviour
 {
+    private AudioSource audioSource;
+
     public WeaponData weaponData;
     public Transform bulletSpawnPoint;
 
@@ -20,6 +22,16 @@ public class WeaponFire : MonoBehaviour
 
     [HideInInspector] public GameObject weaponWorldPrefab;
     [HideInInspector] public GameObject weaponHeldPrefab;
+
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.spatialBlend = 1f; 
+        }
+    }
 
     void OnEnable()
     {
@@ -95,10 +107,19 @@ public class WeaponFire : MonoBehaviour
 
     void Fire()
     {
-        if (!weaponData.HasInfiniteAmmo && currentAmmo <= 0) return;
+        if (!weaponData.HasInfiniteAmmo && currentAmmo <= 0)
+        {
+            PlaySound(weaponData.EmptyClickSound);
+            return;
+        }
 
-        if(!weaponData.HasInfiniteAmmo)
+        if (!weaponData.HasInfiniteAmmo)
+        {
             currentAmmo--;
+            if(weaponData.FireSound != null)
+                PlaySound(weaponData.FireSound);
+        }
+            
 
         WeaponUIManager.instance.UpdateAmmoCount(CurrentAmmo, ammoManager.GetAmmoCount(weaponData.AmmotType));
 
@@ -172,7 +193,10 @@ public class WeaponFire : MonoBehaviour
     private IEnumerator Reload()
     {
         isReloading = true;
-        Debug.Log("Reloading...");
+
+        if(weaponData.ReloadStartSound != null)
+            PlaySound(weaponData.ReloadStartSound);
+
         yield return new WaitForSeconds(weaponData.ReloadTime);
 
         int ammoNeeded = weaponData.MaxAmmo - currentAmmo;
@@ -187,6 +211,17 @@ public class WeaponFire : MonoBehaviour
 
         }
 
+        if (weaponData.ReloadEndSound != null)
+            PlaySound(weaponData.ReloadEndSound);
+
         isReloading = false;
+    }
+
+    private void PlaySound(AudioClip clip)
+    {
+        if(clip != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(clip);
+        }
     }
 }
