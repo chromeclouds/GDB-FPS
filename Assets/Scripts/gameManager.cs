@@ -40,6 +40,8 @@ public class gameManager : MonoBehaviour
     public GameObject checkpointPopup;
     public GameObject levelTimer;
 
+    public TMP_Text heartCountText;
+
     public bool isPaused;
 
     float timescaleOrig;
