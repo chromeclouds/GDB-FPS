@@ -4,7 +4,7 @@ public class ExplosiveBullet : MonoBehaviour
 {
     public float explosionRadius = 5f;
     public float explosionForce = 700f;
-    public int explosionDamage = 100;
+    public int damage = 100; //now gets damage from weaponfire then weapondata
     public GameObject explosionEffectPrefab;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -39,15 +39,11 @@ public class ExplosiveBullet : MonoBehaviour
             IDamage dmg = nearby.GetComponent<IDamage>();
             if (dmg != null)
             {
-                dmg.takeDamage(explosionDamage);
+                dmg.takeDamage(damage);
             }
         }
         Destroy(gameObject);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }

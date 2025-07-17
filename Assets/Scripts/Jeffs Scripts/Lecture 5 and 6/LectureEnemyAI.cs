@@ -177,6 +177,21 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
     }
     public void takeDamage(int amount)
     {
+        if (HP <= 0 || agent == null || !agent.isOnNavMesh) return;
+        HP -= amount;
+        if (HP > 0)
+        {
+            if (agent.isActiveAndEnabled && agent.isOnNavMesh)
+                agent.SetDestination(gameManager.instance.player.transform.position);
+            StartCoroutine(flashRed());
+        }
+        else
+        {
+            gameManager.instance.updateGameGoal(-1);
+            gameManager.instance.increaseWallet(scoreValue);
+            Destroy(gameObject);
+        }
+        /*
         HP -= amount;
         agent.SetDestination(gameManager.instance.player.transform.position);
         if (HP <= 0)
@@ -189,6 +204,7 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
         {
             StartCoroutine(flashRed());
         }
+        */
     }
 
     public void kill()

@@ -5404,8 +5404,8 @@ GameObject:
   - component: {fileID: 8049615855286761359}
   - component: {fileID: 1127351324860324695}
   m_Layer: 5
-  m_Name: Secret Door Popup
-  m_TagString: Untagged
+  m_Name: SecretDoorPopupUI
+  m_TagString: SecretPopup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8483,6 +8483,8 @@ MonoBehaviour:
   gateAttackedPopup: {fileID: 2662812968138505841}
   tutorialPopup: {fileID: 6080011669342553803}
   levelTimer: {fileID: 2219804143670575039}
+  heartCountText: {fileID: 1604811859996334282}
+  secretDoorPopupUI: {fileID: 3308017181739018867}
   isPaused: 0
   playerIsOutside: 0
   gameGoalCount: 0
