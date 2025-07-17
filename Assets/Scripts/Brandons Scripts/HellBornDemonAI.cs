@@ -22,6 +22,7 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
 
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip floatingSound;
+    [SerializeField] AudioClip shootSound;
 
     [SerializeField] private LayerMask lineOfSightMask;
 
@@ -112,6 +113,11 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
                     {
                         shootTimer = 0;
                         anim.SetTrigger("Shoot");
+
+                        if (shootSound != null && audioSource != null)
+                        {
+                            audioSource.PlayOneShot(shootSound);
+                        }
                     }
 
                     agent.stoppingDistance = stoppingDistOrig;
