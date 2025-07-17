@@ -23,7 +23,6 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip floatingSound;
     [SerializeField] AudioClip shootSound;
-
     [SerializeField] private LayerMask lineOfSightMask;
 
     Color colorOrig;
@@ -69,7 +68,6 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
                 RoamCheck();
             }
         }
-
         if (agent.remainingDistance <= agent.stoppingDistance)
             agent.velocity = Vector3.zero;
     }
@@ -100,7 +98,7 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
                 if (hit.collider.CompareTag("Player"))
                 {
                     lastKnownPlayerPos = gameManager.instance.player.transform.position;
-                    searchingPlayer = false;
+                    searchingPlayer = true;
 
                     float distToPlayer = Vector3.Distance(transform.position, lastKnownPlayerPos);
                     agent.isStopped = false;
@@ -181,7 +179,7 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
     public void takeDamage(int amount)
     {
         HP -= amount;
-        agent.SetDestination(gameManager.instance.player.transform.position);
+        agent.SetDestination(lastKnownPlayerPos);
         if (HP <= 0)
         {
             Destroy(gameObject);
