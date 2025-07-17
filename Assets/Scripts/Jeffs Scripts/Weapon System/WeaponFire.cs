@@ -103,22 +103,31 @@ public class WeaponFire : MonoBehaviour
         WeaponUIManager.instance.UpdateAmmoCount(CurrentAmmo, ammoManager.GetAmmoCount(weaponData.AmmotType));
 
         if (weaponData.MuzzleFlash != null)
-        {
             weaponData.MuzzleFlash.Play();
-        }
+        if (weaponData.FireSound != null)
+            AudioSource.PlayClipAtPoint(weaponData.FireSound, transform.position);
+
 
         for (int i = 0; i < weaponData.BulletsPerShot; i++)
         {
-            Quaternion spread = Quaternion.Euler(
+            Vector3 targetPoint = Camera.main.transform.position + Camera.main.transform.forward * 100f;
+            Vector3 direction = (targetPoint - bulletSpawnPoint.position).normalized;
+            Quaternion spreadRotation = Quaternion.Euler(
                 Random.Range(-weaponData.SpreadAngle, weaponData.SpreadAngle),
-                Random.Range(-weaponData.SpreadAngle, weaponData.SpreadAngle),
-                0);
+                Random.Range(-weaponData.SpreadAngle, weaponData.SpreadAngle), 0);
 
-            GameObject bullet = Instantiate(weaponData.BulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation * spread);
+            GameObject bullet = Instantiate(weaponData.BulletPrefab, bulletSpawnPoint.position, Quaternion.LookRotation(direction) * spreadRotation);
+
             Bullet bulletScript = bullet.GetComponent<Bullet>();
             if (bulletScript != null)
             {
                 bulletScript.damage = weaponData.Damage;
+            }
+
+            ExplosiveBullet explosive = bullet.GetComponent<ExplosiveBullet>();
+            if (explosive != null)
+            {
+                explosive.damage = weaponData.Damage;
             }
 
             Rigidbody rb = bullet.GetComponent<Rigidbody>();
