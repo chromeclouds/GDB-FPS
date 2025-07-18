@@ -238,6 +238,32 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
     {
         if (gameManager.instance.GetDifficulty())
             amount *= 2;
+        int damageToHP = 0;
+
+        if (armorValue > 0)
+        {
+            int overflow = amount - armorValue;
+            armorValue -= amount;
+            if (armorValue < 0) armorValue = 0;
+            if (overflow > 0) damageToHP = overflow;
+        }
+        else
+        {
+            damageToHP = amount;
+
+        }
+
+        HP -= damageToHP;
+        updatePlayerUI();
+        StartCoroutine(damageFlash());
+        if (HP <= 0)
+        {
+            gameManager.instance.youLose();
+        }
+
+        /*  //johns code remaining damage is used uninitialized unless armor value > 0
+        if (gameManager.instance.GetDifficulty())
+            amount *= 2;
 
         updatePlayerUI();
         StartCoroutine(damageFlash());
@@ -262,6 +288,7 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
             //oh no im dead
             gameManager.instance.youLose();
         }
+        */
 
     }
 
