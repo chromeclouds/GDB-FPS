@@ -48,10 +48,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d4dbe764a572c24aa923cf83cd14979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  explosionSound: {fileID: 8300000, guid: 96e9337e4248a0747bfc7e4d31a2296e, type: 3}
+  explosionVolume: 1
   explosionRadius: 5
   explosionForce: 700
-  explosionDamage: 100
-  explosionEffectPrefab: {fileID: 0}
+  damage: 100
+  explosionEffectPrefab: {fileID: 358637981425055526, guid: 8eb503696b886e04faff8fc0f480d473, type: 3}
+  scatterMask:
+    serializedVersion: 2
+    m_Bits: 2097152
 --- !u!114 &1434004376837052781
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85,7 +90,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
