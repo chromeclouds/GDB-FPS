@@ -7,6 +7,7 @@ public class WeaponFire : MonoBehaviour
 
     public WeaponData weaponData;
     public Transform bulletSpawnPoint;
+    [SerializeField] private ParticleSystem muzzleFlash;
 
     private float fireTimer;
     
@@ -116,7 +117,13 @@ public class WeaponFire : MonoBehaviour
             }
         }
     }
-
+    private void PlayMuzzleFlash()
+    {
+        if(muzzleFlash != null)
+        {
+            muzzleFlash.Play();
+        }
+    }
     void Fire()
     {
         if (!weaponData.HasInfiniteAmmo && currentAmmo <= 0)
@@ -135,9 +142,9 @@ public class WeaponFire : MonoBehaviour
 
         WeaponUIManager.instance.UpdateAmmoCount(CurrentAmmo, ammoManager.GetAmmoCount(weaponData.AmmotType));
 
-        if (weaponData.MuzzleFlash != null)
+        /*if (weaponData.MuzzleFlash != null)
             weaponData.MuzzleFlash.Play();
-        /*if (weaponData.FireSound != null)
+        if (weaponData.FireSound != null)
             AudioSource.PlayClipAtPoint(weaponData.FireSound, transform.position);
         */
 
@@ -151,6 +158,7 @@ public class WeaponFire : MonoBehaviour
 
             GameObject bullet = Instantiate(weaponData.BulletPrefab, bulletSpawnPoint.position, Quaternion.LookRotation(direction) * spreadRotation);
             FireBullet fire = bullet.GetComponent<FireBullet>();
+            PlayMuzzleFlash();
             if (fire != null)
             {
                 fire.weaponData = weaponData;

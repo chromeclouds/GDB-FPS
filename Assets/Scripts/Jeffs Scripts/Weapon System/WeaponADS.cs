@@ -9,6 +9,7 @@ public class WeaponADS : MonoBehaviour
     private bool isAiming;
 
     private WeaponData weaponData;
+    private Transform adsAnchor;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -16,27 +17,28 @@ public class WeaponADS : MonoBehaviour
     {
         weaponData = GetComponent<WeaponFire>().weaponData;
         hipPosition = transform.localPosition;
-        adsPosition = weaponData.ADSPositionOffset;
         adsSpeed = weaponData.ADSSpeed;
-    }
 
+        adsAnchor = transform.Find("ADSAnchor");
+        if (adsAnchor != null)
+        {
+            adsPosition = transform.localPosition;
+        }
+        else
+        {
+            adsPosition = weaponData.ADSPositionOffset;
+
+        }
+    }
     // Update is called once per frame
     void Update()
     {
-        if (weaponData.HasADS)
-        {
-            if (Input.GetButton("Fire2")) //right click
-            {
-                isAiming = true;
-                
-            }
-            else
-            {
-                isAiming = false;
-            }
-
-            Vector3 targetPosition = isAiming ? adsPosition : hipPosition;
-            transform.localPosition = Vector3.Lerp(transform.localPosition, targetPosition, Time.deltaTime * adsSpeed);
-        }
+        if (!weaponData.HasADS) return;
+        
+        isAiming = Input.GetButton("Fire2");
+        
+        Vector3 targetPosition = isAiming ? adsPosition : hipPosition;
+        transform.localPosition = Vector3.Lerp(transform.localPosition, targetPosition, Time.deltaTime * adsSpeed);
+        
     }
 }

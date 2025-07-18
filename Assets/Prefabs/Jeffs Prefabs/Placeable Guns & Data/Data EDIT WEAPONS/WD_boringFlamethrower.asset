@@ -26,6 +26,7 @@ MonoBehaviour:
   reloadEndSound: {fileID: 0}
   recoilKickback: 0.1
   recoilRecoverySpeed: 9
+  isScopedWeapon: 0
   hasADS: 0
   adsPositionOffset: {x: 0, y: 0, z: 0}
   adsSpeed: 7
@@ -40,6 +41,7 @@ MonoBehaviour:
   isFlamethrower: 1
   overheatTime: 5
   cooldownTime: 3
+  burnDamagePerTick: 1
   weaponPositionOffset: {x: 0, y: 0, z: 0}
   weaponRotationOffset: {x: 0, y: 0, z: 0}
   weaponWorldPrefab: {fileID: 8205573396522084344, guid: 30be31c4141e49c4c9292544e3e6686d, type: 3}
