@@ -19,13 +19,13 @@ MonoBehaviour:
   bulletPrefab: {fileID: 6255843267276114019, guid: eb4250e6b764fd845b889fe3cc6ea8ab, type: 3}
   spreadAngle: 0.3
   bulletsPerShot: 1
-  muzzleFlash: {fileID: 0}
   fireSound: {fileID: 8300000, guid: b33e2cff5225f4437a43a11d35763d46, type: 3}
   emptyClickSound: {fileID: 8300000, guid: 0bb318995a5b71c4095954e4e1326331, type: 3}
   reloadStartSound: {fileID: 8300000, guid: e0c70bed5c1a4443083a81de5648c7d5, type: 3}
   reloadEndSound: {fileID: 8300000, guid: eb5685b26a6494994af389a3293064e8, type: 3}
   recoilKickback: 1
   recoilRecoverySpeed: 5
+  isScopedWeapon: 0
   hasADS: 1
   adsPositionOffset: {x: 0, y: 0, z: 0}
   adsSpeed: 10
@@ -40,6 +40,7 @@ MonoBehaviour:
   isFlamethrower: 0
   overheatTime: 5
   cooldownTime: 3
+  burnDamagePerTick: 0
   weaponPositionOffset: {x: 0, y: 0, z: 0}
   weaponRotationOffset: {x: 0, y: 0, z: 0}
   weaponWorldPrefab: {fileID: 2629047538590957014, guid: 13712342e02cf1640a1a31187e5a4418, type: 3}

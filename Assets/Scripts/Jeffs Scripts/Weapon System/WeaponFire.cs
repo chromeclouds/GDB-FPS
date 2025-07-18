@@ -7,6 +7,7 @@ public class WeaponFire : MonoBehaviour
 
     public WeaponData weaponData;
     public Transform bulletSpawnPoint;
+    [SerializeField] private ParticleSystem muzzleFlash;
 
     private float fireTimer;
     
@@ -25,6 +26,7 @@ public class WeaponFire : MonoBehaviour
 
     private void Awake()
     {
+        //audioSource.loop = true;
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
         {
@@ -60,6 +62,13 @@ public class WeaponFire : MonoBehaviour
                 Fire();
                 flamethrowerTimer += Time.deltaTime;
 
+                if (!audioSource.isPlaying && weaponData.FireSound != null)
+                {
+                    audioSource.clip = weaponData.FireSound;
+                    audioSource.loop = false;
+                    audioSource.Play();
+                }
+
                 if (flamethrowerTimer >= weaponData.OverheatTime)
                 {
                     StartCoroutine(Overheat());
@@ -68,6 +77,10 @@ public class WeaponFire : MonoBehaviour
             else
             {
                 flamethrowerTimer = Mathf.Max(0f, flamethrowerTimer - Time.deltaTime);
+
+                if (audioSource.isPlaying && audioSource.clip == weaponData.FireSound)
+                    audioSource.Stop();
+
             }
         }
         else
@@ -104,7 +117,13 @@ public class WeaponFire : MonoBehaviour
             }
         }
     }
-
+    private void PlayMuzzleFlash()
+    {
+        if(muzzleFlash != null)
+        {
+            muzzleFlash.Play();
+        }
+    }
     void Fire()
     {
         if (!weaponData.HasInfiniteAmmo && currentAmmo <= 0)
@@ -116,18 +135,18 @@ public class WeaponFire : MonoBehaviour
         if (!weaponData.HasInfiniteAmmo)
         {
             currentAmmo--;
-            if(weaponData.FireSound != null)
+            if(weaponData.FireSound != null && !weaponData.IsFlamethrower)
                 PlaySound(weaponData.FireSound);
         }
             
 
         WeaponUIManager.instance.UpdateAmmoCount(CurrentAmmo, ammoManager.GetAmmoCount(weaponData.AmmotType));
 
-        if (weaponData.MuzzleFlash != null)
+        /*if (weaponData.MuzzleFlash != null)
             weaponData.MuzzleFlash.Play();
         if (weaponData.FireSound != null)
             AudioSource.PlayClipAtPoint(weaponData.FireSound, transform.position);
-
+        */
 
         for (int i = 0; i < weaponData.BulletsPerShot; i++)
         {
@@ -138,7 +157,12 @@ public class WeaponFire : MonoBehaviour
                 Random.Range(-weaponData.SpreadAngle, weaponData.SpreadAngle), 0);
 
             GameObject bullet = Instantiate(weaponData.BulletPrefab, bulletSpawnPoint.position, Quaternion.LookRotation(direction) * spreadRotation);
-
+            FireBullet fire = bullet.GetComponent<FireBullet>();
+            PlayMuzzleFlash();
+            if (fire != null)
+            {
+                fire.weaponData = weaponData;
+            }
             Bullet bulletScript = bullet.GetComponent<Bullet>();
             if (bulletScript != null)
             {

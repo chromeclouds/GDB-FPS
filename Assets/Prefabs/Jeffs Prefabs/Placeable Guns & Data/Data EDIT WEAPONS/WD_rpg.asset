@@ -20,6 +20,10 @@ MonoBehaviour:
   spreadAngle: 0
   bulletsPerShot: 1
   muzzleFlash: {fileID: 0}
+  fireSound: {fileID: 8300000, guid: 30ad44295657160429f80f38e3a816a3, type: 3}
+  emptyClickSound: {fileID: 0}
+  reloadStartSound: {fileID: 0}
+  reloadEndSound: {fileID: 8300000, guid: eb5685b26a6494994af389a3293064e8, type: 3}
   recoilKickback: 1
   recoilRecoverySpeed: 2
   hasADS: 0
@@ -32,6 +36,7 @@ MonoBehaviour:
   ammoType: 2
   reloadTime: 1.5
   maxAmmo: 1
+  hasInfiniteAmmo: 0
   isFlamethrower: 0
   overheatTime: 0
   cooldownTime: 0

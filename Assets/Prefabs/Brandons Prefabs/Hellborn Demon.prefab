@@ -2180,6 +2180,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3531195039821396542}
   - component: {fileID: 4367532927693957541}
+  - component: {fileID: -4334425353817526880}
   - component: {fileID: 1138666334568754226}
   - component: {fileID: 977348267971343899}
   - component: {fileID: 3114740033948628455}
@@ -2238,6 +2239,18 @@ MonoBehaviour:
   lineOfSightMask:
     serializedVersion: 2
     m_Bits: 540672
+--- !u!114 &-4334425353817526880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8803542014139876150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58c5c70052d2c7e47bf1f0e3dbe55887, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!195 &1138666334568754226
 NavMeshAgent:
   m_ObjectHideFlags: 0
