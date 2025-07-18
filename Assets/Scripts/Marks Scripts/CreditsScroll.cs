@@ -8,9 +8,9 @@ public class CreditsScroll : MonoBehaviour
     void Update()
     {
         transform.Translate(Vector3.up * scrollSpeed * Time.deltaTime);
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetButtonDown("Cancel"))
         {
-            SceneManager.LoadScene("MainMenu"); 
+            SceneManager.LoadScene(0); 
         }
     }
 }
