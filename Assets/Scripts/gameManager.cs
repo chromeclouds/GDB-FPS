@@ -31,6 +31,7 @@ public class gameManager : MonoBehaviour
     public GameObject player;
     public playerController playerScript;
     public GameObject playerSpawnPos;
+    public GameObject enemySpawnPos;
     public GameObject playerPortal;
     public GameObject mainDoor;
     public GameObject interactPrompt;
@@ -87,6 +88,7 @@ public class gameManager : MonoBehaviour
         playerScript = player.GetComponent<playerController>();
         timescaleOrig = Time.timeScale;
         playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");
+        enemySpawnPos = GameObject.FindWithTag("Enemy");
         playerPortal = GameObject.FindWithTag("Portal");
         levelMusic = GameObject.FindWithTag("Level Music");
         playerPortal.SetActive(false);
