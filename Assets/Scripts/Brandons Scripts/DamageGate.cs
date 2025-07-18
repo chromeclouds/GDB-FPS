@@ -19,6 +19,10 @@ public class Gate : MonoBehaviour
         {
             DestroyGate();
         }
+        else
+        {
+           gameManager.instance.gateDamaged();
+        }
     }
 
     void DestroyGate()
@@ -26,6 +30,7 @@ public class Gate : MonoBehaviour
 
         //Destroy(gameObject);
         gameObject.GetComponent<door>().Open();
+        gameManager.instance.youLose();
 
     }
 }

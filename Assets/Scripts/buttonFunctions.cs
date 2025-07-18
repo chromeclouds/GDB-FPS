@@ -30,33 +30,7 @@ public class buttonFunctions : MonoBehaviour
         if(gameManager.instance.walletAmount() - 200 >= 0)
         {
             gameManager.instance.reduceWallet(200);
-            LectureEnemyAI[] enemies = FindObjectsByType<LectureEnemyAI>(FindObjectsSortMode.None);
-
-            foreach (var enemy in enemies)
-            {
-                enemy.kill();
-            }
-
-            DemonAI[] demonEnemies = FindObjectsByType<DemonAI>(FindObjectsSortMode.None);
-
-            foreach (var singleDemon in demonEnemies)
-            {
-                singleDemon.kill();
-            }
-
-            HellBornDemonAI[] hellBornEnemies = FindObjectsByType<HellBornDemonAI>(FindObjectsSortMode.None);
-
-            foreach (var singleHellBorn in hellBornEnemies)
-            {
-                singleHellBorn.kill();
-            }
-
-            SkullEnemyAI[] skullEnemies = FindObjectsByType<SkullEnemyAI>(FindObjectsSortMode.None);
-
-            foreach (var singleSkull in skullEnemies)
-            {
-                singleSkull.kill();
-            }
+            gameManager.instance.ClearLevel();
             gameManager.instance.levelTimer.GetComponent<LevelTimer>().ResetTimer();
             gameManager.instance.gameGoalCount = 0;
             gameManager.instance.updateGameGoalText(0);
@@ -105,17 +79,17 @@ public class buttonFunctions : MonoBehaviour
     IEnumerator loadShowCase()
     {
         yield return new WaitForSeconds(0.3f);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
     IEnumerator loadNewGame()
     {
         yield return new WaitForSeconds(0.3f);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
     }
     IEnumerator loadRestart()
     {
         yield return new WaitForSeconds(0.3f);
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(0);
     }
     IEnumerator quitGame()
     {
