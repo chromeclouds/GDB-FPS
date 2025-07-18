@@ -12,17 +12,15 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (!gameObject.activeInHierarchy) return; //prevents double hits hopefully fixes shotguns
+
         IDamage dmg = collision.collider.GetComponent<IDamage>();
         if(dmg != null)
         {
-            dmg.takeDamage(damage);
+            dmg.takeDamage(damage); //damage should come from weapondata
         }
         Destroy(gameObject);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }

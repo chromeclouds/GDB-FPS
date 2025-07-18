@@ -7,7 +7,7 @@ public class RoundStartTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.isTrigger)
+        if (other.isTrigger || !other.CompareTag("Player"))
             return;
 
         unifiedPlayerController player = other.GetComponent<unifiedPlayerController>();

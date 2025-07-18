@@ -16,6 +16,7 @@ public class WeaponData : ScriptableObject
     [SerializeField] private float spreadAngle;
     [SerializeField] private int bulletsPerShot = 1; //shotgun effect
     [SerializeField] private ParticleSystem muzzleFlash;
+    
     public float FireRate => fireRate;
     public int Damage => damage;
     public float BulletSpeed => bulletSpeed;
@@ -23,6 +24,16 @@ public class WeaponData : ScriptableObject
     public float SpreadAngle => spreadAngle;
     public int BulletsPerShot => bulletsPerShot;
     public ParticleSystem MuzzleFlash => muzzleFlash;
+    [Header("Audio Clips")]
+    [SerializeField] private AudioClip fireSound;
+    [SerializeField] private AudioClip emptyClickSound;
+    [SerializeField] private AudioClip reloadStartSound;
+    [SerializeField] private AudioClip reloadEndSound;
+    public AudioClip FireSound => fireSound;
+    public AudioClip EmptyClickSound => emptyClickSound;
+    public AudioClip ReloadStartSound => reloadStartSound;
+    public AudioClip ReloadEndSound => reloadEndSound;
+
 
 
     [Header("Recoil")]

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -38,7 +39,16 @@ public class gameManager : MonoBehaviour
     public TMP_Text interactTorchName;
     public GameObject interactTorchPromptPlace;
     public GameObject checkpointPopup;
+    public GameObject preFirstRoundPopup;
+    public GameObject roundEndPopup;
+    public GameObject finalRoundEndPopup;
+    public GameObject finalLevelPopup;
+    public GameObject gateAttackedPopup;
+    public GameObject tutorialPopup;
     public GameObject levelTimer;
+
+    public TMP_Text heartCountText;
+    [SerializeField] public GameObject secretDoorPopupUI;
 
     public bool isPaused;
 
@@ -52,6 +62,7 @@ public class gameManager : MonoBehaviour
     int spawnMult;
     bool isHardMode;
     bool isLoading;
+    bool gatePromptIsRunning;
     
 
    
@@ -79,11 +90,12 @@ public class gameManager : MonoBehaviour
         playerPortal = GameObject.FindWithTag("Portal");
         levelMusic = GameObject.FindWithTag("Level Music");
         playerPortal.SetActive(false);
-        if(SceneManager.GetActiveScene().buildIndex != 0)
-        {
+        //if(SceneManager.GetActiveScene().buildIndex != 1)
+        //{
             DontDestroyOnLoad(player);
             DontDestroyOnLoad(transform.root.gameObject);
-        }
+        //}
+        StartCoroutine(startUpMenu());
     }
 
     // Update is called once per frame
@@ -160,12 +172,26 @@ public class gameManager : MonoBehaviour
         gameGoalCountText.text = count.ToString("f0");
     }
 
+    public void gateDamaged()
+    {
+        if (gatePromptIsRunning)
+            return;
+        StartCoroutine(flashGatePrompt());
+    }
+
     public void restartRound()
     {
         currRound -= 1;
         if (currLevel != SceneManager.sceneCountInBuildSettings - 1)
+        {
             scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
-        else scoreRound.text = "Final";
+            StartCoroutine(flashPrompt(preFirstRoundPopup));
+        }
+        else
+        {
+            scoreRound.text = "Final";
+            StartCoroutine(flashPrompt(finalLevelPopup));
+        }
     }
     public void updateGameGoal(int amount)
     {
@@ -183,14 +209,15 @@ public class gameManager : MonoBehaviour
             playerPortal.SetActive(true);
             mainDoor.GetComponent<door>().Open();
             ClearLevel();
+            StartCoroutine(flashPrompt(finalRoundEndPopup));
         }
         else if(gameGoalCount <= 0)
         {
-            ClearLevel();
             player.GetComponent<unifiedPlayerController>().resetHealth();
             levelTimer.GetComponent<LevelTimer>().ResetTimer();
             mainDoor.GetComponent<door>().Open();
             ClearLevel();
+            StartCoroutine(flashPrompt(roundEndPopup));
         }
     }
 
@@ -248,23 +275,54 @@ public class gameManager : MonoBehaviour
     }
     IEnumerator newScene()
     {
-        yield return new WaitForSeconds(0.3f);
-        if (currLevel != SceneManager.sceneCountInBuildSettings - 1)
-            scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
-        else scoreRound.text = "Final";
-        playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");
-        levelMusic = GameObject.FindWithTag("Level Music");
-        mainDoor = GameObject.FindWithTag("Gate Door");
-        player.GetComponent<unifiedPlayerController>().spawnPlayer();
-        player.GetComponent<unifiedPlayerController>().hasTorch = false;
+        yield return new WaitForSeconds(0.1f);
         playerPortal = null;
-        if (currLevel < SceneManager.sceneCountInBuildSettings - 1)
+        // Checks if the new level is the final level
+        if (currLevel != SceneManager.sceneCountInBuildSettings - 1)
         {
+            scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
+            StartCoroutine(flashPrompt(preFirstRoundPopup));
             playerPortal = GameObject.FindWithTag("Portal");
             playerPortal.SetActive(false);
         }
+        else
+        {
+            scoreRound.text = "Final";
+            StartCoroutine(flashPrompt(finalLevelPopup));
+        }
+        // Get's components placed in each level
+        playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");
+        levelMusic = GameObject.FindWithTag("Level Music");
+        mainDoor = GameObject.FindWithTag("Gate Door");
+        // Sets the player as being inside when they spawn
+        player.GetComponent<unifiedPlayerController>().spawnPlayer();
+        player.GetComponent<unifiedPlayerController>().hasTorch = false;
         levelMusic.SetActive(true);
         isLoading = !isLoading;
+    }
+
+    IEnumerator flashPrompt(GameObject prompt)
+    {
+        prompt.SetActive(true);
+        yield return new WaitForSeconds(2.0f);
+        prompt.SetActive(false);
+    }
+
+    IEnumerator startUpMenu()
+    {
+        //yield return new WaitForSeconds(0.001f);
+        yield return null;
+        statePause();
+        menuActive = tutorialPopup;
+        menuActive.SetActive(true);
+    }
+    IEnumerator flashGatePrompt()
+    {
+        gatePromptIsRunning = true;
+        gateAttackedPopup.SetActive(true);
+        yield return new WaitForSeconds(2.0f);
+        gateAttackedPopup.SetActive(false);
+        gatePromptIsRunning = false;
     }
 
     public void WinGame()
@@ -289,7 +347,10 @@ public class gameManager : MonoBehaviour
             currRound++;
             scoreRound.text = currRound.ToString("f0") + "/" + rounds.ToString("f0");
         }
-        else scoreRound.text = "Final";
+        else
+        {
+            scoreRound.text = "Final";
+        }
         levelTimer.GetComponent<LevelTimer>().ResetTimer();
         levelTimer.GetComponent<LevelTimer>().StartTimer();
     }

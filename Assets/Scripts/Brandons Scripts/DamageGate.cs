@@ -19,6 +19,10 @@ public class Gate : MonoBehaviour
         {
             DestroyGate();
         }
+        else
+        {
+           gameManager.instance.gateDamaged();
+        }
     }
 
     void DestroyGate()
