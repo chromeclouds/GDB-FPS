@@ -395,6 +395,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7546272108716909715}
     m_Modifications:
+    - target: {fileID: 419718923862898433, guid: f194b0dfd1972fa408219973cd1f544f, type: 3}
+      propertyPath: scrollSpeed
+      value: 45
+      objectReference: {fileID: 0}
     - target: {fileID: 1864267992097318743, guid: f194b0dfd1972fa408219973cd1f544f, type: 3}
       propertyPath: m_Name
       value: CreditsText
@@ -425,11 +429,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2251894363729954407, guid: f194b0dfd1972fa408219973cd1f544f, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 200
+      value: 377.62
       objectReference: {fileID: 0}
     - target: {fileID: 2251894363729954407, guid: f194b0dfd1972fa408219973cd1f544f, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 1483.2
       objectReference: {fileID: 0}
     - target: {fileID: 2251894363729954407, guid: f194b0dfd1972fa408219973cd1f544f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -465,7 +469,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2251894363729954407, guid: f194b0dfd1972fa408219973cd1f544f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -766.5999
       objectReference: {fileID: 0}
     - target: {fileID: 2251894363729954407, guid: f194b0dfd1972fa408219973cd1f544f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -478,6 +482,48 @@ PrefabInstance:
     - target: {fileID: 2251894363729954407, guid: f194b0dfd1972fa408219973cd1f544f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7505838138406259800, guid: f194b0dfd1972fa408219973cd1f544f, type: 3}
+      propertyPath: m_text
+      value: 'jeff- ammo types, boss ai state machine, ammo manager, weapon pickup
+        manager, buyable weapons, buyable armor, weapon crates, touch open doors,
+        flamethrower, minigun, weapon system, secret mechanic system, traps, vector
+        3d model
+
+
+        john- game mechanics, difficulty torches, start triggers,
+        pop ups, volume control, buyable ammo
+
+
+        zack- map 2, armor system,
+        turret, float/follow scripting
+
+
+        cj- grapple system, companion system,
+        melee weapon system
+
+
+        brandon- explosive gate mechanic, wandering
+        enemy ai, patrolling enemy ai, arcing bullet, homing bullet, explosive enemy
+        ai, spawner enemy ai
+
+
+        mark- controller inputs, minimap mechanics,
+        credits
+
+
+        meshes pulled from:
+
+        unity asset store, sketchfab,
+        fab'
+      objectReference: {fileID: 0}
+    - target: {fileID: 7505838138406259800, guid: f194b0dfd1972fa408219973cd1f544f, type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
+      objectReference: {fileID: 0}
+    - target: {fileID: 7505838138406259800, guid: f194b0dfd1972fa408219973cd1f544f, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
