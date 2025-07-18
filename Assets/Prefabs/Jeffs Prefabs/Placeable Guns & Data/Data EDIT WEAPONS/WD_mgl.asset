@@ -14,18 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: MGL-32
   fireRate: 0.3
-  damage: 10
+  damage: 1
   bulletSpeed: 75
   bulletPrefab: {fileID: 6255843267276114019, guid: c2a6add062492604aa874a26f8f4ffcc, type: 3}
   spreadAngle: 1
   bulletsPerShot: 1
-  muzzleFlash: {fileID: 0}
   fireSound: {fileID: 8300000, guid: 8e3acfec266de3a4e854403b26cee5b8, type: 3}
   emptyClickSound: {fileID: 0}
   reloadStartSound: {fileID: 8300000, guid: e5198250a6a57408bb36e14bc4a322c4, type: 3}
   reloadEndSound: {fileID: 8300000, guid: e5198250a6a57408bb36e14bc4a322c4, type: 3}
   recoilKickback: 1
   recoilRecoverySpeed: 4
+  isScopedWeapon: 0
   hasADS: 1
   adsPositionOffset: {x: 0, y: 0, z: 0}
   adsSpeed: 7
@@ -40,6 +40,7 @@ MonoBehaviour:
   isFlamethrower: 0
   overheatTime: 0
   cooldownTime: 0
+  burnDamagePerTick: 0
   weaponPositionOffset: {x: 0, y: 0, z: 0}
   weaponRotationOffset: {x: 0, y: 0, z: 0}
   weaponWorldPrefab: {fileID: 491373151081611507, guid: 7cfdb08a9de801a4ba00b6575f4109eb, type: 3}

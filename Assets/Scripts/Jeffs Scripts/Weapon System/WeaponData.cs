@@ -15,7 +15,7 @@ public class WeaponData : ScriptableObject
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private float spreadAngle;
     [SerializeField] private int bulletsPerShot = 1; //shotgun effect
-    [SerializeField] private ParticleSystem muzzleFlash;
+    
     
     public float FireRate => fireRate;
     public int Damage => damage;
@@ -23,7 +23,7 @@ public class WeaponData : ScriptableObject
     public GameObject BulletPrefab => bulletPrefab;
     public float SpreadAngle => spreadAngle;
     public int BulletsPerShot => bulletsPerShot;
-    public ParticleSystem MuzzleFlash => muzzleFlash;
+    
     [Header("Audio Clips")]
     [SerializeField] private AudioClip fireSound;
     [SerializeField] private AudioClip emptyClickSound;
@@ -44,6 +44,7 @@ public class WeaponData : ScriptableObject
 
 
     [Header("ADS")]
+    [SerializeField] private bool isScopedWeapon = false;
     [SerializeField] private bool hasADS = true;
     [SerializeField] private Vector3 adsPositionOffset;
     [SerializeField] private float adsSpeed = 10f;
@@ -54,6 +55,7 @@ public class WeaponData : ScriptableObject
     public float ADSSpeed => adsSpeed;
     public float ADSFOV => adsFOV;
     public float ADSFOVSpeed => adsFOVSpeed;
+    public bool IsScopedWeapon => isScopedWeapon;
 
 
     [Header("Fire Mode")]
