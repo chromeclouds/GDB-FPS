@@ -13,6 +13,7 @@ public class turretPlayer : MonoBehaviour
     [SerializeField] GameObject bullet;
     [SerializeField] private float faceTargetSpeed = 5f;
 
+
     private void Update()
     {
         attackTimer += Time.deltaTime;
