@@ -10,9 +10,10 @@ public class turretPlayer : MonoBehaviour
     public float attackCooldown = 1.5f;
     [SerializeField] Transform shootPos;
     [SerializeField] GameObject bullet;
+ 
     private void OnTriggerEnter(Collider other)
     {
-        if (((1 << other.gameObject.layer) & enemyLayerMask) != 0)
+        if (other.CompareTag("TurretEnemy"))
         {
             Debug.Log("Enemy entered detection range: " + other.name);
             createBullet();
@@ -23,7 +24,7 @@ public class turretPlayer : MonoBehaviour
         if (other.CompareTag("TurretEnemy"))
         {
             Debug.Log("Enemy exited detection range: " + other.name);
-            // Optional: Remove target or stop firing
+ 
         }
     }
     public void Attack()
@@ -32,14 +33,10 @@ public class turretPlayer : MonoBehaviour
         {
             attackTimer = 0f;
             int attackIndex = (Random.Range(1, 6) == 5) ? 2 : 1; //5th attack is heavy
-
-
-
         }
     }
     public void createBullet()
     {
         Instantiate(bullet, shootPos.position, transform.rotation);
-
     }
 }
