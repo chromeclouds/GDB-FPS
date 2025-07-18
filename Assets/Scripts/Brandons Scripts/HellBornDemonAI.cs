@@ -10,26 +10,32 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
     [SerializeField] Transform shootPos;
     [SerializeField] GameObject bullet;
     [SerializeField] Animator anim;
+    
 
-    [SerializeField] int HP = 100;
-    [SerializeField] float shootRate = 2f;
-    [SerializeField] int factTargetSpeed = 6;
+    [SerializeField] int HP;
+    [SerializeField] float shootRate;
+    [SerializeField] int factTargetSpeed;
     [SerializeField] float roamDist = 10f;
     [SerializeField] float roamStopTime = 2f;
-    [SerializeField] float FOV = 70f;
+    [SerializeField] float FOV;
     [SerializeField] int animSpeedTrans = 5;
-    [SerializeField] int scoreValue = 10;
+    [SerializeField] int scoreValue;
+    [SerializeField] float idleSoundRate;
 
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip floatingSound;
-    [SerializeField] AudioClip shootSound;
+    [SerializeField] AudioClip idleSound;
+
     [SerializeField] private LayerMask lineOfSightMask;
 
     Color colorOrig;
-    float shootTimer;
-    float roamTime;
-    float stoppingDistOrig;
-    bool searchingPlayer = false;
+    private float shootTimer;
+    private float roamTime;
+    private float stoppingDistOrig;
+    private bool searchingPlayer = false;
+
+    private AudioSource idleAudioSource;
+    private float idleSoundTimer;
 
     Vector3 playerDir;
     Vector3 lastKnownPlayerPos;
@@ -46,11 +52,16 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
             audioSource.loop = true;
             audioSource.Play();
         }
+
+        idleAudioSource = gameObject.AddComponent<AudioSource>();
+        idleAudioSource.playOnAwake = false;
+        idleAudioSource.volume = 0.1f;
     }
 
     void Update()
     {
         SetAnimations();
+        HandleIdleSound();
 
         if (agent.remainingDistance < 0.1f)
             roamTime += Time.deltaTime;
@@ -70,6 +81,18 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
         }
         if (agent.remainingDistance <= agent.stoppingDistance)
             agent.velocity = Vector3.zero;
+    }
+
+    private void HandleIdleSound()
+    {
+        if (idleSound == null) return;
+
+        idleSoundTimer += Time.deltaTime;
+        if (idleSoundTimer >= idleSoundRate)
+        {
+            idleSoundTimer = 0f;
+            idleAudioSource.PlayOneShot(idleSound);
+        }
     }
 
     public void kill()
@@ -111,11 +134,6 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
                     {
                         shootTimer = 0;
                         anim.SetTrigger("Shoot");
-
-                        if (shootSound != null && audioSource != null)
-                        {
-                            audioSource.PlayOneShot(shootSound);
-                        }
                     }
 
                     agent.stoppingDistance = stoppingDistOrig;
@@ -130,8 +148,11 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
 
     void FacePlayer()
     {
-        Quaternion targetRotation = Quaternion.LookRotation(new Vector3(playerDir.x, 0, playerDir.z));
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * factTargetSpeed);
+        if (playerDir != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(new Vector3(playerDir.x, 0, playerDir.z));
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * factTargetSpeed);
+        }
     }
 
     void RoamCheck()
