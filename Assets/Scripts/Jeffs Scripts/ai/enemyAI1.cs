@@ -30,6 +30,9 @@ public class enemyAI1 : MonoBehaviour, IDamage
     public HammerHitbox hammer;
     public GameObject rangedAttackPrefab;
     public Transform rangedAttackSpawn;
+    public GameObject rageSmokeEffect;
+    public GameObject normalSlashPrefab;
+    public GameObject rageSlashPrefab;
 
     private EnemyState currentState;
     
@@ -68,6 +71,16 @@ public class enemyAI1 : MonoBehaviour, IDamage
         return dist <= lookRadius;
     }
 
+    public bool IsPlayerInLineOfSight()
+    {
+        if (player == null) return false;
+        Ray ray = new Ray(transform.position + Vector3.up, (player.position - transform.position).normalized);
+        if (Physics.Raycast(ray, out RaycastHit hit, lookRadius))
+        {
+            return hit.transform.CompareTag("Player");
+        }
+        return false;
+    }
 
     public void FacePlayer()
     {
@@ -96,14 +109,25 @@ public class enemyAI1 : MonoBehaviour, IDamage
         {
             isRaging = true;
             agent.speed *= 1.5f; //increase speed
+            attackCooldown *= 0.7f;
+            rageSmokeEffect?.SetActive(true);
             Debug.Log("boss is enraged");
-
+            SwitchState(new RageState(this));
         }
 
         if (currentHP <= 0)
         {
             Die();
         }
+    }
+
+
+    public void EndDamageReaction()
+    {
+        animator.ResetTrigger("isDamaged");
+        animator.ResetTrigger("isShotgunHit");
+        animator.Play("IdleTree");
+        animator.SetInteger("IdleIndex", Random.Range(0, 2));
     }
 
     private void Die()
@@ -125,13 +149,16 @@ public class enemyAI1 : MonoBehaviour, IDamage
     {
         hammer.EnableDamage();
     }
+
     public void DisableHammerDamage()
     {
         hammer.DisableDamage();
     }
+
     public void SpawnVerticalSlash()
     {
-        GameObject slash = Instantiate(rangedAttackPrefab, rangedAttackSpawn.position, rangedAttackSpawn.rotation);
+        GameObject slashPrefab = isRaging ? rageSlashPrefab : normalSlashPrefab;
+        GameObject slash = Instantiate(slashPrefab, rangedAttackSpawn.position, rangedAttackSpawn.rotation);
 
     }
 
