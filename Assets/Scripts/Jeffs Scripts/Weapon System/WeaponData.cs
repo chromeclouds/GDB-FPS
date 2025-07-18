@@ -77,9 +77,11 @@ public class WeaponData : ScriptableObject
     [SerializeField] private bool isFlamethrower = false;
     [SerializeField] private float overheatTime = 5f; //time before cant use
     [SerializeField] private float cooldownTime = 3f; //cooldown to reuse
+    [SerializeField] private int burnDamagePerTick;
     public bool IsFlamethrower => isFlamethrower;
     public float OverheatTime => overheatTime;
     public float CooldownTime => cooldownTime;
+    public int BurnDamagePerTick => burnDamagePerTick;
 
 
     [Header("Offsets")]
