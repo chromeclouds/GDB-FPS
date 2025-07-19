@@ -6,28 +6,35 @@ public class SecretDoorController : MonoBehaviour
 {
     public int heartsRequired = 2;
     public GameObject doorMesh;
-    public GameObject popupUI;
+    private GameObject popupUI;
     public float popupDuration = 3f;
 
     private bool isOpen = false;
 
+    private IEnumerator WaitForGlobalHeartManager()
+    {
+        while (GlobalHeartManager.Instance == null) yield return null;
+        GlobalHeartManager.Instance.HeartDestroyedEvent += CheckUnlock;
+        CheckUnlock();
+    }
 
     private void OnEnable()
     {
-        HeartTrackerManager.Instance.HeartUpdate += CheckUnlock;
+        popupUI = gameManager.instance?.secretDoorPopupUI;
+
+        StartCoroutine(WaitForGlobalHeartManager());
 
     }
 
     private void OnDisable()
     {
-        if (HeartTrackerManager.Instance != null)
-            HeartTrackerManager.Instance.HeartUpdate -= CheckUnlock;
-
+        if (GlobalHeartManager.Instance != null) 
+            GlobalHeartManager.Instance.HeartDestroyedEvent -= CheckUnlock;
     }
 
     private void CheckUnlock()
     {
-        if(!isOpen && HeartTrackerManager.Instance.GetDestroyedCount() >= heartsRequired)
+        if(!isOpen && GlobalHeartManager.Instance.GetDestroyedCount() >= heartsRequired)
         {
             OpenDoor();
             isOpen = true;

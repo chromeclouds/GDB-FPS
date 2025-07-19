@@ -14,14 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Barrett 50 Cal
   fireRate: 0.8
-  damage: 5
+  damage: 80
   bulletSpeed: 150
   bulletPrefab: {fileID: 6255843267276114019, guid: eb4250e6b764fd845b889fe3cc6ea8ab, type: 3}
   spreadAngle: 0
   bulletsPerShot: 1
-  muzzleFlash: {fileID: 0}
+  fireSound: {fileID: 8300000, guid: b2e0931bf909c9e4c86ec0ad6129ce04, type: 3}
+  emptyClickSound: {fileID: 8300000, guid: 0bb318995a5b71c4095954e4e1326331, type: 3}
+  reloadStartSound: {fileID: 8300000, guid: e0c70bed5c1a4443083a81de5648c7d5, type: 3}
+  reloadEndSound: {fileID: 8300000, guid: eb5685b26a6494994af389a3293064e8, type: 3}
   recoilKickback: 1.5
   recoilRecoverySpeed: 2
+  isScopedWeapon: 0
   hasADS: 1
   adsPositionOffset: {x: 0, y: 0, z: 0}
   adsSpeed: 8
@@ -32,9 +36,11 @@ MonoBehaviour:
   ammoType: 2
   reloadTime: 1.5
   maxAmmo: 5
+  hasInfiniteAmmo: 0
   isFlamethrower: 0
   overheatTime: 0
   cooldownTime: 0
+  burnDamagePerTick: 0
   weaponPositionOffset: {x: 0, y: 0, z: 0}
   weaponRotationOffset: {x: 0, y: 0, z: 0}
   weaponWorldPrefab: {fileID: 8558028859254325652, guid: 5ab0c63ce17633b47b51ca9c0013777f, type: 3}

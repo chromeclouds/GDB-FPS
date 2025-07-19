@@ -1,12 +1,13 @@
 using UnityEngine;
 
-public class PusherTrap : MonoBehaviour
+public class PusherTrap : MonoBehaviour, ITrapToggle
 {
     public Transform pusher;
     public Vector3 pushDirection = Vector3.forward;
     public float pushDistance = 3f;
     public float pushSpeed = 4f;
     private Vector3 originalPos;
+    private bool isActive = true;
 
     private void Awake()
     {
@@ -14,9 +15,14 @@ public class PusherTrap : MonoBehaviour
 
     }
 
+    public void SetTrapActive(bool active)
+    {
+        isActive = active;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        
+        if (!isActive) return;
         StartCoroutine(PushRoutine());
     }
 

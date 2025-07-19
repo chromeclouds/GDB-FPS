@@ -15,14 +15,25 @@ public class WeaponData : ScriptableObject
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private float spreadAngle;
     [SerializeField] private int bulletsPerShot = 1; //shotgun effect
-    [SerializeField] private ParticleSystem muzzleFlash;
+    
+    
     public float FireRate => fireRate;
     public int Damage => damage;
     public float BulletSpeed => bulletSpeed;
     public GameObject BulletPrefab => bulletPrefab;
     public float SpreadAngle => spreadAngle;
     public int BulletsPerShot => bulletsPerShot;
-    public ParticleSystem MuzzleFlash => muzzleFlash;
+    
+    [Header("Audio Clips")]
+    [SerializeField] private AudioClip fireSound;
+    [SerializeField] private AudioClip emptyClickSound;
+    [SerializeField] private AudioClip reloadStartSound;
+    [SerializeField] private AudioClip reloadEndSound;
+    public AudioClip FireSound => fireSound;
+    public AudioClip EmptyClickSound => emptyClickSound;
+    public AudioClip ReloadStartSound => reloadStartSound;
+    public AudioClip ReloadEndSound => reloadEndSound;
+
 
 
     [Header("Recoil")]
@@ -33,6 +44,7 @@ public class WeaponData : ScriptableObject
 
 
     [Header("ADS")]
+    [SerializeField] private bool isScopedWeapon = false;
     [SerializeField] private bool hasADS = true;
     [SerializeField] private Vector3 adsPositionOffset;
     [SerializeField] private float adsSpeed = 10f;
@@ -43,6 +55,7 @@ public class WeaponData : ScriptableObject
     public float ADSSpeed => adsSpeed;
     public float ADSFOV => adsFOV;
     public float ADSFOVSpeed => adsFOVSpeed;
+    public bool IsScopedWeapon => isScopedWeapon;
 
 
     [Header("Fire Mode")]
@@ -66,9 +79,11 @@ public class WeaponData : ScriptableObject
     [SerializeField] private bool isFlamethrower = false;
     [SerializeField] private float overheatTime = 5f; //time before cant use
     [SerializeField] private float cooldownTime = 3f; //cooldown to reuse
+    [SerializeField] private int burnDamagePerTick;
     public bool IsFlamethrower => isFlamethrower;
     public float OverheatTime => overheatTime;
     public float CooldownTime => cooldownTime;
+    public int BurnDamagePerTick => burnDamagePerTick;
 
 
     [Header("Offsets")]

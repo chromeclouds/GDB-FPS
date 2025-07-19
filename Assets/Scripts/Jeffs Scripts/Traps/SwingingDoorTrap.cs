@@ -1,30 +1,66 @@
 using UnityEngine;
 
-public class SwingingDoorTrap : MonoBehaviour, ICost
+public class SwingingDoorTrap : MonoBehaviour, ITrapToggle
 {
+    [Header("Animation & DMG")]
     public Animator doorAnimator;
-    public int trapCost = 200;
-    private bool isPurchased = false;
-    public LayerMask enemyLayerMask;
+    public Collider blockingCollider; //not trigger
+    public Collider damageZone; //trigger
+    public int damage = 10;
 
-    public void buy()
+    [Header("Settings")]
+    public LayerMask validLayers;
+
+    private bool isActive = true;
+    
+
+    public void SetTrapActive(bool active)
     {
-        if (isPurchased) return;
-        if(gameManager.instance.walletAmount() >= trapCost)
+        isActive = active;
+        if (!isActive)
         {
-            gameManager.instance.reduceWallet(trapCost);
-            isPurchased = true;
+            blockingCollider.enabled = false;
+            damageZone.enabled = false;
+            doorAnimator.ResetTrigger("Swing");
+            doorAnimator.Play("IdleOpen", 0,0);
+        }
+        else
+        {
+            blockingCollider.enabled=true;
+            damageZone.enabled=true;
         }
     }
 
-    public int checkPrice()
-    {
-        return trapCost;
-    }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!isPurchased || (enemyLayerMask.value & (1 << other.gameObject.layer)) == 0) return;
+        if (!isActive || (validLayers.value & (1 << other.gameObject.layer)) == 0) return;
         doorAnimator.SetTrigger("Swing");
     }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (!isActive || !damageZone.enabled) return;
+        if (other == damageZone) return;
+        if((validLayers.value&(1<<other.gameObject.layer))!= 0)
+        {
+            IDamage dmg = other.GetComponent<IDamage>();
+            if(dmg!=null)
+            {
+                dmg.takeDamage(damage);
+                damageZone.enabled = false;
+                Invoke(nameof(EnableDamageZone), 3f);
+            }
+        }
+    }
+
+    private void EnableDamageZone()
+    {
+        if (isActive)
+        {
+            damageZone.enabled = true;
+        }
+    }
+
+    
 }

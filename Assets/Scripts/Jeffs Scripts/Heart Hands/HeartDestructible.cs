@@ -13,9 +13,30 @@ public class HeartDestructible : MonoBehaviour, IDamage
         if (health <= 0)
         {
             destroyed = true;
-            HeartTrackerManager.Instance.RegisterHeartDestroyed(heartIndex);
+            if (GlobalHeartManager.Instance != null)
+            {
+                GlobalHeartManager.Instance.RegisterHeartDestroyed(this);
+            }
+            else
+            {
+                Debug.LogWarning("global heart manager not set");
+            }
             Destroy(gameObject);
         }
     }
-    
+
+    public void Start()
+    {
+        StartCoroutine(WaitForGlobalHeartManager());
+    }
+
+    private System.Collections.IEnumerator WaitForGlobalHeartManager()
+    {
+        while (GlobalHeartManager.Instance == null)
+        {
+            yield return null;
+        }
+
+        GlobalHeartManager.Instance.RegisterHeart(this);
+    }
 }

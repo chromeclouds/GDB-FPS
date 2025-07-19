@@ -184,25 +184,26 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         float endAngle = 125f;
 
         Transform pivot = pivotPoint.transform;
-
+        //if (currentMeleeWeapon.CompareTag("Dagger") || currentMeleeWeapon.CompareTag("Sword")) commented out until I figure this out
+        // {
         pivot.localRotation = Quaternion.Euler(0f, startAngle, 0f);
 
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float t = elapsed / duration;
 
-        while (elapsed < duration)
-        {
-            elapsed += Time.deltaTime;
-            float t = elapsed / duration;
+                float angle = Mathf.Lerp(startAngle, endAngle, Mathf.SmoothStep(0f, 1f, t));
+                pivot.localRotation = Quaternion.Euler(0f, angle, 0f);
 
-            float angle = Mathf.Lerp(startAngle, endAngle, Mathf.SmoothStep(0f, 1f, t));
-            pivot.localRotation = Quaternion.Euler(0f, angle, 0f);
+                yield return null;
+            }
 
-            yield return null;
-        }
-
-        pivot.localRotation = Quaternion.Euler(0f, startAngle, 0f);
-        weaponHolder.gameObject.SetActive(true);
-        isMeleeing = false;
-        pivotPoint.gameObject.SetActive(false);
+            pivot.localRotation = Quaternion.Euler(0f, startAngle, 0f);
+            weaponHolder.gameObject.SetActive(true);
+            isMeleeing = false;
+            pivotPoint.gameObject.SetActive(false);
+       // }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -238,6 +239,32 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
     {
         if (gameManager.instance.GetDifficulty())
             amount *= 2;
+        int damageToHP = 0;
+
+        if (armorValue > 0)
+        {
+            int overflow = amount - armorValue;
+            armorValue -= amount;
+            if (armorValue < 0) armorValue = 0;
+            if (overflow > 0) damageToHP = overflow;
+        }
+        else
+        {
+            damageToHP = amount;
+
+        }
+
+        HP -= damageToHP;
+        updatePlayerUI();
+        StartCoroutine(damageFlash());
+        if (HP <= 0)
+        {
+            gameManager.instance.youLose();
+        }
+
+        /*  //johns code remaining damage is used uninitialized unless armor value > 0
+        if (gameManager.instance.GetDifficulty())
+            amount *= 2;
 
         updatePlayerUI();
         StartCoroutine(damageFlash());
@@ -262,6 +289,7 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
             //oh no im dead
             gameManager.instance.youLose();
         }
+        */
 
     }
 

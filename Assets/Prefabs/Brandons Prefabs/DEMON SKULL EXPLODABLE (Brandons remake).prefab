@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2398688452021882639}
   - component: {fileID: 1488000686661784814}
+  - component: {fileID: 347666200745761724}
   - component: {fileID: 5617818890637119170}
   - component: {fileID: 1973476566176342493}
   - component: {fileID: 6554135582864700308}
@@ -58,6 +59,18 @@ MonoBehaviour:
   maxHealth: 0
   model: {fileID: 0}
   lowlyDemons: []
+--- !u!114 &347666200745761724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4858361898581144930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58c5c70052d2c7e47bf1f0e3dbe55887, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!195 &5617818890637119170
 NavMeshAgent:
   m_ObjectHideFlags: 0

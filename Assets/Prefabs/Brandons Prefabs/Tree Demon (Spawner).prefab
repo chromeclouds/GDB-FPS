@@ -591,6 +591,7 @@ GameObject:
   - component: {fileID: 6270731816389907048}
   - component: {fileID: 8794165198515951846}
   - component: {fileID: 3029431738239328515}
+  - component: {fileID: -2994968522466853805}
   - component: {fileID: 8551873295176252828}
   - component: {fileID: 6970452103674528728}
   - component: {fileID: 6851292265694078375}
@@ -667,6 +668,19 @@ MonoBehaviour:
   spawnIntervalMin: 18
   spawnIntervalMax: 26
   gateTarget: {fileID: 0}
+  gateTarget: {fileID: 5097695028471692300, guid: 02ad0e50fe933914ba32d52fe7fee984, type: 3}
+--- !u!114 &-2994968522466853805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1644428441327535268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58c5c70052d2c7e47bf1f0e3dbe55887, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!95 &8551873295176252828
 Animator:
   serializedVersion: 7

@@ -3,8 +3,11 @@ using UnityEngine;
 
 public class WeaponFire : MonoBehaviour
 {
+    private AudioSource audioSource;
+
     public WeaponData weaponData;
     public Transform bulletSpawnPoint;
+    [SerializeField] private ParticleSystem muzzleFlash;
 
     private float fireTimer;
     
@@ -20,6 +23,17 @@ public class WeaponFire : MonoBehaviour
 
     [HideInInspector] public GameObject weaponWorldPrefab;
     [HideInInspector] public GameObject weaponHeldPrefab;
+
+    private void Awake()
+    {
+        //audioSource.loop = true;
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.spatialBlend = 1f; 
+        }
+    }
 
     void OnEnable()
     {
@@ -48,6 +62,13 @@ public class WeaponFire : MonoBehaviour
                 Fire();
                 flamethrowerTimer += Time.deltaTime;
 
+                if (!audioSource.isPlaying && weaponData.FireSound != null)
+                {
+                    audioSource.clip = weaponData.FireSound;
+                    audioSource.loop = false;
+                    audioSource.Play();
+                }
+
                 if (flamethrowerTimer >= weaponData.OverheatTime)
                 {
                     StartCoroutine(Overheat());
@@ -56,6 +77,10 @@ public class WeaponFire : MonoBehaviour
             else
             {
                 flamethrowerTimer = Mathf.Max(0f, flamethrowerTimer - Time.deltaTime);
+
+                if (audioSource.isPlaying && audioSource.clip == weaponData.FireSound)
+                    audioSource.Stop();
+
             }
         }
         else
@@ -92,33 +117,62 @@ public class WeaponFire : MonoBehaviour
             }
         }
     }
-
+    private void PlayMuzzleFlash()
+    {
+        if(muzzleFlash != null)
+        {
+            muzzleFlash.Play();
+        }
+    }
     void Fire()
     {
-        if (!weaponData.HasInfiniteAmmo && currentAmmo <= 0) return;
+        if (!weaponData.HasInfiniteAmmo && currentAmmo <= 0)
+        {
+            PlaySound(weaponData.EmptyClickSound);
+            return;
+        }
 
-        if(!weaponData.HasInfiniteAmmo)
+        if (!weaponData.HasInfiniteAmmo)
+        {
             currentAmmo--;
+            if(weaponData.FireSound != null && !weaponData.IsFlamethrower)
+                PlaySound(weaponData.FireSound);
+        }
+            
 
         WeaponUIManager.instance.UpdateAmmoCount(CurrentAmmo, ammoManager.GetAmmoCount(weaponData.AmmotType));
 
-        if (weaponData.MuzzleFlash != null)
-        {
+        /*if (weaponData.MuzzleFlash != null)
             weaponData.MuzzleFlash.Play();
-        }
+        if (weaponData.FireSound != null)
+            AudioSource.PlayClipAtPoint(weaponData.FireSound, transform.position);
+        */
 
         for (int i = 0; i < weaponData.BulletsPerShot; i++)
         {
-            Quaternion spread = Quaternion.Euler(
+            Vector3 targetPoint = Camera.main.transform.position + Camera.main.transform.forward * 100f;
+            Vector3 direction = (targetPoint - bulletSpawnPoint.position).normalized;
+            Quaternion spreadRotation = Quaternion.Euler(
                 Random.Range(-weaponData.SpreadAngle, weaponData.SpreadAngle),
-                Random.Range(-weaponData.SpreadAngle, weaponData.SpreadAngle),
-                0);
+                Random.Range(-weaponData.SpreadAngle, weaponData.SpreadAngle), 0);
 
-            GameObject bullet = Instantiate(weaponData.BulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation * spread);
+            GameObject bullet = Instantiate(weaponData.BulletPrefab, bulletSpawnPoint.position, Quaternion.LookRotation(direction) * spreadRotation);
+            FireBullet fire = bullet.GetComponent<FireBullet>();
+            PlayMuzzleFlash();
+            if (fire != null)
+            {
+                fire.weaponData = weaponData;
+            }
             Bullet bulletScript = bullet.GetComponent<Bullet>();
             if (bulletScript != null)
             {
                 bulletScript.damage = weaponData.Damage;
+            }
+
+            ExplosiveBullet explosive = bullet.GetComponent<ExplosiveBullet>();
+            if (explosive != null)
+            {
+                explosive.damage = weaponData.Damage;
             }
 
             Rigidbody rb = bullet.GetComponent<Rigidbody>();
@@ -163,7 +217,10 @@ public class WeaponFire : MonoBehaviour
     private IEnumerator Reload()
     {
         isReloading = true;
-        Debug.Log("Reloading...");
+
+        if(weaponData.ReloadStartSound != null)
+            PlaySound(weaponData.ReloadStartSound);
+
         yield return new WaitForSeconds(weaponData.ReloadTime);
 
         int ammoNeeded = weaponData.MaxAmmo - currentAmmo;
@@ -178,6 +235,17 @@ public class WeaponFire : MonoBehaviour
 
         }
 
+        if (weaponData.ReloadEndSound != null)
+            PlaySound(weaponData.ReloadEndSound);
+
         isReloading = false;
+    }
+
+    private void PlaySound(AudioClip clip)
+    {
+        if(clip != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(clip);
+        }
     }
 }
