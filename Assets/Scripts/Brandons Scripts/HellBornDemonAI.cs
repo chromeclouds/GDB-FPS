@@ -22,8 +22,8 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
     [SerializeField] int scoreValue;
     [SerializeField] float idleSoundRate;
 
-    [SerializeField] AudioSource audioSource;
-    [SerializeField] AudioClip floatingSound;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip floatingSound;
 
     [SerializeField] private LayerMask lineOfSightMask;
 

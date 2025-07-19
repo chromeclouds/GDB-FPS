@@ -16,6 +16,9 @@ public class DemonAI : MonoBehaviour, IDamage, IOpen
     [SerializeField] int scoreValue;
     [SerializeField] Animator anim;
 
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip idleSound;
+
     Color colorOrig;
 
     float shootTimer;
@@ -30,6 +33,13 @@ public class DemonAI : MonoBehaviour, IDamage, IOpen
     {
         colorOrig = model.material.color;
         stoppingDistOrig = agent.stoppingDistance;
+
+        if (idleSound != null && audioSource != null)
+        {
+            audioSource.clip = idleSound;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
     }
 
     // Update is called once per frame

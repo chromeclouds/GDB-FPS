@@ -12,9 +12,9 @@ public class damage : MonoBehaviour
     [SerializeField] int speed;
     [SerializeField] int destroyTime;
 
-    [SerializeField] AudioSource audioSource;
-    [SerializeField] AudioClip shootSound;
-    [SerializeField] AudioClip hitSound;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip shootSound;
+    [SerializeField] private AudioClip hitSound;
 
     bool isDamaging;
 
