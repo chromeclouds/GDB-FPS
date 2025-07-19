@@ -38,7 +38,7 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
     [SerializeField] int meleeDmg;
     [SerializeField] float meleeCD;
     [SerializeField] GameObject pivotPoint;
-    [SerializeField] private Transform meleeHolder;
+    [SerializeField] private Transform meleeHolder; 
 
     [Header("Animator")]
     [SerializeField] Animator anim;
@@ -148,16 +148,6 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         isMeleeing = true;
         weaponHolder.gameObject.SetActive(false);
         StartCoroutine(MeleeAnim());
-
-       // RaycastHit hit;
-        //if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, meleeDist, ~ignoreLayer))
-        //{
-          //  IDamage dmg = hit.collider.GetComponent<IDamage>();
-          //  if (dmg != null)
-           // {
-            //    dmg.takeDamage(meleeDmg);
-            //}
-       // }
     }
 
     public void PickupMeleeWeapon(MeleeWeaponData data)
@@ -171,7 +161,7 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         currentMeleeWeapon.transform.localPosition = data.heldPosition;
         currentMeleeWeapon.transform.localEulerAngles = data.heldRotation;
 
-        //var heldScript = currentMeleeWeapon.GetComponent<MeleeWeaponHeld>();
+        //var heldScript = currentMeleeWeapon.GetComponent<MeleeWeaponHeld>(); // this is set up for when I get the scriptable objects working properly
         //heldScript.weaponData = data;
     }
 
@@ -184,26 +174,25 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         float endAngle = 125f;
 
         Transform pivot = pivotPoint.transform;
-        //if (currentMeleeWeapon.CompareTag("Dagger") || currentMeleeWeapon.CompareTag("Sword")) commented out until I figure this out
-        // {
+        
         pivot.localRotation = Quaternion.Euler(0f, startAngle, 0f);
 
-            while (elapsed < duration)
-            {
-                elapsed += Time.deltaTime;
-                float t = elapsed / duration;
 
-                float angle = Mathf.Lerp(startAngle, endAngle, Mathf.SmoothStep(0f, 1f, t));
-                pivot.localRotation = Quaternion.Euler(0f, angle, 0f);
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
 
-                yield return null;
-            }
+            float angle = Mathf.Lerp(startAngle, endAngle, Mathf.SmoothStep(0f, 1f, t));
+            pivot.localRotation = Quaternion.Euler(0f, angle, 0f);
 
-            pivot.localRotation = Quaternion.Euler(0f, startAngle, 0f);
-            weaponHolder.gameObject.SetActive(true);
-            isMeleeing = false;
-            pivotPoint.gameObject.SetActive(false);
-       // }
+            yield return null;
+        }
+
+        pivot.localRotation = Quaternion.Euler(0f, startAngle, 0f);
+        weaponHolder.gameObject.SetActive(true);
+         isMeleeing = false;
+         pivotPoint.gameObject.SetActive(false);
     }
 
     private void OnTriggerEnter(Collider other)
