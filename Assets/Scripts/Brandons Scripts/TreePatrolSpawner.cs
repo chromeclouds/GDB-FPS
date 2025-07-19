@@ -19,8 +19,7 @@ public class TreePatrolSpawner : MonoBehaviour
 
     private bool isTreeAlive = true;
     private int spawnCount = 0;
-    
-
+   
     private void Start()
     {
         // Validate required references
@@ -96,7 +95,7 @@ public class TreePatrolSpawner : MonoBehaviour
             demonAI.SendMessage("SetFollowOffset", followOffset, SendMessageOptions.DontRequireReceiver);
 
             if (skullAI != null)
-                skullAI.lowlyDemons.Add(demonAI); // This is the key line!
+                skullAI.lowlyDemons.Add(demonAI);
         }
     }
 

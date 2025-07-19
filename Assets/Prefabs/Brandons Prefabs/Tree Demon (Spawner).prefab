@@ -637,8 +637,6 @@ MonoBehaviour:
   headPOS: {fileID: 7125484113383143673}
   HP: 15
   factTargetSpeed: 80
-  roamDist: 0
-  roamstopTime: 0
   shootPos: {fileID: 9039283796521223967}
   bullet: {fileID: 3512113257025459144, guid: f31a15df4839c9d47a2bd28eda6b7f42, type: 3}
   shootRate: 5
@@ -646,7 +644,6 @@ MonoBehaviour:
   FOV: 100
   scoreValue: 100
   anim: {fileID: 8551873295176252828}
-  swordCol: {fileID: 0}
 --- !u!114 &3029431738239328515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -669,7 +666,7 @@ MonoBehaviour:
   initialSpawnDelayMax: 10
   spawnIntervalMin: 18
   spawnIntervalMax: 26
-  gateTarget: {fileID: 5097695028471692300, guid: 02ad0e50fe933914ba32d52fe7fee984, type: 3}
+  gateTarget: {fileID: 0}
 --- !u!95 &8551873295176252828
 Animator:
   serializedVersion: 7

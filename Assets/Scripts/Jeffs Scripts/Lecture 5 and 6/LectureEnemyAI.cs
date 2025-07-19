@@ -17,10 +17,11 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
     [SerializeField] int FOV;
     [SerializeField] int scoreValue;
     [SerializeField] Animator anim;
-    [SerializeField] Collider swordCol;
 
     [SerializeField] public Transform skullTarget;
     [SerializeField] private Vector3 followOffset = Vector3.zero;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip idleSound;
 
     Color colorOrig;
 
@@ -39,10 +40,16 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
     void Start()
     {
         colorOrig = model.material.color;
-        
+
         startingPos = transform.position;
         stoppingDistOrig = agent.stoppingDistance;
 
+        if (idleSound != null && audioSource != null)
+        {
+            audioSource.clip = idleSound;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
     }
 
     // Update is called once per frame
@@ -63,7 +70,7 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
             roamCheck();
             return;
         }
-        if(!playerInRange && isFollowingSkull)
+        if (!playerInRange && isFollowingSkull)
         {
             FollowSkull();
             return;
@@ -84,7 +91,6 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
         agent.SetDestination(targetPos);
         faceTarget(targetPos);
     }
-
     void faceTarget(Vector3 targetPos)
     {
         Vector3 dir = targetPos - transform.position;
@@ -99,7 +105,6 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
         anim.SetFloat("Speed", Mathf.Lerp(animSpeedCur, agentSpeedCur, Time.deltaTime * animSpeedTrans));
     }
 
-
     void roamCheck()
     {
         if (roamTime >= roamstopTime && agent.remainingDistance < 0.01f)
@@ -107,7 +112,6 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
             roam();
         }
     }
-
 
     void roam()
     {
@@ -123,19 +127,18 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
         agent.SetDestination(hit.position);
     }
 
-
     bool canSeePlayer()
     {
         playerDir = gameManager.instance.player.transform.position - headPOS.position;
         angleToPlayer = Vector3.Angle(playerDir, transform.forward);
         Debug.DrawRay(headPOS.position, playerDir);
-        
+
         RaycastHit hit;
         if (Physics.Raycast(headPOS.position, playerDir, out hit))
         {
             if (angleToPlayer < FOV && hit.collider.CompareTag("Player"))
             {
-                
+
                 shootTimer += Time.deltaTime;
                 agent.SetDestination(gameManager.instance.player.transform.position);
                 if (shootTimer > shootRate)
@@ -154,6 +157,7 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
         agent.stoppingDistance = 0;
         return false;
     }
+
     void faceTarget()
     {
         Quaternion rot = Quaternion.LookRotation(new Vector3(playerDir.x, 0, playerDir.z));
@@ -234,17 +238,5 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
     {
         Instantiate(bullet, shootPos.position, transform.rotation);
 
-    }
-
-    public void swordColOn()
-    {
-        if (swordCol)
-            swordCol.enabled = true;
-    }
-
-    public void swordColOff()
-    {
-        if (swordCol)
-            swordCol.enabled = false;
     }
 }

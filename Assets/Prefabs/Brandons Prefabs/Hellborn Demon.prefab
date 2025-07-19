@@ -2185,6 +2185,7 @@ GameObject:
   - component: {fileID: 3114740033948628455}
   - component: {fileID: 7477942674466384243}
   - component: {fileID: 9200036017188017948}
+  - component: {fileID: 7265090952605363471}
   m_Layer: 7
   m_Name: Hellborn Demon
   m_TagString: Untagged
@@ -2226,7 +2227,6 @@ MonoBehaviour:
   shootPos: {fileID: 5064080036038250654}
   bullet: {fileID: 2605596456829534252, guid: 939c8dea707a74b4fbd2b0181ab28294, type: 3}
   anim: {fileID: 7477942674466384243}
-  swordCol: {fileID: 0}
   HP: 10
   shootRate: 2
   factTargetSpeed: 80
@@ -2235,6 +2235,9 @@ MonoBehaviour:
   FOV: 80
   animSpeedTrans: 8
   scoreValue: 100
+  idleSoundRate: 0
+  audioSource: {fileID: 7265090952605363471}
+  floatingSound: {fileID: 8300000, guid: 92a79d18abe1376439d43b47778ea771, type: 3}
   lineOfSightMask:
     serializedVersion: 2
     m_Bits: 540672
@@ -2248,7 +2251,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -2347,6 +2350,103 @@ CapsuleCollider:
   m_Height: 1.5
   m_Direction: 1
   m_Center: {x: 0, y: 2, z: 0}
+--- !u!82 &7265090952605363471
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8803542014139876150}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 1739079367118338026, guid: 66abccd7ddeeccb49baa2e4fb44f5192, type: 2}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 0.519
+  m_Pitch: -0.93
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 214
+  DopplerLevel: 2.65
+  MinDistance: 5
+  MaxDistance: 25
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 1
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.066
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &8937444904417872702
 GameObject:
   m_ObjectHideFlags: 0

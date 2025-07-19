@@ -16,6 +16,10 @@ public class ArcDamage : MonoBehaviour
     [SerializeField] float homingSpeed;     // Speed the projectile moves once homing starts
     [SerializeField] float turnRate;        // How quickly the projectile can rotate toward its target
 
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip shootSound;
+    [SerializeField] private AudioClip hitSound;
+
     bool isDamaging;
     // See if the projectile is currently homing
     bool isHoming = false;
@@ -37,7 +41,11 @@ public class ArcDamage : MonoBehaviour
             if (type == damageType.homing)
             {
                 StartCoroutine(StartHoming());
-            }         
+            }
+            if (audioSource != null && shootSound != null)
+            {
+                audioSource.PlayOneShot(shootSound);
+            }
         }
     }
 
@@ -66,6 +74,10 @@ public class ArcDamage : MonoBehaviour
 
             dmg.takeDamage(damageAmount);
 
+        }
+        if (hitSound != null)
+        {
+            AudioSource.PlayClipAtPoint(hitSound, transform.position);
         }
         if(type == damageType.homing || type == damageType.moving)
         {
