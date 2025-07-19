@@ -24,7 +24,6 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
 
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip floatingSound;
-    [SerializeField] AudioClip idleSound;
 
     [SerializeField] private LayerMask lineOfSightMask;
 
@@ -33,9 +32,6 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
     private float roamTime;
     private float stoppingDistOrig;
     private bool searchingPlayer = false;
-
-    private AudioSource idleAudioSource;
-    private float idleSoundTimer;
 
     Vector3 playerDir;
     Vector3 lastKnownPlayerPos;
@@ -52,16 +48,11 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
             audioSource.loop = true;
             audioSource.Play();
         }
-
-        idleAudioSource = gameObject.AddComponent<AudioSource>();
-        idleAudioSource.playOnAwake = false;
-        idleAudioSource.volume = 0.1f;
     }
 
     void Update()
     {
         SetAnimations();
-        HandleIdleSound();
 
         if (agent.remainingDistance < 0.1f)
             roamTime += Time.deltaTime;
@@ -81,18 +72,6 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
         }
         if (agent.remainingDistance <= agent.stoppingDistance)
             agent.velocity = Vector3.zero;
-    }
-
-    private void HandleIdleSound()
-    {
-        if (idleSound == null) return;
-
-        idleSoundTimer += Time.deltaTime;
-        if (idleSoundTimer >= idleSoundRate)
-        {
-            idleSoundTimer = 0f;
-            idleAudioSource.PlayOneShot(idleSound);
-        }
     }
 
     public void kill()
