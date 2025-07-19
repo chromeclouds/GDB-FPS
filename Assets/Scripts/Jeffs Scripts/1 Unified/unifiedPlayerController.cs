@@ -184,25 +184,26 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         float endAngle = 125f;
 
         Transform pivot = pivotPoint.transform;
-
+        //if (currentMeleeWeapon.CompareTag("Dagger") || currentMeleeWeapon.CompareTag("Sword")) commented out until I figure this out
+        // {
         pivot.localRotation = Quaternion.Euler(0f, startAngle, 0f);
 
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float t = elapsed / duration;
 
-        while (elapsed < duration)
-        {
-            elapsed += Time.deltaTime;
-            float t = elapsed / duration;
+                float angle = Mathf.Lerp(startAngle, endAngle, Mathf.SmoothStep(0f, 1f, t));
+                pivot.localRotation = Quaternion.Euler(0f, angle, 0f);
 
-            float angle = Mathf.Lerp(startAngle, endAngle, Mathf.SmoothStep(0f, 1f, t));
-            pivot.localRotation = Quaternion.Euler(0f, angle, 0f);
+                yield return null;
+            }
 
-            yield return null;
-        }
-
-        pivot.localRotation = Quaternion.Euler(0f, startAngle, 0f);
-        weaponHolder.gameObject.SetActive(true);
-        isMeleeing = false;
-        pivotPoint.gameObject.SetActive(false);
+            pivot.localRotation = Quaternion.Euler(0f, startAngle, 0f);
+            weaponHolder.gameObject.SetActive(true);
+            isMeleeing = false;
+            pivotPoint.gameObject.SetActive(false);
+       // }
     }
 
     private void OnTriggerEnter(Collider other)
