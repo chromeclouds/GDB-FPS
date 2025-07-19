@@ -17,7 +17,7 @@ public class SkullEnemyAI : MonoBehaviour, IDamage
     [SerializeField] private AudioClip idleSound;
     [SerializeField] private AudioClip explodeSound;
 
-    
+
     private NavMeshAgent agent;
     private bool hasExploded = false;
     private int currentHealth;
@@ -111,7 +111,6 @@ public class SkullEnemyAI : MonoBehaviour, IDamage
         if (hasExploded) return;
 
         currentHealth -= amount;
-        agent.SetDestination(gameManager.instance.player.transform.position);
 
         if (currentHealth <= 0)
         {

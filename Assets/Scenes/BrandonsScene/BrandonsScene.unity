@@ -489,6 +489,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 23a729cfa4c94d040b683187b2a8a1a0, type: 3}
+--- !u!4 &460506139 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5097695028471692300, guid: 02ad0e50fe933914ba32d52fe7fee984, type: 3}
+  m_PrefabInstance: {fileID: 1061529697}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &491398845
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -504,6 +509,14 @@ PrefabInstance:
     - target: {fileID: 335588936990250131, guid: 791a2d572bd05e64294f6b1d8ad168c1, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6862260792710729417, guid: 791a2d572bd05e64294f6b1d8ad168c1, type: 3}
+      propertyPath: Priority
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6862260792710729417, guid: 791a2d572bd05e64294f6b1d8ad168c1, type: 3}
+      propertyPath: m_Volume
+      value: 0.863
       objectReference: {fileID: 0}
     - target: {fileID: 8638840479964390619, guid: 791a2d572bd05e64294f6b1d8ad168c1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1032,6 +1045,18 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2722834544082068731, guid: 440ebae28d019c4408717ae488b85668, type: 3}
+      propertyPath: Priority
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2722834544082068731, guid: 440ebae28d019c4408717ae488b85668, type: 3}
+      propertyPath: m_Volume
+      value: 0.835
+      objectReference: {fileID: 0}
+    - target: {fileID: 3029431738239328515, guid: 440ebae28d019c4408717ae488b85668, type: 3}
+      propertyPath: gateTarget
+      value: 
+      objectReference: {fileID: 460506139}
     - target: {fileID: 6270731816389907048, guid: 440ebae28d019c4408717ae488b85668, type: 3}
       propertyPath: m_LocalPosition.x
       value: 24.22492
@@ -1107,6 +1132,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1488000686661784814, guid: 32eb3f6df6d50e443bc3e1b572898c9f, type: 3}
+      propertyPath: explodeRange
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1488000686661784814, guid: 32eb3f6df6d50e443bc3e1b572898c9f, type: 3}
+      propertyPath: explodeDamage
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2398688452021882639, guid: 32eb3f6df6d50e443bc3e1b572898c9f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 23.15454
@@ -1150,6 +1183,10 @@ PrefabInstance:
     - target: {fileID: 4858361898581144930, guid: 32eb3f6df6d50e443bc3e1b572898c9f, type: 3}
       propertyPath: m_Name
       value: DEMON SKULL EXPLODABLE (Brandons remake)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4858361898581144930, guid: 32eb3f6df6d50e443bc3e1b572898c9f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
