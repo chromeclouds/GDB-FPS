@@ -50,16 +50,12 @@ public class buttonFunctions : MonoBehaviour
             gameManager.instance.player.GetComponent<unifiedPlayerController>().resetHealth();
             gameManager.instance.stateUnpause();
         }
-        else
-        {
-
-        }
     }
 
     public void quit()
     {
-        gameManager.instance.resetTime();
         gameManager.instance.isPaused = true;
+        gameManager.instance.resetTime();
         StartCoroutine(quitGame());
     }
     public void quitMain()
