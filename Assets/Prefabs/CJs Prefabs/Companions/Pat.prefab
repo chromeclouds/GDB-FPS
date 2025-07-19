@@ -119,12 +119,15 @@ MonoBehaviour:
   bullet: {fileID: 4095459179216274780, guid: 527641dbb80907944b959b1f83e79b3f, type: 3}
   anim: {fileID: 4540459264630237289}
   attackSound: {fileID: 8300000, guid: a652877b012108e41871f867ada9f176, type: 3}
-  atkRange: 10
+  atkRange: 300
   lookRadius: 100
   atkCD: 1.5
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128
+  ignoreLayer:
+    serializedVersion: 2
+    m_Bits: 262144
 --- !u!33 &8168952302524672566
 MeshFilter:
   m_ObjectHideFlags: 0
