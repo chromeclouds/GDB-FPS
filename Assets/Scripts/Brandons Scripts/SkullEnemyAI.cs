@@ -79,7 +79,7 @@ public class SkullEnemyAI : MonoBehaviour, IDamage
         {
             if (demon != null)
             {
-                Destroy(demon.gameObject);
+                demon.StartCoroutine(demon.SafeDeath());
             }
         }
 

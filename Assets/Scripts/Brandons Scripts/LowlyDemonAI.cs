@@ -228,6 +228,14 @@ public class LowlyDemonAI : MonoBehaviour, IDamage, IOpen
         Destroy(gameObject);
     }
 
+    public IEnumerator SafeDeath()
+    {
+        if (model != null) model.enabled = false;
+        if (agent != null) agent.enabled = false;
+        yield return new WaitForSeconds(0.25f); // Let logic settle
+        Destroy(gameObject);
+    }
+
     IEnumerator DeathSequence()
     {
         if (deathVisual != null)
