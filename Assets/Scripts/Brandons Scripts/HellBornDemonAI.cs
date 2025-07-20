@@ -12,7 +12,6 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
     [SerializeField] GameObject bullet;
     [SerializeField] Animator anim;
     
-
     [SerializeField] int HP;
     [SerializeField] float shootRate;
     [SerializeField] int factTargetSpeed;
@@ -127,7 +126,6 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
                 }
             }
         }
-
         agent.stoppingDistance = 0;
         return false;
     }

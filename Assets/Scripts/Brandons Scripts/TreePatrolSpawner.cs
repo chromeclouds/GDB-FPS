@@ -19,7 +19,7 @@ public class TreePatrolSpawner : MonoBehaviour
 
     private bool isTreeAlive = true;
     private int spawnCount = 0;
-   
+ 
     private void Start()
     {
         // Validate required references
