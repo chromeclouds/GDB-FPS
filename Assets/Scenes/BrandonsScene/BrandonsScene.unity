@@ -508,11 +508,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 335588936990250131, guid: 791a2d572bd05e64294f6b1d8ad168c1, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8638840479964390619, guid: 791a2d572bd05e64294f6b1d8ad168c1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 23.15454
+      value: 38.15454
       objectReference: {fileID: 0}
     - target: {fileID: 8638840479964390619, guid: 791a2d572bd05e64294f6b1d8ad168c1, type: 3}
       propertyPath: m_LocalPosition.y
@@ -785,21 +785,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4367532927693957541, guid: 6c5f634869e474747a3ec845ad3f7b61, type: 3}
-      propertyPath: vfxSpawn
-      value: 
-      objectReference: {fileID: 1129178149}
-    - target: {fileID: 4367532927693957541, guid: 6c5f634869e474747a3ec845ad3f7b61, type: 3}
-      propertyPath: deathVisual
-      value: 
-      objectReference: {fileID: 8829451551789304542, guid: 8206b722d11501a449d6a278cca2adfa, type: 3}
     - target: {fileID: 8803542014139876150, guid: 6c5f634869e474747a3ec845ad3f7b61, type: 3}
       propertyPath: m_Name
       value: Hellborn Demon
-      objectReference: {fileID: 0}
-    - target: {fileID: 8803542014139876150, guid: 6c5f634869e474747a3ec845ad3f7b61, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1029,11 +1017,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 02ad0e50fe933914ba32d52fe7fee984, type: 3}
---- !u!4 &1129178149 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1846914914764736733, guid: 6c5f634869e474747a3ec845ad3f7b61, type: 3}
-  m_PrefabInstance: {fileID: 792999124}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1163631708
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1048,7 +1031,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1644428441327535268, guid: 440ebae28d019c4408717ae488b85668, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3029431738239328515, guid: 440ebae28d019c4408717ae488b85668, type: 3}
       propertyPath: gateTarget
@@ -1056,7 +1039,7 @@ PrefabInstance:
       objectReference: {fileID: 460506139}
     - target: {fileID: 6270731816389907048, guid: 440ebae28d019c4408717ae488b85668, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 24.22492
+      value: 28.47492
       objectReference: {fileID: 0}
     - target: {fileID: 6270731816389907048, guid: 440ebae28d019c4408717ae488b85668, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1131,7 +1114,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2398688452021882639, guid: 32eb3f6df6d50e443bc3e1b572898c9f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 23.15454
+      value: 32.40454
       objectReference: {fileID: 0}
     - target: {fileID: 2398688452021882639, guid: 32eb3f6df6d50e443bc3e1b572898c9f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1175,18 +1158,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4858361898581144930, guid: 32eb3f6df6d50e443bc3e1b572898c9f, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 32eb3f6df6d50e443bc3e1b572898c9f, type: 3}
---- !u!4 &1315084066 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1109618752928433225, guid: 8365d70774efebd46bd06d6af7cff287, type: 3}
-  m_PrefabInstance: {fileID: 1478745520}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1416145204
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1353,17 +1331,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7982290236892864981, guid: 8365d70774efebd46bd06d6af7cff287, type: 3}
-      propertyPath: vfxSpawn
-      value: 
-      objectReference: {fileID: 1315084066}
-    - target: {fileID: 7982290236892864981, guid: 8365d70774efebd46bd06d6af7cff287, type: 3}
-      propertyPath: deathVisual
-      value: 
-      objectReference: {fileID: 8829451551789304542, guid: 8206b722d11501a449d6a278cca2adfa, type: 3}
     - target: {fileID: 8017222159065870189, guid: 8365d70774efebd46bd06d6af7cff287, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 24.22492
+      value: 19.97492
       objectReference: {fileID: 0}
     - target: {fileID: 8017222159065870189, guid: 8365d70774efebd46bd06d6af7cff287, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1404,10 +1374,6 @@ PrefabInstance:
     - target: {fileID: 8264106210931889935, guid: 8365d70774efebd46bd06d6af7cff287, type: 3}
       propertyPath: m_Name
       value: Lowly Demon
-      objectReference: {fileID: 0}
-    - target: {fileID: 8264106210931889935, guid: 8365d70774efebd46bd06d6af7cff287, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
