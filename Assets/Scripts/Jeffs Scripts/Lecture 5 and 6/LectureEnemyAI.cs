@@ -22,7 +22,9 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
     [SerializeField] private Vector3 followOffset = Vector3.zero;
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip idleSound;
-
+    [SerializeField] private GameObject deathVisual;
+    [SerializeField] private Transform vfxSpawn;
+ 
     Color colorOrig;
 
     float shootTimer;
@@ -193,7 +195,7 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
         {
             gameManager.instance.updateGameGoal(-1);
             gameManager.instance.increaseWallet(scoreValue);
-            Destroy(gameObject);
+            StartCoroutine(DeathSequence());
         }
         /*
         HP -= amount;
@@ -219,6 +221,25 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
     public void endRound()
     {
         gameManager.instance.reduceWallet(scoreValue);
+        Destroy(gameObject);
+    }
+
+    IEnumerator DeathSequence()
+    {
+        if (deathVisual != null)
+        {
+            GameObject vfx = Instantiate(deathVisual, vfxSpawn.position, Quaternion.identity);
+            Destroy(vfx, 1f);
+        }
+        if (model != null)
+        {
+            model.enabled = false;
+        }
+        if (agent != null)
+        {
+            agent.enabled = false;
+        }
+        yield return new WaitForSeconds(0.5f);
         Destroy(gameObject);
     }
 

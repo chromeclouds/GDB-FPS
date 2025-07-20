@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
+using UnityEngine.VFX;
 
 public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
 {
@@ -24,6 +25,9 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
 
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip floatingSound;
+
+    [SerializeField] private GameObject deathVisual;
+    [SerializeField] private Transform vfxSpawn;
 
     [SerializeField] private LayerMask lineOfSightMask;
 
@@ -190,7 +194,7 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
         {
             gameManager.instance.updateGameGoal(-1);
             gameManager.instance.increaseWallet(scoreValue);
-            Destroy(gameObject);
+            StartCoroutine(DeathSequence());
         }
         /*
         HP -= amount;
@@ -207,7 +211,26 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
         }
         */
     }
+    IEnumerator DeathSequence()
+    {
+        if (deathVisual != null)
+        {
+            GameObject vfx = Instantiate(deathVisual, vfxSpawn.position, Quaternion.identity);
+            Destroy(vfx, 1f);
+        }
+        if (model != null)
+        {
+            model.enabled = false;
+        }
 
+        if (agent != null)
+        {
+            agent.enabled = false;
+        }
+
+        yield return new WaitForSeconds(0.5f);
+        Destroy(gameObject);
+    }
     IEnumerator FlashRed()
     {
         model.material.color = Color.red;

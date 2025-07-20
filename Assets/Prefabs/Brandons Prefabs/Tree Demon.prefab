@@ -131,6 +131,8 @@ MonoBehaviour:
   anim: {fileID: 1256168275407690926}
   audioSource: {fileID: 6862260792710729417}
   idleSound: {fileID: 8300000, guid: 5a05e37024d29024a80bd0ca48815f7d, type: 3}
+  deathVisual: {fileID: 8829451551789304542, guid: 8206b722d11501a449d6a278cca2adfa, type: 3}
+  vfxSpawn: {fileID: 5145469098928721938}
 --- !u!114 &984101740929332506
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -228,9 +230,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 2
-  m_Height: 1
+  m_Height: 12
   m_Direction: 1
-  m_Center: {x: 0, y: 8, z: 1.8}
+  m_Center: {x: 0, y: 5, z: 1.4}
 --- !u!82 &6862260792710729417
 AudioSource:
   m_ObjectHideFlags: 0
@@ -244,13 +246,13 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.282
+  m_Volume: 0.863
   m_Pitch: 1
   Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 230
+  Priority: 0
   DopplerLevel: 1
   MinDistance: 5
   MaxDistance: 10
