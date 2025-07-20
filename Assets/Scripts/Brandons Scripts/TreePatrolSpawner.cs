@@ -88,7 +88,7 @@ public class TreePatrolSpawner : MonoBehaviour
         yield return new WaitForSeconds(0.05f);
 
         GameObject demon = Instantiate(lowlyDemonPrefab, pos, rot);
-        LectureEnemyAI demonAI = demon.GetComponent<LectureEnemyAI>();
+        LowlyDemonAI demonAI = demon.GetComponent<LowlyDemonAI>();
         if (demonAI != null)
         {
             demonAI.skullTarget = skullTransform;

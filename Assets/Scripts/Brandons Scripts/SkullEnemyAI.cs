@@ -24,7 +24,7 @@ public class SkullEnemyAI : MonoBehaviour, IDamage
 
     private Color colorOrig;
 
-    public List<LectureEnemyAI> lowlyDemons = new List<LectureEnemyAI>();
+    public List<LowlyDemonAI> lowlyDemons = new List<LowlyDemonAI>();
 
     void Start()
     {
@@ -75,7 +75,7 @@ public class SkullEnemyAI : MonoBehaviour, IDamage
         hasExploded = true;
 
         // Destroy all linked lowly demons
-        foreach (LectureEnemyAI demon in lowlyDemons)
+        foreach (LowlyDemonAI demon in lowlyDemons)
         {
             if (demon != null)
             {

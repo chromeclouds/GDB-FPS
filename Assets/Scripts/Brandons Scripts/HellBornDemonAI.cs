@@ -56,6 +56,9 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
 
     void Update()
     {
+        if (agent == null || !agent.enabled || !agent.isOnNavMesh)
+            return;
+
         SetAnimations();
 
         if (agent.remainingDistance < 0.1f)

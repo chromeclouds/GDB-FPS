@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.AI;
-public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
+public class LowlyDemonAI : MonoBehaviour, IDamage, IOpen
 {
     [SerializeField] Renderer model;
     [SerializeField] NavMeshAgent agent;
@@ -57,7 +57,11 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
     // Update is called once per frame
     void Update()
     {
+        if (agent == null || !agent.enabled || !agent.isOnNavMesh)
+            return;
+
         setAnimations();
+
         if (agent.remainingDistance < 0.01f)
         {
             roamTime += Time.deltaTime;
