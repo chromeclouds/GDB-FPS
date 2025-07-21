@@ -7,11 +7,16 @@ public class SkullEnemyAI : MonoBehaviour, IDamage
 {
     [SerializeField] private Transform gateTarget;
     [SerializeField] private GameObject explosionEffect;
-    [SerializeField] private float explodeDistance = 1.0f;
-    [SerializeField] private int damageToGate = 50;
+    [SerializeField] private float explodeDistance;
+    [SerializeField] private int damageToGate;
 
     [SerializeField] private int maxHealth;
     [SerializeField] private Renderer model;
+
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip idleSound;
+    [SerializeField] private AudioClip explodeSound;
+
 
     private NavMeshAgent agent;
     private bool hasExploded = false;
@@ -19,7 +24,7 @@ public class SkullEnemyAI : MonoBehaviour, IDamage
 
     private Color colorOrig;
 
-    public List<LectureEnemyAI> lowlyDemons = new List<LectureEnemyAI>();
+    public List<LowlyDemonAI> lowlyDemons = new List<LowlyDemonAI>();
 
     void Start()
     {
@@ -34,6 +39,12 @@ public class SkullEnemyAI : MonoBehaviour, IDamage
         if (gateTarget != null)
         {
             agent.SetDestination(gateTarget.position);
+        }
+        if (idleSound != null && audioSource != null)
+        {
+            audioSource.clip = idleSound;
+            audioSource.loop = true;
+            audioSource.Play();
         }
     }
 
@@ -64,11 +75,11 @@ public class SkullEnemyAI : MonoBehaviour, IDamage
         hasExploded = true;
 
         // Destroy all linked lowly demons
-        foreach (LectureEnemyAI demon in lowlyDemons)
+        foreach (LowlyDemonAI demon in lowlyDemons)
         {
             if (demon != null)
             {
-                Destroy(demon.gameObject);
+                demon.StartCoroutine(demon.SafeDeath());
             }
         }
 
@@ -77,7 +88,16 @@ public class SkullEnemyAI : MonoBehaviour, IDamage
             GameObject vfx = Instantiate(explosionEffect, transform.position, Quaternion.identity);
             Destroy(vfx, 1.5f); // Clean up explosion effect after playing
         }
-
+        if (explodeSound != null)
+        {
+            GameObject tempGO = new GameObject("TempExplosionSound");
+            AudioSource aSource = tempGO.AddComponent<AudioSource>();
+            aSource.clip = explodeSound;
+            aSource.spatialBlend = 0f; // 0 = 2D, no spatial falloff
+            aSource.volume = 2.0f;
+            aSource.Play();
+            Destroy(tempGO, explodeSound.length);
+        }
         Destroy(gameObject);
     }
 
@@ -91,21 +111,20 @@ public class SkullEnemyAI : MonoBehaviour, IDamage
         if (hasExploded) return;
 
         currentHealth -= amount;
-        agent.SetDestination(gameManager.instance.player.transform.position);
 
         if (currentHealth <= 0)
         {
             Explode();
         }
-        else
-        {
-            StartCoroutine(flashRed());
-        }
+        //else
+        //{
+        //    StartCoroutine(flashRed());
+        //}
     }
-    IEnumerator flashRed()
-    {
-        model.material.color = Color.red;
-        yield return new WaitForSeconds(0.1f);
-        model.material.color = colorOrig;
-    }
+    //IEnumerator flashRed()
+    //{
+    //    model.material.color = Color.red;
+    //    yield return new WaitForSeconds(0.1f);
+    //    model.material.color = colorOrig;
+    //}
 }

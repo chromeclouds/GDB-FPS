@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
+using UnityEngine.VFX;
+using System.Collections.Generic;
 
 public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
 {
@@ -10,37 +12,55 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
     [SerializeField] Transform shootPos;
     [SerializeField] GameObject bullet;
     [SerializeField] Animator anim;
-    [SerializeField] Collider swordCol;
 
-    [SerializeField] int HP = 100;
-    [SerializeField] float shootRate = 2f;
-    [SerializeField] int factTargetSpeed = 6;
+    [SerializeField] int HP;
+    [SerializeField] float shootRate;
+    [SerializeField] int factTargetSpeed;
     [SerializeField] float roamDist = 10f;
     [SerializeField] float roamStopTime = 2f;
-    [SerializeField] float FOV = 70f;
+    [SerializeField] float FOV;
     [SerializeField] int animSpeedTrans = 5;
-    [SerializeField] int scoreValue = 10;
+    [SerializeField] int scoreValue;
+    [SerializeField] float idleSoundRate;
+
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip floatingSound;
+
+    [SerializeField] private GameObject deathVisual;
+    [SerializeField] private Transform vfxSpawn;
 
     [SerializeField] private LayerMask lineOfSightMask;
 
     Color colorOrig;
-    float shootTimer;
-    float roamTime;
-    float stoppingDistOrig;
-    bool searchingPlayer = false;
+    private float shootTimer;
+    private float roamTime;
+    private float stoppingDistOrig;
+    private bool searchingPlayer = false;
 
     Vector3 playerDir;
     Vector3 lastKnownPlayerPos;
+
+    private List<GameObject> projectiles = new List<GameObject>();
 
     void Start()
     {
         stoppingDistOrig = agent.stoppingDistance;
         colorOrig = model.material.color;
         roamTime = roamStopTime + 1f; // force roam start
+
+        if (floatingSound != null && audioSource != null)
+        {
+            audioSource.clip = floatingSound;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
     }
 
     void Update()
     {
+        if (agent == null || !agent.enabled || !agent.isOnNavMesh)
+            return;
+
         SetAnimations();
 
         if (agent.remainingDistance < 0.1f)
@@ -59,7 +79,6 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
                 RoamCheck();
             }
         }
-
         if (agent.remainingDistance <= agent.stoppingDistance)
             agent.velocity = Vector3.zero;
     }
@@ -90,7 +109,7 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
                 if (hit.collider.CompareTag("Player"))
                 {
                     lastKnownPlayerPos = gameManager.instance.player.transform.position;
-                    searchingPlayer = false;
+                    searchingPlayer = true;
 
                     float distToPlayer = Vector3.Distance(transform.position, lastKnownPlayerPos);
                     agent.isStopped = false;
@@ -110,15 +129,17 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
                 }
             }
         }
-
         agent.stoppingDistance = 0;
         return false;
     }
 
     void FacePlayer()
     {
-        Quaternion targetRotation = Quaternion.LookRotation(new Vector3(playerDir.x, 0, playerDir.z));
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * factTargetSpeed);
+        if (playerDir != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(new Vector3(playerDir.x, 0, playerDir.z));
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * factTargetSpeed);
+        }
     }
 
     void RoamCheck()
@@ -160,7 +181,8 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
 
     public void createBullet()
     {
-        Instantiate(bullet, shootPos.position, transform.rotation);
+        GameObject newProj = Instantiate(bullet, shootPos.position, transform.rotation);
+        projectiles.Add(newProj);
     }
 
     public void takeDamage(int amount)
@@ -177,11 +199,11 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
         {
             gameManager.instance.updateGameGoal(-1);
             gameManager.instance.increaseWallet(scoreValue);
-            Destroy(gameObject);
+            StartCoroutine(DeathSequence());
         }
         /*
         HP -= amount;
-        agent.SetDestination(gameManager.instance.player.transform.position);
+        agent.SetDestination(lastKnownPlayerPos);
         if (HP <= 0)
         {
             Destroy(gameObject);
@@ -194,7 +216,31 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
         }
         */
     }
+    IEnumerator DeathSequence()
+    {
+        foreach (GameObject proj in projectiles)
+        {
+            if (proj != null)
+                Destroy(proj);
+        }
+        if (deathVisual != null)
+        {
+            GameObject vfx = Instantiate(deathVisual, vfxSpawn.position, Quaternion.identity);
+            Destroy(vfx, 1f);
+        }
+        if (model != null)
+        {
+            model.enabled = false;
+        }
 
+        if (agent != null)
+        {
+            agent.enabled = false;
+        }
+
+        yield return new WaitForSeconds(0.5f);
+        Destroy(gameObject);
+    }
     IEnumerator FlashRed()
     {
         model.material.color = Color.red;
@@ -206,17 +252,5 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
     {
         gameManager.instance.reduceWallet(scoreValue);
         Destroy(gameObject);
-    }
-
-    public void swordColOn()
-    {
-        if (swordCol)
-            swordCol.enabled = true;
-    }
-
-    public void swordColOff()
-    {
-        if (swordCol)
-            swordCol.enabled = false;
     }
 }

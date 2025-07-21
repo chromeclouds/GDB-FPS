@@ -12,6 +12,9 @@ public class damage : MonoBehaviour
     [SerializeField] int speed;
     [SerializeField] int destroyTime;
 
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip shootSound;
+    [SerializeField] private AudioClip hitSound;
 
     bool isDamaging;
 
@@ -26,8 +29,11 @@ public class damage : MonoBehaviour
             {
                 rb.linearVelocity = transform.forward * speed;
             }
+        } 
+        if (audioSource != null && shootSound != null)
+        {
+            audioSource.PlayOneShot(shootSound);
         }
-        
     }
 
     // Update is called once per frame
@@ -36,8 +42,7 @@ public class damage : MonoBehaviour
         if(type == damageType.homing)
         {
             rb.linearVelocity = (gameManager.instance.player.transform.position - transform.position).normalized * speed * Time.deltaTime;
-        }
-        
+        }  
     }
 
     private void OnTriggerEnter(Collider other)
@@ -53,15 +58,15 @@ public class damage : MonoBehaviour
             dmg.takeDamage(damageAmount);
 
         }
+        if ((type == damageType.homing || type == damageType.moving) && hitSound != null)
+        {
+            AudioSource.PlayClipAtPoint(hitSound, transform.position);
+        }
         if(type == damageType.homing || type == damageType.moving)
         {
             Destroy(gameObject);
         }
     }
-
-
-
-
 
     private void OnTriggerStay(Collider other)
     {

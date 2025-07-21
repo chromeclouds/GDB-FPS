@@ -1,7 +1,8 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.AI;
-public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
+using System.Collections.Generic;
+public class LowlyDemonAI : MonoBehaviour, IDamage, IOpen
 {
     [SerializeField] Renderer model;
     [SerializeField] NavMeshAgent agent;
@@ -17,10 +18,13 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
     [SerializeField] int FOV;
     [SerializeField] int scoreValue;
     [SerializeField] Animator anim;
-    [SerializeField] Collider swordCol;
 
     [SerializeField] public Transform skullTarget;
     [SerializeField] private Vector3 followOffset = Vector3.zero;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip idleSound;
+    [SerializeField] private GameObject deathVisual;
+    [SerializeField] private Transform vfxSpawn;
 
     Color colorOrig;
 
@@ -35,20 +39,32 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
     Vector3 playerDir;
     Vector3 startingPos;
 
+    private List<GameObject> projectiles = new List<GameObject>();
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         colorOrig = model.material.color;
-        
+
         startingPos = transform.position;
         stoppingDistOrig = agent.stoppingDistance;
 
+        if (idleSound != null && audioSource != null)
+        {
+            audioSource.clip = idleSound;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (agent == null || !agent.enabled || !agent.isOnNavMesh)
+            return;
+
         setAnimations();
+
         if (agent.remainingDistance < 0.01f)
         {
             roamTime += Time.deltaTime;
@@ -63,7 +79,7 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
             roamCheck();
             return;
         }
-        if(!playerInRange && isFollowingSkull)
+        if (!playerInRange && isFollowingSkull)
         {
             FollowSkull();
             return;
@@ -84,7 +100,6 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
         agent.SetDestination(targetPos);
         faceTarget(targetPos);
     }
-
     void faceTarget(Vector3 targetPos)
     {
         Vector3 dir = targetPos - transform.position;
@@ -99,7 +114,6 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
         anim.SetFloat("Speed", Mathf.Lerp(animSpeedCur, agentSpeedCur, Time.deltaTime * animSpeedTrans));
     }
 
-
     void roamCheck()
     {
         if (roamTime >= roamstopTime && agent.remainingDistance < 0.01f)
@@ -108,34 +122,35 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
         }
     }
 
-
     void roam()
     {
         roamTime = 0;
         agent.stoppingDistance = 0;
 
         Vector3 ranPos = Random.insideUnitSphere * roamDist;
-
         ranPos += startingPos;
 
         NavMeshHit hit;
-        NavMesh.SamplePosition(ranPos, out hit, roamDist, 1);
-        agent.SetDestination(hit.position);
-    }
+        bool found = NavMesh.SamplePosition(ranPos, out hit, roamDist, NavMesh.AllAreas); // safer mask
 
+        if (found && hit.position != Vector3.positiveInfinity)
+        {
+            agent.SetDestination(hit.position);
+        }
+    }
 
     bool canSeePlayer()
     {
         playerDir = gameManager.instance.player.transform.position - headPOS.position;
         angleToPlayer = Vector3.Angle(playerDir, transform.forward);
         Debug.DrawRay(headPOS.position, playerDir);
-        
+
         RaycastHit hit;
         if (Physics.Raycast(headPOS.position, playerDir, out hit))
         {
             if (angleToPlayer < FOV && hit.collider.CompareTag("Player"))
             {
-                
+
                 shootTimer += Time.deltaTime;
                 agent.SetDestination(gameManager.instance.player.transform.position);
                 if (shootTimer > shootRate)
@@ -154,6 +169,7 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
         agent.stoppingDistance = 0;
         return false;
     }
+
     void faceTarget()
     {
         Quaternion rot = Quaternion.LookRotation(new Vector3(playerDir.x, 0, playerDir.z));
@@ -189,7 +205,7 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
         {
             gameManager.instance.updateGameGoal(-1);
             gameManager.instance.increaseWallet(scoreValue);
-            Destroy(gameObject);
+            StartCoroutine(DeathSequence());
         }
         /*
         HP -= amount;
@@ -215,6 +231,38 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
     public void endRound()
     {
         gameManager.instance.reduceWallet(scoreValue);
+        Destroy(gameObject);
+    }
+
+    public IEnumerator SafeDeath()
+    {
+        if (model != null) model.enabled = false;
+        if (agent != null) agent.enabled = false;
+        yield return new WaitForSeconds(0.25f); // Let logic settle
+        Destroy(gameObject);
+    }
+
+    IEnumerator DeathSequence()
+    {
+        foreach (GameObject proj in projectiles)
+        {
+            if (proj != null)
+                Destroy(proj);
+        }
+        if (deathVisual != null)
+        {
+            GameObject vfx = Instantiate(deathVisual, vfxSpawn.position, Quaternion.identity);
+            Destroy(vfx, 1f);
+        }
+        if (model != null)
+        {
+            model.enabled = false;
+        }
+        if (agent != null)
+        {
+            agent.enabled = false;
+        }
+        yield return new WaitForSeconds(0.5f);
         Destroy(gameObject);
     }
 
@@ -248,19 +296,8 @@ public class LectureEnemyAI : MonoBehaviour, IDamage, IOpen
 
     public void createBullet()
     {
-        Instantiate(bullet, shootPos.position, transform.rotation);
+        GameObject newProj = Instantiate(bullet, shootPos.position, transform.rotation);
+        projectiles.Add(newProj);
 
-    }
-
-    public void swordColOn()
-    {
-        if (swordCol)
-            swordCol.enabled = true;
-    }
-
-    public void swordColOff()
-    {
-        if (swordCol)
-            swordCol.enabled = false;
     }
 }
