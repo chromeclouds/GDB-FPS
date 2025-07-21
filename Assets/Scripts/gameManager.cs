@@ -240,7 +240,7 @@ public class gameManager : MonoBehaviour
 
     public void ClearLevel()
     {
-        LectureEnemyAI[] enemies = FindObjectsByType<LectureEnemyAI>(FindObjectsSortMode.None);
+        LowlyDemonAI[] enemies = FindObjectsByType<LowlyDemonAI>(FindObjectsSortMode.None);
 
         foreach (var enemy in enemies)
         {
@@ -416,7 +416,7 @@ public class gameManager : MonoBehaviour
     {
         if (currLevel != SceneManager.sceneCountInBuildSettings - 1)
         {
-            LectureEnemyAI[] enemies = FindObjectsByType<LectureEnemyAI>(FindObjectsSortMode.None);
+            LowlyDemonAI[] enemies = FindObjectsByType<LowlyDemonAI>(FindObjectsSortMode.None);
 
             foreach (var enemy in enemies)
             {

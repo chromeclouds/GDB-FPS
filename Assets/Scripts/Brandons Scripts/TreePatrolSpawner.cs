@@ -19,8 +19,7 @@ public class TreePatrolSpawner : MonoBehaviour
 
     private bool isTreeAlive = true;
     private int spawnCount = 0;
-    
-
+ 
     private void Start()
     {
         // Validate required references
@@ -89,14 +88,14 @@ public class TreePatrolSpawner : MonoBehaviour
         yield return new WaitForSeconds(0.05f);
 
         GameObject demon = Instantiate(lowlyDemonPrefab, pos, rot);
-        LectureEnemyAI demonAI = demon.GetComponent<LectureEnemyAI>();
+        LowlyDemonAI demonAI = demon.GetComponent<LowlyDemonAI>();
         if (demonAI != null)
         {
             demonAI.skullTarget = skullTransform;
             demonAI.SendMessage("SetFollowOffset", followOffset, SendMessageOptions.DontRequireReceiver);
 
             if (skullAI != null)
-                skullAI.lowlyDemons.Add(demonAI); // This is the key line!
+                skullAI.lowlyDemons.Add(demonAI);
         }
     }
 

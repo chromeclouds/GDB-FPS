@@ -16,6 +16,10 @@ public class HomingAOEProjectile : MonoBehaviour, IDamage
     [SerializeField] float homingSpeed = 8f;
     [SerializeField] float turnRate = 2f;
 
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip shootSound;
+    [SerializeField] private AudioClip hitSound;
+
     bool isHoming = false;
     bool hasExploded = false;
 
@@ -28,6 +32,11 @@ public class HomingAOEProjectile : MonoBehaviour, IDamage
         rb.AddForce(launchDirection * speed, ForceMode.VelocityChange);
 
         StartCoroutine(StartHoming());
+
+        if (audioSource != null && shootSound != null)
+        {
+            audioSource.PlayOneShot(shootSound);
+        }
     }
 
     void Update()
@@ -75,7 +84,10 @@ public class HomingAOEProjectile : MonoBehaviour, IDamage
             if (dmg != null)
                 dmg.takeDamage(damageAmount);
         }
-
+        if (hitSound != null)
+        {
+            AudioSource.PlayClipAtPoint(hitSound, transform.position);
+        }
         Destroy(gameObject);
     }
 
