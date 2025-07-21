@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
 using UnityEngine.VFX;
+using System.Collections.Generic;
 
 public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
 {
@@ -11,7 +12,7 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
     [SerializeField] Transform shootPos;
     [SerializeField] GameObject bullet;
     [SerializeField] Animator anim;
-    
+
     [SerializeField] int HP;
     [SerializeField] float shootRate;
     [SerializeField] int factTargetSpeed;
@@ -38,6 +39,8 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
 
     Vector3 playerDir;
     Vector3 lastKnownPlayerPos;
+
+    private List<GameObject> projectiles = new List<GameObject>();
 
     void Start()
     {
@@ -178,7 +181,8 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
 
     public void createBullet()
     {
-        Instantiate(bullet, shootPos.position, transform.rotation);
+        GameObject newProj = Instantiate(bullet, shootPos.position, transform.rotation);
+        projectiles.Add(newProj);
     }
 
     public void takeDamage(int amount)
@@ -214,6 +218,11 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
     }
     IEnumerator DeathSequence()
     {
+        foreach (GameObject proj in projectiles)
+        {
+            if (proj != null)
+                Destroy(proj);
+        }
         if (deathVisual != null)
         {
             GameObject vfx = Instantiate(deathVisual, vfxSpawn.position, Quaternion.identity);

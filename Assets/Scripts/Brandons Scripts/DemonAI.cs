@@ -35,7 +35,7 @@ public class DemonAI : MonoBehaviour, IDamage, IOpen
     Vector3 playerDir;
 
     private List<GameObject> projectiles = new List<GameObject>();
- 
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -99,7 +99,7 @@ public class DemonAI : MonoBehaviour, IDamage, IOpen
                 return true;
             }
         }
-        
+
         return false;
     }
 
@@ -175,11 +175,11 @@ public class DemonAI : MonoBehaviour, IDamage, IOpen
         {
             model.enabled = false;
         }
-            
+
         if (agent != null)
         {
             agent.enabled = false;
-        }    
+        }
 
         yield return new WaitForSeconds(0.5f);
         Destroy(gameObject);

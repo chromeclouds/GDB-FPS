@@ -7,7 +7,7 @@ public class SkullEnemyAI : MonoBehaviour, IDamage
 {
     [SerializeField] private Transform gateTarget;
     [SerializeField] private GameObject explosionEffect;
-    [SerializeField] private float explodeDistance = 1.0f;
+    [SerializeField] private float explodeDistance;
     [SerializeField] private int damageToGate;
 
     [SerializeField] private int maxHealth;

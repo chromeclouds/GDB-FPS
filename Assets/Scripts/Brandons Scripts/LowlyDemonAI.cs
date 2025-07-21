@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.AI;
+using System.Collections.Generic;
 public class LowlyDemonAI : MonoBehaviour, IDamage, IOpen
 {
     [SerializeField] Renderer model;
@@ -24,7 +25,7 @@ public class LowlyDemonAI : MonoBehaviour, IDamage, IOpen
     [SerializeField] private AudioClip idleSound;
     [SerializeField] private GameObject deathVisual;
     [SerializeField] private Transform vfxSpawn;
- 
+
     Color colorOrig;
 
     float shootTimer;
@@ -37,6 +38,8 @@ public class LowlyDemonAI : MonoBehaviour, IDamage, IOpen
 
     Vector3 playerDir;
     Vector3 startingPos;
+
+    private List<GameObject> projectiles = new List<GameObject>();
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -125,12 +128,15 @@ public class LowlyDemonAI : MonoBehaviour, IDamage, IOpen
         agent.stoppingDistance = 0;
 
         Vector3 ranPos = Random.insideUnitSphere * roamDist;
-
         ranPos += startingPos;
 
         NavMeshHit hit;
-        NavMesh.SamplePosition(ranPos, out hit, roamDist, 1);
-        agent.SetDestination(hit.position);
+        bool found = NavMesh.SamplePosition(ranPos, out hit, roamDist, NavMesh.AllAreas); // safer mask
+
+        if (found && hit.position != Vector3.positiveInfinity)
+        {
+            agent.SetDestination(hit.position);
+        }
     }
 
     bool canSeePlayer()
@@ -238,6 +244,11 @@ public class LowlyDemonAI : MonoBehaviour, IDamage, IOpen
 
     IEnumerator DeathSequence()
     {
+        foreach (GameObject proj in projectiles)
+        {
+            if (proj != null)
+                Destroy(proj);
+        }
         if (deathVisual != null)
         {
             GameObject vfx = Instantiate(deathVisual, vfxSpawn.position, Quaternion.identity);
@@ -285,7 +296,8 @@ public class LowlyDemonAI : MonoBehaviour, IDamage, IOpen
 
     public void createBullet()
     {
-        Instantiate(bullet, shootPos.position, transform.rotation);
+        GameObject newProj = Instantiate(bullet, shootPos.position, transform.rotation);
+        projectiles.Add(newProj);
 
     }
 }
