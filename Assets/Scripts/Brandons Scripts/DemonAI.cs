@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.AI;
+using NUnit.Framework;
+using System.Collections.Generic;
+
 public class DemonAI : MonoBehaviour, IDamage, IOpen
 {
     [SerializeField] Renderer model;
@@ -30,6 +33,8 @@ public class DemonAI : MonoBehaviour, IDamage, IOpen
     bool playerInRange;
 
     Vector3 playerDir;
+
+    private List<GameObject> projectiles = new List<GameObject>();
  
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -156,6 +161,11 @@ public class DemonAI : MonoBehaviour, IDamage, IOpen
 
     IEnumerator DeathSequence()
     {
+        foreach (GameObject proj in projectiles)
+        {
+            if (proj != null)
+                Destroy(proj);
+        }
         if (deathVisual != null)
         {
             GameObject vfx = Instantiate(deathVisual, vfxSpawn.position, Quaternion.identity);
@@ -213,7 +223,7 @@ public class DemonAI : MonoBehaviour, IDamage, IOpen
 
     public void createBullet()
     {
-        Instantiate(bullet, shootPos.position, transform.rotation);
-
+        GameObject newProj = Instantiate(bullet, shootPos.position, transform.rotation);
+        projectiles.Add(newProj);
     }
 }
