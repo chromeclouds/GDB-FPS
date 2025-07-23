@@ -21,7 +21,7 @@ public class unifiedWeaponPickup : MonoBehaviour
         {
             unifiedController.getWeaponData(weaponData, weaponPrefab);
             ClearFromCrate();
-            gameObject.SetActive(false);
+            Destroy(gameObject);
             return;
         }
 

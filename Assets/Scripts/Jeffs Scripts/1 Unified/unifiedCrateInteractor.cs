@@ -38,57 +38,70 @@ public class unifiedCrateInteractor : MonoBehaviour
     {
         if (heldWeapon == null || crate == null || player == null) return;
 
-        GameObject dropped = player.RemoveCurrentHeldWeapon();
-        if (dropped == null) return;
+        //get weaponfire &data
+        WeaponFire fire = heldWeapon.GetComponent<WeaponFire>();
+        if (fire == null || fire.weaponWorldPrefab == null) return;
 
-        //reposition and renable the dropped weapon
-        dropped.transform.SetParent(null);
-        dropped.transform.position = crate.itemHolder.position;
-        dropped.transform.rotation = Quaternion.identity;
+        GameObject toPlace = player.RemoveCurrentHeldWeapon();
+        if(toPlace!= null)
+        {
+            var fireScript = toPlace.GetComponent<WeaponFire>();
+            if (fireScript != null)
+                fireScript.enabled = false;
 
-        var pickup = dropped.GetComponent<unifiedWeaponPickup>();
-        if (pickup != null)
-            pickup.enabled = true;
+            toPlace.transform.SetParent(null);
+            toPlace.transform.position = crate.itemHolder.position;
+            toPlace.transform.rotation = Quaternion.identity;
 
-        foreach (Collider col in dropped.GetComponentsInChildren<Collider>())
-            col.enabled = true;
+            foreach (Collider col in toPlace.GetComponentsInChildren<Collider>())
+                col.enabled = true;
+            
+            var pickup = toPlace.GetComponent<unifiedWeaponPickup>();
+            if (pickup != null)
+                pickup.enabled = true;
 
-        crate.PlaceItem(dropped);
+            CrateItem crateItem = toPlace.GetComponent<CrateItem>();
+            if (crateItem == null)
+                crateItem = toPlace.AddComponent<CrateItem>();
+            crateItem.originCrate = crate;
+            
+            crate.PlaceItem(toPlace);
+        }
+        
     }
 
 
     void PickupWeapon(GameObject crateItem, WeaponCrate crate)
     {
-        crate.ClearItemWithoutDestroy();
+        if (crate == null || crateItem == null || player == null) return;
 
-        crateItem.transform.SetParent(player.weaponHolder);
-        crateItem.transform.localPosition = Vector3.zero;
-        crateItem.transform.localRotation = Quaternion.identity;
-
-        //disable pickup script and colliders
         var pickup = crateItem.GetComponent<unifiedWeaponPickup>();
-        foreach (Collider col in crateItem.GetComponentsInChildren<Collider>())
-            col.enabled = false;
+        if (pickup == null || pickup.weaponData == null || pickup.weaponPrefab == null) return;
 
-        if (pickup != null)
+        WeaponData data = pickup.weaponData;
+        GameObject heldPrefab = pickup.weaponPrefab;
+
+        if (player.HasMaxWeapons())
         {
-            pickup.enabled = true;
-
-            var fire = crateItem.GetComponent<WeaponFire>();
-            if (fire != null && pickup != null)
+            GameObject toDrop = player.RemoveCurrentHeldWeapon();
+            if (toDrop != null)
             {
-                fire.weaponData = pickup.weaponData;
-                fire.weaponHeldPrefab = pickup.weaponPrefab;
-                fire.weaponWorldPrefab = pickup.weaponData.WeaponWorldPrefab;
+                WeaponFire fire = toDrop.GetComponent<WeaponFire>();
+                if(fire!= null && fire.weaponWorldPrefab != null)
+                {
+                    GameObject world = Instantiate(fire.weaponWorldPrefab);
+                    world.transform.position = crate.itemHolder.position;
+                    crate.PlaceItem(world);
 
-                fire.enabled = false;
-                fire.enabled = true;
-                
+                }
+                Destroy(toDrop);
             }
         }
-        
-        crate.ClearItemWithoutDestroy();
-        player.AddExistingWeapon(crateItem);
+        else
+        {
+            crate.ClearItem();
+        }
+        player.getWeaponData(data, heldPrefab);
     }
 
 

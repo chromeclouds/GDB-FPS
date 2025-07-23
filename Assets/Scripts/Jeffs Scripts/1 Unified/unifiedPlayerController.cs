@@ -293,6 +293,11 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
 
     }
 
+    public bool HasMaxWeapons()
+    {
+        return ownedWeapons.Count >= 3;
+    }
+
     void updatePlayerUI()
     {
         gameManager.instance.playerHPBar.fillAmount = (float)HP / HPOrig;
@@ -543,25 +548,48 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
 
     public GameObject RemoveCurrentHeldWeapon()
     {
-        if (ownedWeapons.Count == 0) return null;
-
-        GameObject weaponToDrop = ownedWeapons[currentWeaponIndex];
+        if (ownedWeapons.Count == 0 || currentWeaponIndex < 0 || currentWeaponIndex >= ownedWeapons.Count)
+            return null;
+        
+        GameObject weaponToRemove = ownedWeapons[currentWeaponIndex];
         ownedWeapons.RemoveAt(currentWeaponIndex);
 
-        if (ownedWeapons.Count == 0)
+        weaponToRemove.transform.SetParent(null);
+        weaponToRemove.SetActive(true);
+
+        var pickup = weaponToRemove.GetComponent<unifiedWeaponPickup>();
+        if (pickup != null)
+            pickup.enabled = true;
+
+        foreach (Collider col in weaponToRemove.GetComponentsInChildren<Collider>())
+            col.enabled = true;
+
+        if(ownedWeapons.Count == 0)
         {
-            currentWeaponIndex = 0;
+            currentWeaponIndex = -1;
         }
         else
         {
             currentWeaponIndex = Mathf.Clamp(currentWeaponIndex, 0, ownedWeapons.Count - 1);
             for (int i = 0; i < ownedWeapons.Count; i++)
-            {
                 ownedWeapons[i].SetActive(i == currentWeaponIndex);
-            }
         }
 
-        return weaponToDrop;
+        if (currentWeaponIndex != -1)
+        {
+            var fire = ownedWeapons[currentWeaponIndex].GetComponent<WeaponFire>();
+            if(fire!= null)
+            {
+                int reserve = GetComponent<AmmoManager>()?.GetAmmoCount(fire.weaponData.AmmotType) ?? 0;
+                WeaponUIManager.instance.UpdateWeaponUI(fire.weaponData, fire.CurrentAmmo, reserve);
+
+            }
+        }
+        else
+        {
+            WeaponUIManager.instance.HideWeaponUI();
+        }
+        return weaponToRemove;
     }
 
     public void addArmor(int amount)
