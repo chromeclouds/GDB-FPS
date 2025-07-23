@@ -591,6 +591,10 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         return world; 
     }
 
+    public bool isArmorFull()
+    {
+        return armorValue >= armorMax;
+    }
 
     public void addArmor(int amount)
     {
