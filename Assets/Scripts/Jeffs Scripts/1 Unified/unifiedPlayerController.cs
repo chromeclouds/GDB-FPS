@@ -380,9 +380,27 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
     public void getWeaponStats(WeaponStats weapon) { } //lecture 
     public void getWeaponData(WeaponData data, GameObject heldPrefab)
     {
+        //testers didnt like being able to have all the guns, now they get a max of 3
+        if(ownedWeapons.Count >= 3)
+        {
+            GameObject toDrop = RemoveCurrentHeldWeapon();
+            if(toDrop != null)
+            {
+                toDrop.transform.SetParent(null);
+                toDrop.transform.position = transform.position + transform.forward;
+                foreach (Collider col in toDrop.GetComponentsInChildren<Collider>())
+                    col.enabled = true;
+                var pickup = toDrop.GetComponent<unifiedWeaponPickup>();
+                if (pickup != null) pickup.enabled = true;
+                toDrop.SetActive(true);
+            }
+        }
+
+        //instantiates new weapon
         GameObject spawned = Instantiate(heldPrefab, weaponHolder);
         spawned.transform.localPosition = Vector3.zero;
         spawned.transform.localRotation = Quaternion.identity;
+
 
         WeaponFire fire = spawned.GetComponent<WeaponFire>();
         if (fire != null)
@@ -399,32 +417,42 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
                     Debug.LogError("BulletSpawnPoint not found on: " + spawned.name);
             }
 
-            // Manually re-run OnEnable logic if needed
+            // load full mag on pickup
             fire.enabled = false;
             fire.enabled = true;
+            var maxMag = data.MaxAmmo;
+            typeof(WeaponFire).GetField("currentAmmo", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                ?.SetValue(fire, maxMag);
         }
 
-        // Give 3 mags of reserve ammo on first pick up
+        // Give 3 extra mags of reserve ammo of this weapons ammo type
         AmmoManager ammoManager = GetComponent<AmmoManager>();
         if (ammoManager != null && !data.HasInfiniteAmmo)
         {
+            int extraAmmo = data.MaxAmmo * 3; 
+            ammoManager.AddAmmo(data.AmmotType, extraAmmo);
+            /*
+             
             int currentReserve = ammoManager.GetAmmoCount(data.AmmotType);
             int grantedAmmo = data.MaxAmmo * 3;
             if(currentReserve == 0) // Only grant if has 0
             {
                 ammoManager.AddAmmo(data.AmmotType, grantedAmmo);
             }
+            */
         }
-
-        var pickup = spawned.GetComponent<unifiedWeaponPickup>();
-        if (pickup != null)
+        
+        //prevent interaction collisions and crate pickup reactivation
+        var pickupComp = spawned.GetComponent<unifiedWeaponPickup>();
+        if (pickupComp != null)
         {
-            pickup.enabled = false;
+            pickupComp.enabled = false;
         }
 
         foreach (Collider col in spawned.GetComponentsInChildren<Collider>())
             col.enabled = false;
 
+        // track and switch to new weapon
         ownedWeapons.Add(spawned);
         currentWeaponIndex = ownedWeapons.Count - 1;
 
@@ -433,6 +461,7 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
             ownedWeapons[i].SetActive(i == currentWeaponIndex);
         }
 
+        //update ui
         if (fire != null)
         {
             int reserve = ammoManager != null ? ammoManager.GetAmmoCount(data.AmmotType) : 0;
