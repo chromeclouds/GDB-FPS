@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class unifiedCrateInteractor : MonoBehaviour
@@ -13,25 +14,51 @@ public class unifiedCrateInteractor : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(interactKey))
-        {
-            WeaponCrate closestCrate = FindNearestCrate();
-            if (closestCrate == null) return;
-
-            GameObject heldWeapon = player.GetCurrentHeldWeapon();
-            GameObject crateItem = closestCrate.GetCurrentItem();
-
-            // Place weapon if player has one and crate is empty
-            if (heldWeapon != null && crateItem == null)
+        
+            if (Input.GetKeyDown(interactKey))
             {
-                PlaceWeapon(heldWeapon, closestCrate);
+                WeaponCrate closestCrate = FindNearestCrate();
+                if (closestCrate == null) return;
+
+                GameObject heldWeapon = player.GetCurrentHeldWeapon();
+                GameObject crateItem = closestCrate.GetCurrentItem();
+
+                //crate has item
+                if (crateItem != null)
+                {
+                    //if 3 weapons swap held
+                    if (player.HasMaxWeapons())
+                    {
+                        GameObject toDrop = player.RemoveCurrentHeldWeapon();
+                        if (toDrop != null)
+                        {
+                            WeaponFire fire = toDrop.GetComponent<WeaponFire>();
+                            if (fire != null && fire.weaponWorldPrefab != null)
+                            {
+                                GameObject world = Instantiate(fire.weaponWorldPrefab);
+                                PositionAndAttachToCrate(world, closestCrate);
+                                closestCrate.PlaceItem(world);
+                            }
+                            Destroy(toDrop);
+                        }
+                    }
+                    else
+                    {
+                        //clear the crate item
+                        closestCrate.ClearItem();
+                    }
+
+                    PickupWeapon(crateItem);
+                }
+
+                //crate is empty and player is holding a weapon
+                else if (heldWeapon != null)
+                {
+                    PlaceWeapon(heldWeapon, closestCrate);
+                }
             }
-            // Pick up weapon if crate has item and player has room
-            else if (heldWeapon == null && crateItem != null)
-            {
-                PickupWeapon(crateItem, closestCrate);
-            }
-        }
+        
+
     }
 
     void PlaceWeapon(GameObject heldWeapon, WeaponCrate crate)
@@ -39,41 +66,50 @@ public class unifiedCrateInteractor : MonoBehaviour
         if (heldWeapon == null || crate == null || player == null) return;
 
         //get weaponfire &data
-        WeaponFire fire = heldWeapon.GetComponent<WeaponFire>();
+        WeaponFire fire = heldWeapon.GetComponent<WeaponFire>(); 
         if (fire == null || fire.weaponWorldPrefab == null) return;
 
-        GameObject toPlace = player.RemoveCurrentHeldWeapon();
+        player.RemoveCurrentHeldWeapon();
+
+        GameObject toPlace = Instantiate(fire.weaponWorldPrefab);
         if(toPlace!= null)
         {
             var fireScript = toPlace.GetComponent<WeaponFire>();
             if (fireScript != null)
                 fireScript.enabled = false;
 
+            foreach (Collider col in toPlace.GetComponentsInChildren<Collider>())
+                col.enabled = true;
+
+            var pickup = toPlace.GetComponent<unifiedWeaponPickup>();
+            if (pickup != null)
+                pickup.enabled = true;
+
+            PositionAndAttachToCrate(toPlace, crate);
+            crate.PlaceItem(toPlace);
+            /*
             toPlace.transform.SetParent(null);
             toPlace.transform.position = crate.itemHolder.position;
             toPlace.transform.rotation = Quaternion.identity;
 
-            foreach (Collider col in toPlace.GetComponentsInChildren<Collider>())
-                col.enabled = true;
             
-            var pickup = toPlace.GetComponent<unifiedWeaponPickup>();
-            if (pickup != null)
-                pickup.enabled = true;
+            
+            
 
             CrateItem crateItem = toPlace.GetComponent<CrateItem>();
             if (crateItem == null)
                 crateItem = toPlace.AddComponent<CrateItem>();
             crateItem.originCrate = crate;
+            */
             
-            crate.PlaceItem(toPlace);
         }
         
     }
 
 
-    void PickupWeapon(GameObject crateItem, WeaponCrate crate)
+    void PickupWeapon(GameObject crateItem)
     {
-        if (crate == null || crateItem == null || player == null) return;
+        if (crateItem == null || player == null) return;
 
         var pickup = crateItem.GetComponent<unifiedWeaponPickup>();
         if (pickup == null || pickup.weaponData == null || pickup.weaponPrefab == null) return;
@@ -81,6 +117,10 @@ public class unifiedCrateInteractor : MonoBehaviour
         WeaponData data = pickup.weaponData;
         GameObject heldPrefab = pickup.weaponPrefab;
 
+        player.getWeaponData(data, heldPrefab);
+        Destroy(crateItem);
+
+        /*
         if (player.HasMaxWeapons())
         {
             GameObject toDrop = player.RemoveCurrentHeldWeapon();
@@ -102,9 +142,20 @@ public class unifiedCrateInteractor : MonoBehaviour
             crate.ClearItem();
         }
         player.getWeaponData(data, heldPrefab);
+        */
     }
 
+    void PositionAndAttachToCrate(GameObject obj, WeaponCrate crate)
+    {
+        obj.transform.position = crate.itemHolder.position;
+        obj.transform.rotation = Quaternion.identity;
+        obj.transform.SetParent(null);
 
+        CrateItem crateItem = obj.GetComponent<CrateItem>();
+        if(crateItem == null)
+            crateItem = obj.AddComponent<CrateItem>();
+        crateItem.originCrate = crate;
+    }
 
 
 

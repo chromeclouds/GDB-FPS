@@ -14,6 +14,10 @@ public class unifiedWeaponPickup : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Player")) return;
+        if(crateOrigin!= null && crateOrigin.originCrate != null)
+        {
+            return; //crate item ignore walkover
+        }
 
         // Priority 1: my weapon system
         var unifiedController = other.GetComponent<unifiedPlayerController>();
