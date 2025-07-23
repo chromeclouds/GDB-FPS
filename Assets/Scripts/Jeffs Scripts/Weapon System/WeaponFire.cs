@@ -44,8 +44,8 @@ public class WeaponFire : MonoBehaviour
         }
 
         ammoManager = GetComponentInParent<AmmoManager>();
-        if(currentAmmo <= 0 || currentAmmo > weaponData.MaxAmmo)
-            currentAmmo = Mathf.Clamp(currentAmmo, 0, weaponData.MaxAmmo);
+        if(currentAmmo > weaponData.MaxAmmo || currentAmmo <0)
+            currentAmmo = weaponData.MaxAmmo;
 
     }
 

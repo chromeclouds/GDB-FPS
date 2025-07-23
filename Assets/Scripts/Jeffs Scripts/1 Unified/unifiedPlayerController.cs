@@ -404,6 +404,18 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
             fire.enabled = true;
         }
 
+        // Give 3 mags of reserve ammo on first pick up
+        AmmoManager ammoManager = GetComponent<AmmoManager>();
+        if (ammoManager != null && !data.HasInfiniteAmmo)
+        {
+            int currentReserve = ammoManager.GetAmmoCount(data.AmmotType);
+            int grantedAmmo = data.MaxAmmo * 3;
+            if(currentReserve == 0) // Only grant if has 0
+            {
+                ammoManager.AddAmmo(data.AmmotType, grantedAmmo);
+            }
+        }
+
         var pickup = spawned.GetComponent<unifiedWeaponPickup>();
         if (pickup != null)
         {
@@ -421,9 +433,16 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
             ownedWeapons[i].SetActive(i == currentWeaponIndex);
         }
 
+        if (fire != null)
+        {
+            int reserve = ammoManager != null ? ammoManager.GetAmmoCount(data.AmmotType) : 0;
+            WeaponUIManager.instance.UpdateWeaponUI(data, fire.CurrentAmmo, reserve);
+        }
+        /*
         AmmoManager ammoManager = GetComponent<AmmoManager>();
         int reserve = ammoManager != null ? ammoManager.GetAmmoCount(data.AmmotType) : 0;
         WeaponUIManager.instance.UpdateWeaponUI(data, fire.CurrentAmmo, reserve);
+        */
     }
 
 
