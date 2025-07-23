@@ -352,7 +352,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Press p to Exit
+  m_text: Press P to Exit
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -361,8 +361,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190239
+  m_fontColor: {r: 0.6226415, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -633,6 +633,10 @@ PrefabInstance:
         \nCredits\n\nMeshes Pulled From:\nUnity Asset Store, Sketchfab, Fab"
       objectReference: {fileID: 0}
     - target: {fileID: 7505838138406259800, guid: f194b0dfd1972fa408219973cd1f544f, type: 3}
+      propertyPath: m_colorMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7505838138406259800, guid: f194b0dfd1972fa408219973cd1f544f, type: 3}
       propertyPath: m_VerticalAlignment
       value: 512
       objectReference: {fileID: 0}
@@ -646,19 +650,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7505838138406259800, guid: f194b0dfd1972fa408219973cd1f544f, type: 3}
       propertyPath: m_fontColorGradient.topLeft.b
-      value: 1
+      value: 0.85660374
       objectReference: {fileID: 0}
     - target: {fileID: 7505838138406259800, guid: f194b0dfd1972fa408219973cd1f544f, type: 3}
       propertyPath: m_fontColorGradient.topLeft.g
-      value: 0.07813406
-      objectReference: {fileID: 0}
-    - target: {fileID: 7505838138406259800, guid: f194b0dfd1972fa408219973cd1f544f, type: 3}
-      propertyPath: m_fontColorGradient.topLeft.r
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7505838138406259800, guid: f194b0dfd1972fa408219973cd1f544f, type: 3}
+      propertyPath: m_fontColorGradient.topLeft.r
+      value: 0.47835055
+      objectReference: {fileID: 0}
+    - target: {fileID: 7505838138406259800, guid: f194b0dfd1972fa408219973cd1f544f, type: 3}
       propertyPath: m_fontColorGradient.topRight.b
-      value: 1
+      value: 0.85660374
       objectReference: {fileID: 0}
     - target: {fileID: 7505838138406259800, guid: f194b0dfd1972fa408219973cd1f544f, type: 3}
       propertyPath: m_fontColorGradient.topRight.g
@@ -666,31 +670,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7505838138406259800, guid: f194b0dfd1972fa408219973cd1f544f, type: 3}
       propertyPath: m_fontColorGradient.topRight.r
-      value: 0.46322584
+      value: 0.47835055
       objectReference: {fileID: 0}
     - target: {fileID: 7505838138406259800, guid: f194b0dfd1972fa408219973cd1f544f, type: 3}
       propertyPath: m_fontColorGradient.bottomLeft.b
-      value: 0.93674016
+      value: 0.6745098
       objectReference: {fileID: 0}
     - target: {fileID: 7505838138406259800, guid: f194b0dfd1972fa408219973cd1f544f, type: 3}
       propertyPath: m_fontColorGradient.bottomLeft.g
-      value: 1
+      value: 0.5277584
       objectReference: {fileID: 0}
     - target: {fileID: 7505838138406259800, guid: f194b0dfd1972fa408219973cd1f544f, type: 3}
       propertyPath: m_fontColorGradient.bottomLeft.r
-      value: 0
+      value: 0.24313726
       objectReference: {fileID: 0}
     - target: {fileID: 7505838138406259800, guid: f194b0dfd1972fa408219973cd1f544f, type: 3}
       propertyPath: m_fontColorGradient.bottomRight.b
-      value: 0.91854143
+      value: 0.6745098
       objectReference: {fileID: 0}
     - target: {fileID: 7505838138406259800, guid: f194b0dfd1972fa408219973cd1f544f, type: 3}
       propertyPath: m_fontColorGradient.bottomRight.g
-      value: 0
+      value: 0.5277584
       objectReference: {fileID: 0}
     - target: {fileID: 7505838138406259800, guid: f194b0dfd1972fa408219973cd1f544f, type: 3}
       propertyPath: m_fontColorGradient.bottomRight.r
-      value: 1
+      value: 0.24313726
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
