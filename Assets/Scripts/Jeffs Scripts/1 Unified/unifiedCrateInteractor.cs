@@ -54,7 +54,11 @@ public class unifiedCrateInteractor : MonoBehaviour
                 //crate is empty and player is holding a weapon
                 else if (heldWeapon != null)
                 {
-                    PlaceWeapon(heldWeapon, closestCrate);
+                    GameObject toDrop = player.RemoveCurrentHeldWeapon(true, closestCrate.itemHolder);
+                    if(toDrop != null)
+                    {
+                        closestCrate.PlaceItem(toDrop);
+                    }
                 }
             }
         

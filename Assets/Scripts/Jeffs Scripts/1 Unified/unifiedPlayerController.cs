@@ -546,51 +546,51 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         return ownedWeapons.Count > 0 ? ownedWeapons[currentWeaponIndex] : null;
     }
 
-    public GameObject RemoveCurrentHeldWeapon()
+    public GameObject RemoveCurrentHeldWeapon(bool spawnWorld = false, Transform dropTransform = null)
     {
-        if (ownedWeapons.Count == 0 || currentWeaponIndex < 0 || currentWeaponIndex >= ownedWeapons.Count)
+        if (currentWeaponIndex < 0 || currentWeaponIndex >= ownedWeapons.Count)
             return null;
-        
-        GameObject weaponToRemove = ownedWeapons[currentWeaponIndex];
+
+        GameObject weapon = ownedWeapons[currentWeaponIndex];
+
         ownedWeapons.RemoveAt(currentWeaponIndex);
 
-        weaponToRemove.transform.SetParent(null);
-        weaponToRemove.SetActive(true);
+        GameObject world = null;
 
-        var pickup = weaponToRemove.GetComponent<unifiedWeaponPickup>();
-        if (pickup != null)
-            pickup.enabled = true;
+        if (spawnWorld && weapon.TryGetComponent(out WeaponFire fire) && fire.weaponWorldPrefab != null && dropTransform != null)
+        {
+            world = Instantiate(fire.weaponWorldPrefab);
+            world.transform.position = dropTransform.position;
+            world.transform.rotation = dropTransform.rotation;
+        }
 
-        foreach (Collider col in weaponToRemove.GetComponentsInChildren<Collider>())
-            col.enabled = true;
+        Destroy(weapon); 
 
-        if(ownedWeapons.Count == 0)
+        
+        if (ownedWeapons.Count == 0)
         {
             currentWeaponIndex = -1;
+            WeaponUIManager.instance.HideWeaponUI();
         }
         else
         {
             currentWeaponIndex = Mathf.Clamp(currentWeaponIndex, 0, ownedWeapons.Count - 1);
             for (int i = 0; i < ownedWeapons.Count; i++)
                 ownedWeapons[i].SetActive(i == currentWeaponIndex);
-        }
 
-        if (currentWeaponIndex != -1)
-        {
-            var fire = ownedWeapons[currentWeaponIndex].GetComponent<WeaponFire>();
-            if(fire!= null)
+            WeaponFire newFire = ownedWeapons[currentWeaponIndex].GetComponent<WeaponFire>();
+            if (newFire != null && newFire.weaponData != null)
             {
-                int reserve = GetComponent<AmmoManager>()?.GetAmmoCount(fire.weaponData.AmmotType) ?? 0;
-                WeaponUIManager.instance.UpdateWeaponUI(fire.weaponData, fire.CurrentAmmo, reserve);
-
+                int currentAmmo = newFire.CurrentAmmo;
+                int reserveAmmo = GetComponent<AmmoManager>()?.GetAmmoCount(newFire.weaponData.AmmotType) ?? 0;
+                WeaponUIManager.instance.UpdateWeaponUI(newFire.weaponData, currentAmmo, reserveAmmo);
             }
+
         }
-        else
-        {
-            WeaponUIManager.instance.HideWeaponUI();
-        }
-        return weaponToRemove;
+
+        return world; 
     }
+
 
     public void addArmor(int amount)
     {

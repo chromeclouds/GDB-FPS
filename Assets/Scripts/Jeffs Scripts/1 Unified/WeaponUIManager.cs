@@ -19,6 +19,7 @@ public class WeaponUIManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        HideWeaponUI();
 
     }
 

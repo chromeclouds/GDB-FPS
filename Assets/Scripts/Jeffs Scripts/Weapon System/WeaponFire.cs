@@ -49,6 +49,18 @@ public class WeaponFire : MonoBehaviour
 
     }
 
+    private void OnDisable()
+    {
+        if (audioSource != null && audioSource.isPlaying)
+        {
+            audioSource.Stop();
+            audioSource.clip = null;
+        }
+        isFiringBurst = false;
+        isReloading = false;
+        isOverheated = false;
+    }
+
     void Update()
     {
         if (isReloading || isOverheated) return;
