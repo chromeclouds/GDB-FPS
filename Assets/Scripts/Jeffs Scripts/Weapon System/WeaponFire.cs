@@ -111,7 +111,7 @@ public class WeaponFire : MonoBehaviour
                     break;
             }
 
-            if (Input.GetKeyDown(KeyCode.R) && !weaponData.HasInfiniteAmmo)
+            if (Input.GetKeyDown(KeyCode.R) && !weaponData.HasInfiniteAmmo && ammoManager.GetAmmoCount(weaponData.AmmotType) > 0 && currentAmmo < weaponData.MaxAmmo)
             {
                 StartCoroutine(Reload());
             }
