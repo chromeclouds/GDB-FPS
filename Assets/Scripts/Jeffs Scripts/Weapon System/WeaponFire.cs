@@ -232,8 +232,11 @@ public class WeaponFire : MonoBehaviour
     {
         isReloading = true;
 
-        if(weaponData.ReloadStartSound != null)
+        if (weaponData.ReloadStartSound != null)
+        {
+            audioSource.Stop();
             PlaySound(weaponData.ReloadStartSound);
+        }
 
         yield return new WaitForSeconds(weaponData.ReloadTime);
 
@@ -249,6 +252,12 @@ public class WeaponFire : MonoBehaviour
 
         }
 
+        if (audioSource.isPlaying && audioSource.clip == weaponData.ReloadStartSound)
+        {
+            audioSource.Stop();
+            audioSource.clip = null;
+        }
+
         if (weaponData.ReloadEndSound != null)
             PlaySound(weaponData.ReloadEndSound);
 
@@ -262,4 +271,15 @@ public class WeaponFire : MonoBehaviour
             audioSource.PlayOneShot(clip);
         }
     }
+
+    private void PlaySoundLoop(AudioClip clip)
+    {
+        if (clip != null && audioSource != null)
+        {
+            audioSource.clip = clip;
+            audioSource.loop = false;
+            audioSource.Play();
+        }
+    }
+
 }
