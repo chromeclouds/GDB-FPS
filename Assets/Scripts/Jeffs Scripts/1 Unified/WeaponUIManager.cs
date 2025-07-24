@@ -19,6 +19,7 @@ public class WeaponUIManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        HideWeaponUI();
 
     }
 
@@ -53,6 +54,21 @@ public class WeaponUIManager : MonoBehaviour
                 ammoTypeText.color = heavyColor;
                 break;
         }
+    }
+
+    public void HideWeaponUI()
+    {
+        if (gunNameText != null)
+            gunNameText.text = "";
+        if (gunIcon != null)
+        {
+            gunIcon.sprite = null;
+            gunIcon.enabled = false;
+        }
+        if (ammoTypeText != null)
+            ammoTypeText.text = "";
+        if (ammoCountText != null)
+            ammoCountText.text = "";
     }
 
     public void UpdateAmmoCount(int currentAmmo, int totalAmmo)

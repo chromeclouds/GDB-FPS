@@ -52,12 +52,14 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
     bool isSprinting;
     int remainingDamage;
     public bool hasTorch;
+    int speedOrig;
 
     private GameObject currentMeleeWeapon;
 
     void Start()
     {
         HPOrig = HP;
+        speedOrig = speed;
         armorValue = armor;
         spawnPlayer();
         hasTorch = false;
@@ -184,25 +186,26 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         float endAngle = 125f;
 
         Transform pivot = pivotPoint.transform;
-
+        //if (currentMeleeWeapon.CompareTag("Dagger") || currentMeleeWeapon.CompareTag("Sword")) commented out until I figure this out
+        // {
         pivot.localRotation = Quaternion.Euler(0f, startAngle, 0f);
 
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float t = elapsed / duration;
 
-        while (elapsed < duration)
-        {
-            elapsed += Time.deltaTime;
-            float t = elapsed / duration;
+                float angle = Mathf.Lerp(startAngle, endAngle, Mathf.SmoothStep(0f, 1f, t));
+                pivot.localRotation = Quaternion.Euler(0f, angle, 0f);
 
-            float angle = Mathf.Lerp(startAngle, endAngle, Mathf.SmoothStep(0f, 1f, t));
-            pivot.localRotation = Quaternion.Euler(0f, angle, 0f);
+                yield return null;
+            }
 
-            yield return null;
-        }
-
-        pivot.localRotation = Quaternion.Euler(0f, startAngle, 0f);
-        weaponHolder.gameObject.SetActive(true);
-        isMeleeing = false;
-        pivotPoint.gameObject.SetActive(false);
+            pivot.localRotation = Quaternion.Euler(0f, startAngle, 0f);
+            weaponHolder.gameObject.SetActive(true);
+            isMeleeing = false;
+            pivotPoint.gameObject.SetActive(false);
+       // }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -238,6 +241,32 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
     {
         if (gameManager.instance.GetDifficulty())
             amount *= 2;
+        int damageToHP = 0;
+
+        if (armorValue > 0)
+        {
+            int overflow = amount - armorValue;
+            armorValue -= amount;
+            if (armorValue < 0) armorValue = 0;
+            if (overflow > 0) damageToHP = overflow;
+        }
+        else
+        {
+            damageToHP = amount;
+
+        }
+
+        HP -= damageToHP;
+        updatePlayerUI();
+        StartCoroutine(damageFlash());
+        if (HP <= 0)
+        {
+            gameManager.instance.youLose();
+        }
+
+        /*  //johns code remaining damage is used uninitialized unless armor value > 0
+        if (gameManager.instance.GetDifficulty())
+            amount *= 2;
 
         updatePlayerUI();
         StartCoroutine(damageFlash());
@@ -262,7 +291,13 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
             //oh no im dead
             gameManager.instance.youLose();
         }
+        */
 
+    }
+
+    public bool HasMaxWeapons()
+    {
+        return ownedWeapons.Count >= 3;
     }
 
     void updatePlayerUI()
@@ -276,6 +311,11 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
     {
         HP = HPOrig;
         updatePlayerUI();
+    }
+
+    public void resetSpeed()
+    {
+        speed = speedOrig;
     }
     IEnumerator damageFlash()
     {
@@ -346,15 +386,34 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
     {
         controller.transform.position = gameManager.instance.playerSpawnPos.transform.position;
         HP = HPOrig;
+        speed = speedOrig;
         updatePlayerUI();
     }
 
     public void getWeaponStats(WeaponStats weapon) { } //lecture 
     public void getWeaponData(WeaponData data, GameObject heldPrefab)
     {
+        //testers didnt like being able to have all the guns, now they get a max of 3
+        if(ownedWeapons.Count >= 3)
+        {
+            GameObject toDrop = RemoveCurrentHeldWeapon();
+            if(toDrop != null)
+            {
+                toDrop.transform.SetParent(null);
+                toDrop.transform.position = transform.position + transform.forward;
+                foreach (Collider col in toDrop.GetComponentsInChildren<Collider>())
+                    col.enabled = true;
+                var pickup = toDrop.GetComponent<unifiedWeaponPickup>();
+                if (pickup != null) pickup.enabled = true;
+                toDrop.SetActive(true);
+            }
+        }
+
+        //instantiates new weapon
         GameObject spawned = Instantiate(heldPrefab, weaponHolder);
         spawned.transform.localPosition = Vector3.zero;
         spawned.transform.localRotation = Quaternion.identity;
+
 
         WeaponFire fire = spawned.GetComponent<WeaponFire>();
         if (fire != null)
@@ -371,20 +430,42 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
                     Debug.LogError("BulletSpawnPoint not found on: " + spawned.name);
             }
 
-            // Manually re-run OnEnable logic if needed
+            // load full mag on pickup
             fire.enabled = false;
             fire.enabled = true;
+            var maxMag = data.MaxAmmo;
+            typeof(WeaponFire).GetField("currentAmmo", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                ?.SetValue(fire, maxMag);
         }
 
-        var pickup = spawned.GetComponent<unifiedWeaponPickup>();
-        if (pickup != null)
+        // Give 3 extra mags of reserve ammo of this weapons ammo type
+        AmmoManager ammoManager = GetComponent<AmmoManager>();
+        if (ammoManager != null && !data.HasInfiniteAmmo)
         {
-            pickup.enabled = false;
+            int extraAmmo = data.MaxAmmo * 3; 
+            ammoManager.AddAmmo(data.AmmotType, extraAmmo);
+            /*
+             
+            int currentReserve = ammoManager.GetAmmoCount(data.AmmotType);
+            int grantedAmmo = data.MaxAmmo * 3;
+            if(currentReserve == 0) // Only grant if has 0
+            {
+                ammoManager.AddAmmo(data.AmmotType, grantedAmmo);
+            }
+            */
+        }
+        
+        //prevent interaction collisions and crate pickup reactivation
+        var pickupComp = spawned.GetComponent<unifiedWeaponPickup>();
+        if (pickupComp != null)
+        {
+            pickupComp.enabled = false;
         }
 
         foreach (Collider col in spawned.GetComponentsInChildren<Collider>())
             col.enabled = false;
 
+        // track and switch to new weapon
         ownedWeapons.Add(spawned);
         currentWeaponIndex = ownedWeapons.Count - 1;
 
@@ -393,9 +474,17 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
             ownedWeapons[i].SetActive(i == currentWeaponIndex);
         }
 
+        //update ui
+        if (fire != null)
+        {
+            int reserve = ammoManager != null ? ammoManager.GetAmmoCount(data.AmmotType) : 0;
+            WeaponUIManager.instance.UpdateWeaponUI(data, fire.CurrentAmmo, reserve);
+        }
+        /*
         AmmoManager ammoManager = GetComponent<AmmoManager>();
         int reserve = ammoManager != null ? ammoManager.GetAmmoCount(data.AmmotType) : 0;
         WeaponUIManager.instance.UpdateWeaponUI(data, fire.CurrentAmmo, reserve);
+        */
     }
 
 
@@ -465,27 +554,54 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         return ownedWeapons.Count > 0 ? ownedWeapons[currentWeaponIndex] : null;
     }
 
-    public GameObject RemoveCurrentHeldWeapon()
+    public GameObject RemoveCurrentHeldWeapon(bool spawnWorld = false, Transform dropTransform = null)
     {
-        if (ownedWeapons.Count == 0) return null;
+        if (currentWeaponIndex < 0 || currentWeaponIndex >= ownedWeapons.Count)
+            return null;
 
-        GameObject weaponToDrop = ownedWeapons[currentWeaponIndex];
+        GameObject weapon = ownedWeapons[currentWeaponIndex];
+
         ownedWeapons.RemoveAt(currentWeaponIndex);
 
+        GameObject world = null;
+
+        if (spawnWorld && weapon.TryGetComponent(out WeaponFire fire) && fire.weaponWorldPrefab != null && dropTransform != null)
+        {
+            world = Instantiate(fire.weaponWorldPrefab);
+            world.transform.position = dropTransform.position;
+            world.transform.rotation = dropTransform.rotation;
+        }
+
+        Destroy(weapon); 
+
+        
         if (ownedWeapons.Count == 0)
         {
-            currentWeaponIndex = 0;
+            currentWeaponIndex = -1;
+            WeaponUIManager.instance.HideWeaponUI();
         }
         else
         {
             currentWeaponIndex = Mathf.Clamp(currentWeaponIndex, 0, ownedWeapons.Count - 1);
             for (int i = 0; i < ownedWeapons.Count; i++)
-            {
                 ownedWeapons[i].SetActive(i == currentWeaponIndex);
+
+            WeaponFire newFire = ownedWeapons[currentWeaponIndex].GetComponent<WeaponFire>();
+            if (newFire != null && newFire.weaponData != null)
+            {
+                int currentAmmo = newFire.CurrentAmmo;
+                int reserveAmmo = GetComponent<AmmoManager>()?.GetAmmoCount(newFire.weaponData.AmmotType) ?? 0;
+                WeaponUIManager.instance.UpdateWeaponUI(newFire.weaponData, currentAmmo, reserveAmmo);
             }
+
         }
 
-        return weaponToDrop;
+        return world; 
+    }
+
+    public bool isArmorFull()
+    {
+        return armorValue >= armorMax;
     }
 
     public void addArmor(int amount)

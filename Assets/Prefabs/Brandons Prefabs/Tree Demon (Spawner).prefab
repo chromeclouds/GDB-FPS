@@ -591,10 +591,12 @@ GameObject:
   - component: {fileID: 6270731816389907048}
   - component: {fileID: 8794165198515951846}
   - component: {fileID: 3029431738239328515}
+  - component: {fileID: -2994968522466853805}
   - component: {fileID: 8551873295176252828}
   - component: {fileID: 6970452103674528728}
   - component: {fileID: 6851292265694078375}
   - component: {fileID: 1514683135630874354}
+  - component: {fileID: 2722834544082068731}
   m_Layer: 7
   m_Name: Tree Demon (Spawner)
   m_TagString: Untagged
@@ -618,6 +620,7 @@ Transform:
   - {fileID: 2917859459874056259}
   - {fileID: 5380069487440036852}
   - {fileID: 94212525820542676}
+  - {fileID: 4787516426500437326}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8794165198515951846
@@ -637,8 +640,6 @@ MonoBehaviour:
   headPOS: {fileID: 7125484113383143673}
   HP: 15
   factTargetSpeed: 80
-  roamDist: 0
-  roamstopTime: 0
   shootPos: {fileID: 9039283796521223967}
   bullet: {fileID: 3512113257025459144, guid: f31a15df4839c9d47a2bd28eda6b7f42, type: 3}
   shootRate: 5
@@ -646,7 +647,10 @@ MonoBehaviour:
   FOV: 100
   scoreValue: 100
   anim: {fileID: 8551873295176252828}
-  swordCol: {fileID: 0}
+  audioSource: {fileID: 2722834544082068731}
+  idleSound: {fileID: 8300000, guid: 5a05e37024d29024a80bd0ca48815f7d, type: 3}
+  deathVisual: {fileID: 8829451551789304542, guid: 8206b722d11501a449d6a278cca2adfa, type: 3}
+  vfxSpawn: {fileID: 1589179016382381468}
 --- !u!114 &3029431738239328515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -670,6 +674,18 @@ MonoBehaviour:
   spawnIntervalMin: 18
   spawnIntervalMax: 26
   gateTarget: {fileID: 5097695028471692300, guid: 02ad0e50fe933914ba32d52fe7fee984, type: 3}
+--- !u!114 &-2994968522466853805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1644428441327535268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58c5c70052d2c7e47bf1f0e3dbe55887, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!95 &8551873295176252828
 Animator:
   serializedVersion: 7
@@ -755,9 +771,106 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 2
-  m_Height: 1
+  m_Height: 12
   m_Direction: 1
-  m_Center: {x: 0, y: 8, z: 1.8}
+  m_Center: {x: 0, y: 5, z: 1.4}
+--- !u!82 &2722834544082068731
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1644428441327535268}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 1739079367118338026, guid: 66abccd7ddeeccb49baa2e4fb44f5192, type: 2}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 0.835
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 0
+  DopplerLevel: 1
+  MinDistance: 5
+  MaxDistance: 25
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 1
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1916995153067229632
 GameObject:
   m_ObjectHideFlags: 0
@@ -981,6 +1094,38 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2276559749044812483}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2533786574497049314
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4787516426500437326}
+  m_Layer: 22
+  m_Name: MiniMapIconTreeDemonSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4787516426500437326
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2533786574497049314}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5448219727134451242}
+  m_Father: {fileID: 6270731816389907048}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2535134010733924468
 GameObject:
@@ -3292,3 +3437,69 @@ Transform:
   - {fileID: 8826630665299324600}
   m_Father: {fileID: 6154255332829535868}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &5016245572322079971
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4787516426500437326}
+    m_Modifications:
+    - target: {fileID: 1010704333487854281, guid: 3528e449cf00e774797c4744aeaf994c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1010704333487854281, guid: 3528e449cf00e774797c4744aeaf994c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 13.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1010704333487854281, guid: 3528e449cf00e774797c4744aeaf994c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1010704333487854281, guid: 3528e449cf00e774797c4744aeaf994c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1010704333487854281, guid: 3528e449cf00e774797c4744aeaf994c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1010704333487854281, guid: 3528e449cf00e774797c4744aeaf994c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1010704333487854281, guid: 3528e449cf00e774797c4744aeaf994c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1010704333487854281, guid: 3528e449cf00e774797c4744aeaf994c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1010704333487854281, guid: 3528e449cf00e774797c4744aeaf994c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1010704333487854281, guid: 3528e449cf00e774797c4744aeaf994c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3482138226534883091, guid: 3528e449cf00e774797c4744aeaf994c, type: 3}
+      propertyPath: m_Name
+      value: TreeDemonSpawnerIcon
+      objectReference: {fileID: 0}
+    - target: {fileID: 3482138226534883091, guid: 3528e449cf00e774797c4744aeaf994c, type: 3}
+      propertyPath: m_Layer
+      value: 22
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3528e449cf00e774797c4744aeaf994c, type: 3}
+--- !u!4 &5448219727134451242 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1010704333487854281, guid: 3528e449cf00e774797c4744aeaf994c, type: 3}
+  m_PrefabInstance: {fileID: 5016245572322079971}
+  m_PrefabAsset: {fileID: 0}

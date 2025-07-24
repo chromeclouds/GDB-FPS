@@ -8,13 +8,14 @@ public class buttonFunctions : MonoBehaviour
     {
         StartCoroutine(loadNewGame());
     }
-    public void showCaseLevel()
+    public void credits()
     {
-        StartCoroutine(loadShowCase());
+        StartCoroutine(loadCredits());
     }
     public void resume()
     {
         gameManager.instance.stateUnpause();
+        gameManager.instance.player.GetComponent<unifiedPlayerController>().resetSpeed();
     }
 
     public void restart()
@@ -48,18 +49,19 @@ public class buttonFunctions : MonoBehaviour
         {
             gameManager.instance.reduceWallet(500);
             gameManager.instance.player.GetComponent<unifiedPlayerController>().resetHealth();
+            gameManager.instance.player.GetComponent<unifiedPlayerController>().resetSpeed();
             gameManager.instance.stateUnpause();
-        }
-        else
-        {
-
         }
     }
 
     public void quit()
     {
-        gameManager.instance.resetTime();
         gameManager.instance.isPaused = true;
+        gameManager.instance.resetTime();
+        StartCoroutine(quitGame());
+    }
+    public void quitMain()
+    {
         StartCoroutine(quitGame());
     }
 
@@ -76,7 +78,13 @@ public class buttonFunctions : MonoBehaviour
         gameManager.instance.stateUnpause();
     }
 
-    IEnumerator loadShowCase()
+    //IEnumerator loadShowCase()
+    //{
+    //    yield return new WaitForSeconds(0.3f);
+    //    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    //}
+
+    IEnumerator loadCredits()
     {
         yield return new WaitForSeconds(0.3f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);

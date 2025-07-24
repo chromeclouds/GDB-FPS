@@ -6,7 +6,7 @@ public class VerticalSlash : MonoBehaviour
     public int damage = 15;
 
     public float lifetime = 3f;
-    public float aimSlightlyTowardPlayer = 0.1f; //slight homing correction
+    public float aimSlightlyTowardPlayer = 0.35f; //slight homing correction
 
     private Vector3 direction;
 
@@ -31,7 +31,8 @@ public class VerticalSlash : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position += direction * speed * Time.deltaTime;    
+        transform.position += direction * speed * Time.deltaTime;
+        transform.forward = direction;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -40,6 +41,10 @@ public class VerticalSlash : MonoBehaviour
         {
             IDamage dmg = other.GetComponent<IDamage>();
             if (dmg != null) dmg.takeDamage(damage);
+            Destroy(gameObject);
+        }
+        else if (other.gameObject.layer == LayerMask.NameToLayer("Default") || other.gameObject.CompareTag("Wall"))
+        {
             Destroy(gameObject);
         }
 

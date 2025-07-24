@@ -3149,6 +3149,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6260549870518555252}
   - component: {fileID: 4365955534082108048}
+  - component: {fileID: 8508588688178875114}
   - component: {fileID: 8296336076007083606}
   - component: {fileID: 63041440872613050}
   - component: {fileID: 2746986890804011822}
@@ -3201,7 +3202,7 @@ MonoBehaviour:
   agent: {fileID: 8296336076007083606}
   headPOS: {fileID: 8532714096018523202}
   HP: 5
-  factTargetSpeed: 80
+  faceTargetSpeed: 0
   roamDist: 5
   roamstopTime: 3
   shootPos: {fileID: 998774183534578487}
@@ -3212,6 +3213,20 @@ MonoBehaviour:
   scoreValue: 100
   anim: {fileID: 63041440872613050}
   swordCol: {fileID: 0}
+  skullTarget: {fileID: 0}
+  followOffset: {x: 0, y: 0, z: 0}
+--- !u!114 &8508588688178875114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8320022925783731698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58c5c70052d2c7e47bf1f0e3dbe55887, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!195 &8296336076007083606
 NavMeshAgent:
   m_ObjectHideFlags: 0

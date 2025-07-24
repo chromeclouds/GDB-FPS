@@ -6,34 +6,33 @@ public class BuyableAmmo : MonoBehaviour, ICost
 
     [SerializeField] private ArmorType armorType = ArmorType.Light;
     [SerializeField] private int price = 100;
+
+
     public void buy()
     {
-        if (gameManager.instance.walletAmount() - price >= 0)
+        if (gameManager.instance.walletAmount() < price) return;
+
+        GameObject player = GameObject.FindWithTag("Player");
+        if (player == null) return;
+
+        var controller = player.GetComponent<unifiedPlayerController>();
+        if(controller == null)
         {
-            GameObject player = GameObject.FindWithTag("Player");
-            if(player != null)
-            {
-                Collider playerCollider = player.GetComponent<Collider>();
-                if (playerCollider != null)
-                {
-                    GiveArmorToPlayer(playerCollider);
-                    gameManager.instance.reduceWallet(price);
-                }
-                else
-                {
-                    Debug.LogWarning("no collider on player");
-                }
-            }
+            Debug.LogWarning("player does not have controller");
+            return;
         }
+        if (controller.isArmorFull())
+        {
+            Debug.Log("armor is full");
+            return;
+        }
+        gameManager.instance.reduceWallet(price);
+        GiveArmorToPlayer(controller);
     }
 
-    private void GiveArmorToPlayer(Collider playerCollider)
+    private void GiveArmorToPlayer(unifiedPlayerController controller)
     {
-        if (playerCollider == null) return;
-
-        var controller = playerCollider.GetComponent<unifiedPlayerController>();
-        if(controller != null)
-        {
+        
             switch(armorType)
             {
                 case ArmorType.Light:
@@ -46,7 +45,7 @@ public class BuyableAmmo : MonoBehaviour, ICost
                     controller.addArmor(3);
                     break;
             }
-        }
+        
     }
 
     public int checkPrice()

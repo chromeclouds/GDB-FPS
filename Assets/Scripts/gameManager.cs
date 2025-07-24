@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -23,6 +24,7 @@ public class gameManager : MonoBehaviour
     [SerializeField] int wallet;
     [SerializeField] int rounds;
     [SerializeField] int roundValue;
+    [SerializeField] GameObject notification;
 
     public Image playerHPBar;
     public Image playerArmorBar;
@@ -240,7 +242,7 @@ public class gameManager : MonoBehaviour
 
     public void ClearLevel()
     {
-        LectureEnemyAI[] enemies = FindObjectsByType<LectureEnemyAI>(FindObjectsSortMode.None);
+        LowlyDemonAI[] enemies = FindObjectsByType<LowlyDemonAI>(FindObjectsSortMode.None);
 
         foreach (var enemy in enemies)
         {
@@ -306,7 +308,9 @@ public class gameManager : MonoBehaviour
     IEnumerator flashPrompt(GameObject prompt)
     {
         prompt.SetActive(true);
-        yield return new WaitForSeconds(2.0f);
+        notification.GetComponent<AudioSource>().Play();
+        yield return new WaitForSeconds(3.0f);
+        notification.GetComponent<AudioSource>().Stop();
         prompt.SetActive(false);
     }
 
@@ -322,8 +326,10 @@ public class gameManager : MonoBehaviour
     {
         gatePromptIsRunning = true;
         gateAttackedPopup.SetActive(true);
+        notification.GetComponent<AudioSource>().Play();
         yield return new WaitForSeconds(2.0f);
         gateAttackedPopup.SetActive(false);
+        notification.GetComponent<AudioSource>().Stop();
         gatePromptIsRunning = false;
     }
 
@@ -412,7 +418,7 @@ public class gameManager : MonoBehaviour
     {
         if (currLevel != SceneManager.sceneCountInBuildSettings - 1)
         {
-            LectureEnemyAI[] enemies = FindObjectsByType<LectureEnemyAI>(FindObjectsSortMode.None);
+            LowlyDemonAI[] enemies = FindObjectsByType<LowlyDemonAI>(FindObjectsSortMode.None);
 
             foreach (var enemy in enemies)
             {

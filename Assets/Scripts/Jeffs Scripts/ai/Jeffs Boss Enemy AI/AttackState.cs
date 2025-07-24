@@ -13,8 +13,21 @@ public class AttackState : EnemyState
         timer = 0f;
 
         ai.agent.isStopped = true;
+        float distance = Vector3.Distance(ai.transform.position, ai.player.position);
 
-        chosenAttack = ai.GetBestAttackIndex();
+        if (distance>ai.attackRange && ai.IsPlayerInLineOfSight())
+        {
+            ai.FacePlayer();
+            ai.animator.SetBool("isAttacking", true);
+            ai.animator.SetInteger("AttackIndex", 2);
+            ai.animator.SetTrigger("AttackTrigger");
+            ai.SpawnVerticalSlash();
+            return;
+        }
+
+        chosenAttack = ai.currentHP <= ai.rageThreshold ? Random.Range(1, 4) : ai.GetBestAttackIndex();
+        if (ai.currentHP <= ai.rageThreshold)
+            ai.SpawnVerticalSlash();
 
         ai.animator.SetBool("isAttacking", true);
         ai.animator.SetInteger("AttackIndex", chosenAttack);

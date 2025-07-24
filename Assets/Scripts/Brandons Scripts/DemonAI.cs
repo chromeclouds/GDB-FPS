@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.AI;
+using NUnit.Framework;
+using System.Collections.Generic;
+
 public class DemonAI : MonoBehaviour, IDamage, IOpen
 {
     [SerializeField] Renderer model;
@@ -8,8 +11,6 @@ public class DemonAI : MonoBehaviour, IDamage, IOpen
     [SerializeField] Transform headPOS;
     [SerializeField] int HP;
     [SerializeField] int factTargetSpeed;
-    [SerializeField] int roamDist;
-    [SerializeField] int roamstopTime;
     [SerializeField] Transform shootPos;
     [SerializeField] GameObject bullet;
     [SerializeField] float shootRate;
@@ -17,25 +18,36 @@ public class DemonAI : MonoBehaviour, IDamage, IOpen
     [SerializeField] int FOV;
     [SerializeField] int scoreValue;
     [SerializeField] Animator anim;
-    [SerializeField] Collider swordCol;
+
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip idleSound;
+
+    [SerializeField] private GameObject deathVisual;
+    [SerializeField] private Transform vfxSpawn;
 
     Color colorOrig;
 
     float shootTimer;
     float angleToPlayer;
-    float roamTime;
     float stoppingDistOrig;
     bool playerInRange;
 
     Vector3 playerDir;
-    Vector3 startingPos;
+
+    private List<GameObject> projectiles = new List<GameObject>();
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         colorOrig = model.material.color;
-        startingPos = transform.position;
         stoppingDistOrig = agent.stoppingDistance;
 
+        if (idleSound != null && audioSource != null)
+        {
+            audioSource.clip = idleSound;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
     }
 
     // Update is called once per frame
@@ -43,23 +55,9 @@ public class DemonAI : MonoBehaviour, IDamage, IOpen
     {
         setAnimations();
 
-        if (agent.remainingDistance < 0.01f)
-            roamTime += Time.deltaTime;
-
         if (playerInRange)
         {
-            if (!canSeePlayer())
-                roamCheck();
-        }
-        else
-        {
-            roamCheck();
-        }
-
-        // Prevents the enemy from creeping forward when already within attack range
-        if (playerInRange && agent.remainingDistance <= agent.stoppingDistance)
-        {
-            agent.velocity = Vector3.zero;
+            canSeePlayer();
         }
     }
 
@@ -76,32 +74,6 @@ public class DemonAI : MonoBehaviour, IDamage, IOpen
         anim.SetFloat("Speed", Mathf.Lerp(animSpeedCur, agentSpeedCur, Time.deltaTime * animSpeedTrans));
     }
 
-
-    void roamCheck()
-    {
-        if (roamTime >= roamstopTime && agent.remainingDistance < 0.01f)
-        {
-            roam();
-        }
-    }
-
-
-    void roam()
-    {
-        roamTime = 0;
-        agent.stoppingDistance = 0;
-
-        Vector3 ranPos = Random.insideUnitSphere * roamDist;
-        ranPos += startingPos;
-
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(ranPos, out hit, roamDist, NavMesh.AllAreas))
-        {
-            agent.SetDestination(hit.position);
-        }
-    }
-
-
     bool canSeePlayer()
     {
         if (!playerInRange) return false;
@@ -115,44 +87,30 @@ public class DemonAI : MonoBehaviour, IDamage, IOpen
         {
             if (angleToPlayer < FOV && hit.collider.CompareTag("Player"))
             {
+                faceTarget(); // Always rotate toward player
 
                 shootTimer += Time.deltaTime;
-
-                // Calculate the current distance between the enemy and the player
-                float distToPlayer = Vector3.Distance(transform.position, gameManager.instance.player.transform.position);
-                // If the player is farther than the stopping distance continue chasing
-                if (distToPlayer > agent.stoppingDistance)
-                {
-                    // Resume movement and update destination to follow the player
-                    agent.isStopped = false;
-                    agent.SetDestination(gameManager.instance.player.transform.position);
-                }
-                else
-                {
-                    // Stop movement without cancelling path
-                    agent.isStopped = true;
-                }
 
                 if (shootTimer > shootRate)
                 {
                     shoot();
                 }
 
-                if (agent.remainingDistance <= agent.stoppingDistance)
-                {
-                    faceTarget();
-                }
-                agent.stoppingDistance = stoppingDistOrig;
                 return true;
             }
         }
-        agent.stoppingDistance = 0;
+
         return false;
     }
+
     void faceTarget()
     {
-        Quaternion rot = Quaternion.LookRotation(new Vector3(playerDir.x, 0, playerDir.z));
-        transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * factTargetSpeed);//Change direction over time
+        Vector3 direction = new Vector3(playerDir.x, 0, playerDir.z).normalized;
+        if (direction != Vector3.zero)
+        {
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -167,7 +125,6 @@ public class DemonAI : MonoBehaviour, IDamage, IOpen
         if (other.CompareTag("Player"))
         {
             playerInRange = false;
-            agent.stoppingDistance = 0;
         }
     }
     public void takeDamage(int amount)
@@ -184,11 +141,11 @@ public class DemonAI : MonoBehaviour, IDamage, IOpen
         {
             gameManager.instance.updateGameGoal(-1);
             gameManager.instance.increaseWallet(scoreValue);
-            Destroy(gameObject);
+            StartCoroutine(DeathSequence());
         }
         /*
         HP -= amount;
-        agent.SetDestination(gameManager.instance.player.transform.position);
+       
         if (HP <= 0)
         {
             Destroy(gameObject);
@@ -200,6 +157,32 @@ public class DemonAI : MonoBehaviour, IDamage, IOpen
             StartCoroutine(flashRed());
         }
         */
+    }
+
+    IEnumerator DeathSequence()
+    {
+        foreach (GameObject proj in projectiles)
+        {
+            if (proj != null)
+                Destroy(proj);
+        }
+        if (deathVisual != null)
+        {
+            GameObject vfx = Instantiate(deathVisual, vfxSpawn.position, Quaternion.identity);
+            Destroy(vfx, 1f);
+        }
+        if (model != null)
+        {
+            model.enabled = false;
+        }
+
+        if (agent != null)
+        {
+            agent.enabled = false;
+        }
+
+        yield return new WaitForSeconds(0.5f);
+        Destroy(gameObject);
     }
 
     IEnumerator flashRed() //Timer
@@ -240,19 +223,7 @@ public class DemonAI : MonoBehaviour, IDamage, IOpen
 
     public void createBullet()
     {
-        Instantiate(bullet, shootPos.position, transform.rotation);
-
-    }
-
-    public void swordColOn()
-    {
-        if (swordCol)
-            swordCol.enabled = true;
-    }
-
-    public void swordColOff()
-    {
-        if (swordCol)
-            swordCol.enabled = false;
+        GameObject newProj = Instantiate(bullet, shootPos.position, transform.rotation);
+        projectiles.Add(newProj);
     }
 }

@@ -770,6 +770,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8995397386975968514}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2699001750637110783
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5890594398807817494}
+  m_Layer: 22
+  m_Name: MiniMapIconHellBornDemon
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5890594398807817494
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2699001750637110783}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 828532840785089316}
+  m_Father: {fileID: 3531195039821396542}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2733834870776871143
 GameObject:
   m_ObjectHideFlags: 0
@@ -2180,11 +2212,13 @@ GameObject:
   m_Component:
   - component: {fileID: 3531195039821396542}
   - component: {fileID: 4367532927693957541}
+  - component: {fileID: -4334425353817526880}
   - component: {fileID: 1138666334568754226}
   - component: {fileID: 977348267971343899}
   - component: {fileID: 3114740033948628455}
   - component: {fileID: 7477942674466384243}
   - component: {fileID: 9200036017188017948}
+  - component: {fileID: 7265090952605363471}
   m_Layer: 7
   m_Name: Hellborn Demon
   m_TagString: Untagged
@@ -2206,6 +2240,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3872797891816682229}
+  - {fileID: 5890594398807817494}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4367532927693957541
@@ -2226,7 +2261,6 @@ MonoBehaviour:
   shootPos: {fileID: 5064080036038250654}
   bullet: {fileID: 2605596456829534252, guid: 939c8dea707a74b4fbd2b0181ab28294, type: 3}
   anim: {fileID: 7477942674466384243}
-  swordCol: {fileID: 0}
   HP: 10
   shootRate: 2
   factTargetSpeed: 80
@@ -2235,9 +2269,26 @@ MonoBehaviour:
   FOV: 80
   animSpeedTrans: 8
   scoreValue: 100
+  idleSoundRate: 0
+  audioSource: {fileID: 7265090952605363471}
+  floatingSound: {fileID: 8300000, guid: 92a79d18abe1376439d43b47778ea771, type: 3}
+  deathVisual: {fileID: 8829451551789304542, guid: 8206b722d11501a449d6a278cca2adfa, type: 3}
+  vfxSpawn: {fileID: 1846914914764736733}
   lineOfSightMask:
     serializedVersion: 2
     m_Bits: 540672
+--- !u!114 &-4334425353817526880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8803542014139876150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58c5c70052d2c7e47bf1f0e3dbe55887, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!195 &1138666334568754226
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2248,7 +2299,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -2347,6 +2398,103 @@ CapsuleCollider:
   m_Height: 1.5
   m_Direction: 1
   m_Center: {x: 0, y: 2, z: 0}
+--- !u!82 &7265090952605363471
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8803542014139876150}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 1739079367118338026, guid: 66abccd7ddeeccb49baa2e4fb44f5192, type: 2}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 0.56
+  m_Pitch: -0.93
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 201
+  DopplerLevel: 2.65
+  MinDistance: 5
+  MaxDistance: 25
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 1
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &8937444904417872702
 GameObject:
   m_ObjectHideFlags: 0
@@ -2443,3 +2591,81 @@ Transform:
   - {fileID: 8977739800324050610}
   m_Father: {fileID: 5155858104378880225}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &7814719956582999890
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5890594398807817494}
+    m_Modifications:
+    - target: {fileID: 4249057657256443148, guid: 949ffb53e4caa6a4b8b8bab9bf193d1b, type: 3}
+      propertyPath: m_Name
+      value: HellbornDemonIcon
+      objectReference: {fileID: 0}
+    - target: {fileID: 4249057657256443148, guid: 949ffb53e4caa6a4b8b8bab9bf193d1b, type: 3}
+      propertyPath: m_Layer
+      value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 7425587374554657910, guid: 949ffb53e4caa6a4b8b8bab9bf193d1b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7425587374554657910, guid: 949ffb53e4caa6a4b8b8bab9bf193d1b, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7425587374554657910, guid: 949ffb53e4caa6a4b8b8bab9bf193d1b, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7425587374554657910, guid: 949ffb53e4caa6a4b8b8bab9bf193d1b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7425587374554657910, guid: 949ffb53e4caa6a4b8b8bab9bf193d1b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7425587374554657910, guid: 949ffb53e4caa6a4b8b8bab9bf193d1b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7425587374554657910, guid: 949ffb53e4caa6a4b8b8bab9bf193d1b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7425587374554657910, guid: 949ffb53e4caa6a4b8b8bab9bf193d1b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7425587374554657910, guid: 949ffb53e4caa6a4b8b8bab9bf193d1b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7425587374554657910, guid: 949ffb53e4caa6a4b8b8bab9bf193d1b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7425587374554657910, guid: 949ffb53e4caa6a4b8b8bab9bf193d1b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7425587374554657910, guid: 949ffb53e4caa6a4b8b8bab9bf193d1b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7425587374554657910, guid: 949ffb53e4caa6a4b8b8bab9bf193d1b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 949ffb53e4caa6a4b8b8bab9bf193d1b, type: 3}
+--- !u!4 &828532840785089316 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7425587374554657910, guid: 949ffb53e4caa6a4b8b8bab9bf193d1b, type: 3}
+  m_PrefabInstance: {fileID: 7814719956582999890}
+  m_PrefabAsset: {fileID: 0}
