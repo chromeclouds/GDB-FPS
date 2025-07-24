@@ -15,6 +15,7 @@ public class buttonFunctions : MonoBehaviour
     public void resume()
     {
         gameManager.instance.stateUnpause();
+        gameManager.instance.player.GetComponent<unifiedPlayerController>().resetSpeed();
     }
 
     public void restart()
@@ -48,6 +49,7 @@ public class buttonFunctions : MonoBehaviour
         {
             gameManager.instance.reduceWallet(500);
             gameManager.instance.player.GetComponent<unifiedPlayerController>().resetHealth();
+            gameManager.instance.player.GetComponent<unifiedPlayerController>().resetSpeed();
             gameManager.instance.stateUnpause();
         }
     }
