@@ -344,8 +344,12 @@ public class gameManager : MonoBehaviour
     {
         if (currRound == rounds || gameGoalCount > 0)
             return;
-        if (isHardMode) 
+        if (isHardMode)
+        {
             scoreMult = 2;
+            spawnMult = 2;
+        }
+
         else scoreMult = 1;
         activateSpawners();
         increaseWallet(roundValue);
