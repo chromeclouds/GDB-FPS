@@ -63,6 +63,7 @@ public class WeaponFire : MonoBehaviour
 
     void Update()
     {
+        if (Time.timeScale == 0f) return;
         if (isReloading || isOverheated) return;
         if (GetComponentInParent<unifiedPlayerController>() == null) return;
 
