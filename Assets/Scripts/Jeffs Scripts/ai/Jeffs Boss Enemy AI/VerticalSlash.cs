@@ -43,7 +43,7 @@ public class VerticalSlash : MonoBehaviour
             if (dmg != null) dmg.takeDamage(damage);
             Destroy(gameObject);
         }
-        else if (other.gameObject.layer == LayerMask.NameToLayer("Default") || other.gameObject.CompareTag("Wall"))
+        else if (other.gameObject.layer == LayerMask.NameToLayer("Default"))
         {
             Destroy(gameObject);
         }
