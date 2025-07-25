@@ -115,6 +115,7 @@ public class gameManager : MonoBehaviour
             }
             else if (menuActive == menuPause) 
             { 
+                player.GetComponent<unifiedPlayerController>().resetSpeed();
                 stateUnpause(); 
             }
         }

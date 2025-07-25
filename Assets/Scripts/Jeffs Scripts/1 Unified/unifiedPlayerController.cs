@@ -128,7 +128,7 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         }
         else if (Input.GetButtonUp("Sprint"))
         {
-            speed /= sprintMod;
+            speed = speedOrig;
             isSprinting = false;
         }
     }
