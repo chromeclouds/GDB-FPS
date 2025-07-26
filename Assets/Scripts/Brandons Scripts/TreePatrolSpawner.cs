@@ -28,9 +28,6 @@ public class TreePatrolSpawner : MonoBehaviour
             return;
         }
 
-        // Randomized interval per tree to add variation
-        // spawnInterval = Random.Range(spawnIntervalMin, spawnIntervalMax);
-
         // Random initial delay before the first patrol
         float randomDelay = Random.Range(initialSpawnDelayMin, initialSpawnDelayMax);
         StartCoroutine(DelayedSpawnStart(randomDelay));

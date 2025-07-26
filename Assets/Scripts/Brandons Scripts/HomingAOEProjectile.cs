@@ -35,6 +35,7 @@ public class HomingAOEProjectile : MonoBehaviour, IDamage
 
         if (audioSource != null && shootSound != null)
         {
+            audioSource.outputAudioMixerGroup = gameManager.instance.mixerSFX;
             audioSource.PlayOneShot(shootSound);
         }
     }
@@ -73,6 +74,11 @@ public class HomingAOEProjectile : MonoBehaviour, IDamage
             var ps = vfxInstance.GetComponent<ParticleSystem>();
             if (ps != null)
                 ps.Play();
+
+            AudioSource vfxAudio = vfxInstance.GetComponent<AudioSource>();
+            if (vfxAudio != null)
+                vfxAudio.outputAudioMixerGroup = gameManager.instance.mixerSFX;
+
             Destroy(vfxInstance, ps.main.duration);
         }
 
@@ -86,7 +92,15 @@ public class HomingAOEProjectile : MonoBehaviour, IDamage
         }
         if (hitSound != null)
         {
-            AudioSource.PlayClipAtPoint(hitSound, transform.position);
+            GameObject tempGO = new GameObject("TempHitSound");
+            tempGO.transform.position = transform.position;
+
+            AudioSource tempSource = tempGO.AddComponent<AudioSource>();
+            tempSource.clip = hitSound;
+            tempSource.outputAudioMixerGroup = gameManager.instance.mixerSFX; // ?
+            tempSource.Play();
+
+            Destroy(tempGO, hitSound.length);
         }
         Destroy(gameObject);
     }

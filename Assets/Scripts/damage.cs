@@ -32,6 +32,7 @@ public class damage : MonoBehaviour
         } 
         if (audioSource != null && shootSound != null)
         {
+            audioSource.outputAudioMixerGroup = gameManager.instance.mixerSFX;
             audioSource.PlayOneShot(shootSound);
         }
     }
@@ -60,7 +61,15 @@ public class damage : MonoBehaviour
         }
         if ((type == damageType.homing || type == damageType.moving) && hitSound != null)
         {
-            AudioSource.PlayClipAtPoint(hitSound, transform.position);
+            GameObject tempGO = new GameObject("TempHitSound");
+            tempGO.transform.position = transform.position;
+
+            AudioSource tempSource = tempGO.AddComponent<AudioSource>();
+            tempSource.clip = hitSound;
+            tempSource.outputAudioMixerGroup = gameManager.instance.mixerSFX;
+            tempSource.Play();
+
+            Destroy(tempGO, hitSound.length);
         }
         if(type == damageType.homing || type == damageType.moving)
         {

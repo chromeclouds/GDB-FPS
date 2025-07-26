@@ -50,6 +50,7 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
 
         if (floatingSound != null && audioSource != null)
         {
+            audioSource.outputAudioMixerGroup = gameManager.instance.mixerSFX;
             audioSource.clip = floatingSound;
             audioSource.loop = true;
             audioSource.Play();
@@ -201,20 +202,6 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
             gameManager.instance.increaseWallet(scoreValue);
             StartCoroutine(DeathSequence());
         }
-        /*
-        HP -= amount;
-        agent.SetDestination(lastKnownPlayerPos);
-        if (HP <= 0)
-        {
-            Destroy(gameObject);
-            gameManager.instance.updateGameGoal(-1);
-            gameManager.instance.increaseWallet(scoreValue);
-        }
-        else
-        {
-            StartCoroutine(FlashRed());
-        }
-        */
     }
     IEnumerator DeathSequence()
     {
@@ -226,6 +213,11 @@ public class HellBornDemonAI : MonoBehaviour, IDamage, IOpen
         if (deathVisual != null)
         {
             GameObject vfx = Instantiate(deathVisual, vfxSpawn.position, Quaternion.identity);
+            AudioSource fxAudio = vfx.GetComponent<AudioSource>();
+            if (fxAudio != null)
+            {
+                fxAudio.outputAudioMixerGroup = gameManager.instance.mixerSFX;
+            }
             Destroy(vfx, 1f);
         }
         if (model != null)

@@ -31,7 +31,7 @@ public class SkullEnemyAI : MonoBehaviour, IDamage
         agent = GetComponent<NavMeshAgent>();
         currentHealth = maxHealth;
 
-        if (model != null)
+        if (Application.isPlaying && model != null)
         {
             colorOrig = model.material.color;
         }
@@ -79,7 +79,7 @@ public class SkullEnemyAI : MonoBehaviour, IDamage
         {
             if (demon != null)
             {
-                demon.StartCoroutine(demon.SafeDeath());
+                demon.StartCoroutine(demon.DeathSequence());
             }
         }
 
@@ -91,9 +91,12 @@ public class SkullEnemyAI : MonoBehaviour, IDamage
         if (explodeSound != null)
         {
             GameObject tempGO = new GameObject("TempExplosionSound");
+            tempGO.transform.position = transform.position;
+
             AudioSource aSource = tempGO.AddComponent<AudioSource>();
             aSource.clip = explodeSound;
-            aSource.spatialBlend = 0f; // 0 = 2D, no spatial falloff
+            aSource.outputAudioMixerGroup = gameManager.instance.mixerSFX;
+            aSource.spatialBlend = 0f; 
             aSource.volume = 2.0f;
             aSource.Play();
             Destroy(tempGO, explodeSound.length);
@@ -116,15 +119,24 @@ public class SkullEnemyAI : MonoBehaviour, IDamage
         {
             Explode();
         }
-        //else
-        //{
-        //    StartCoroutine(flashRed());
-        //}
+        else
+        {
+            StartCoroutine(flashRed());
+        }
     }
-    //IEnumerator flashRed()
-    //{
-    //    model.material.color = Color.red;
-    //    yield return new WaitForSeconds(0.1f);
-    //    model.material.color = colorOrig;
-    //}
+    IEnumerator flashRed()
+    {
+        Material[] mats = model.materials;
+        foreach (Material mat in mats)
+        {
+            mat.color = Color.red;
+        }
+
+        yield return new WaitForSeconds(0.1f);
+
+        foreach (Material mat in mats)
+        {
+            mat.color = colorOrig;
+        }
+    }
 }

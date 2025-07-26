@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.AI;
 using System.Collections.Generic;
+using UnityEngineInternal;
 public class LowlyDemonAI : MonoBehaviour, IDamage, IOpen
 {
     [SerializeField] Renderer model;
@@ -51,6 +52,7 @@ public class LowlyDemonAI : MonoBehaviour, IDamage, IOpen
 
         if (idleSound != null && audioSource != null)
         {
+            audioSource.outputAudioMixerGroup = gameManager.instance.mixerSFX;
             audioSource.clip = idleSound;
             audioSource.loop = true;
             audioSource.Play();
@@ -207,20 +209,6 @@ public class LowlyDemonAI : MonoBehaviour, IDamage, IOpen
             gameManager.instance.increaseWallet(scoreValue);
             StartCoroutine(DeathSequence());
         }
-        /*
-        HP -= amount;
-        agent.SetDestination(gameManager.instance.player.transform.position);
-        if (HP <= 0)
-        {
-            Destroy(gameObject);
-            gameManager.instance.updateGameGoal(-1);
-            gameManager.instance.increaseWallet(scoreValue);
-        }
-        else
-        {
-            StartCoroutine(flashRed());
-        }
-        */
     }
 
     public void kill()
@@ -238,11 +226,11 @@ public class LowlyDemonAI : MonoBehaviour, IDamage, IOpen
     {
         if (model != null) model.enabled = false;
         if (agent != null) agent.enabled = false;
-        yield return new WaitForSeconds(0.25f); // Let logic settle
+        yield return new WaitForSeconds(0.25f);
         Destroy(gameObject);
     }
 
-    IEnumerator DeathSequence()
+    public IEnumerator DeathSequence()
     {
         foreach (GameObject proj in projectiles)
         {
@@ -252,6 +240,11 @@ public class LowlyDemonAI : MonoBehaviour, IDamage, IOpen
         if (deathVisual != null)
         {
             GameObject vfx = Instantiate(deathVisual, vfxSpawn.position, Quaternion.identity);
+            AudioSource fxAudio = vfx.GetComponent<AudioSource>();
+            if (fxAudio != null)
+            {
+                fxAudio.outputAudioMixerGroup = gameManager.instance.mixerSFX;
+            }
             Destroy(vfx, 1f);
         }
         if (model != null)
