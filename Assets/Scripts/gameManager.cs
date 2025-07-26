@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -9,6 +10,7 @@ using UnityEngine.UI;
 public class gameManager : MonoBehaviour
 {
     public static gameManager instance;
+    public AudioMixerGroup mixerSFX;
     public playerController playerController;
     [SerializeField] GameObject menuActive;
     [SerializeField] GameObject menuPause;
@@ -33,6 +35,7 @@ public class gameManager : MonoBehaviour
     public GameObject player;
     public playerController playerScript;
     public GameObject playerSpawnPos;
+    public GameObject enemySpawnPos;
     public GameObject playerPortal;
     public GameObject mainDoor;
     public GameObject interactPrompt;
@@ -89,6 +92,7 @@ public class gameManager : MonoBehaviour
         playerScript = player.GetComponent<playerController>();
         timescaleOrig = Time.timeScale;
         playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");
+        enemySpawnPos = GameObject.FindWithTag("Enemy");
         playerPortal = GameObject.FindWithTag("Portal");
         levelMusic = GameObject.FindWithTag("Level Music");
         playerPortal.SetActive(false);
@@ -343,8 +347,12 @@ public class gameManager : MonoBehaviour
     {
         if (currRound == rounds || gameGoalCount > 0)
             return;
-        if (isHardMode) 
+        if (isHardMode)
+        {
             scoreMult = 2;
+            spawnMult = 2;
+        }
+
         else scoreMult = 1;
         activateSpawners();
         increaseWallet(roundValue);

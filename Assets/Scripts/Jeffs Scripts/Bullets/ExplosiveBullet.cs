@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.Audio;
+using UnityEngine.UIElements;
 
 public class ExplosiveBullet : MonoBehaviour
 {
@@ -36,7 +38,17 @@ public class ExplosiveBullet : MonoBehaviour
         }
         if(explosionSound != null)
         {
-            AudioSource.PlayClipAtPoint(explosionSound, transform.position, explosionVolume);
+            //AudioSource.PlayClipAtPoint(explosionSound, transform.position, explosionVolume);
+
+            GameObject gameObject = new GameObject("One shot audio");
+            gameObject.transform.position = transform.position;
+            AudioSource audioSource = (AudioSource)gameObject.AddComponent(typeof(AudioSource));
+            audioSource.outputAudioMixerGroup = gameManager.instance.mixerSFX;
+            audioSource.clip = explosionSound;
+            audioSource.spatialBlend = 1f;
+            audioSource.volume = explosionVolume;
+            audioSource.Play();
+            Object.Destroy(gameObject, explosionSound.length * ((Time.timeScale < 0.01f) ? 0.01f : Time.timeScale));
         }
 
         Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius);

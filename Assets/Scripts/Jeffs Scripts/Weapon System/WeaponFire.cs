@@ -31,6 +31,7 @@ public class WeaponFire : MonoBehaviour
         if (audioSource == null)
         {
             audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.outputAudioMixerGroup = gameManager.instance.mixerSFX;
             audioSource.spatialBlend = 1f; 
         }
     }
