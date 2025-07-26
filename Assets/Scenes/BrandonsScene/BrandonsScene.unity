@@ -1035,7 +1035,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1644428441327535268, guid: 440ebae28d019c4408717ae488b85668, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3029431738239328515, guid: 440ebae28d019c4408717ae488b85668, type: 3}
       propertyPath: gateTarget
@@ -1116,10 +1116,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1488000686661784814, guid: 32eb3f6df6d50e443bc3e1b572898c9f, type: 3}
-      propertyPath: model
-      value: 
-      objectReference: {fileID: 2025858736}
     - target: {fileID: 2398688452021882639, guid: 32eb3f6df6d50e443bc3e1b572898c9f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 32.40454
@@ -1166,7 +1162,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4858361898581144930, guid: 32eb3f6df6d50e443bc3e1b572898c9f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1460,11 +1456,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eadf104b9f456704d93a22f9e880ae93, type: 3}
---- !u!23 &2025858736 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 7417253435052691403, guid: 32eb3f6df6d50e443bc3e1b572898c9f, type: 3}
-  m_PrefabInstance: {fileID: 1287131811}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2124564488
 PrefabInstance:
   m_ObjectHideFlags: 0

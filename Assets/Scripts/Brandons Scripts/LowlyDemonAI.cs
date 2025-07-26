@@ -242,7 +242,7 @@ public class LowlyDemonAI : MonoBehaviour, IDamage, IOpen
         Destroy(gameObject);
     }
 
-    IEnumerator DeathSequence()
+    public IEnumerator DeathSequence()
     {
         foreach (GameObject proj in projectiles)
         {
