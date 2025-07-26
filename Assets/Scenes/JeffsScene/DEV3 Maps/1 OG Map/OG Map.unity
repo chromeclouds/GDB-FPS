@@ -2762,6 +2762,46 @@ PrefabInstance:
       propertyPath: m_sharedMaterial
       value: 
       objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 221157054765369015, guid: d1e45cbd7578901458661f547d7f6f5a, type: 3}
+      propertyPath: m_text
+      value: '-Use your points to buy from the shop area.
+
+        -Survive all rounds
+        on a level to move on to the next level.
+
+        -Kill Enemy skulls to stop
+        them from destroying your castle''s gate.
+
+        -Press P to pause
+
+        -Press
+        Q to use your grappling hook.
+
+        -Press V to melee, only hold 1 melee
+        weapon.
+
+        -Enemies left alive at end of round cost points.
+
+        -Grab
+        a torch before leaving the castle to select difficulty.  Hard mode gives
+        double points, double incoming damage, double enemies.'
+      objectReference: {fileID: 0}
+    - target: {fileID: 221157054765369015, guid: d1e45cbd7578901458661f547d7f6f5a, type: 3}
+      propertyPath: m_fontSize
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 221157054765369015, guid: d1e45cbd7578901458661f547d7f6f5a, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 221157054765369015, guid: d1e45cbd7578901458661f547d7f6f5a, type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 256
+      objectReference: {fileID: 0}
+    - target: {fileID: 221157054765369015, guid: d1e45cbd7578901458661f547d7f6f5a, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 427475475689620932, guid: d1e45cbd7578901458661f547d7f6f5a, type: 3}
       propertyPath: m_fontAsset
       value: 
@@ -2809,6 +2849,14 @@ PrefabInstance:
     - target: {fileID: 725888034798113287, guid: d1e45cbd7578901458661f547d7f6f5a, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 870349247690520469, guid: d1e45cbd7578901458661f547d7f6f5a, type: 3}
+      propertyPath: wallet
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 870349247690520469, guid: d1e45cbd7578901458661f547d7f6f5a, type: 3}
+      propertyPath: roundValue
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 1042188339971755616, guid: d1e45cbd7578901458661f547d7f6f5a, type: 3}
       propertyPath: m_Name
