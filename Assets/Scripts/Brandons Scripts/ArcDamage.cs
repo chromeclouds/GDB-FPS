@@ -44,6 +44,7 @@ public class ArcDamage : MonoBehaviour
             }
             if (audioSource != null && shootSound != null)
             {
+                audioSource.outputAudioMixerGroup = gameManager.instance.mixerSFX;
                 audioSource.PlayOneShot(shootSound);
             }
         }
@@ -77,9 +78,17 @@ public class ArcDamage : MonoBehaviour
         }
         if (hitSound != null)
         {
-            AudioSource.PlayClipAtPoint(hitSound, transform.position);
+            GameObject tempGO = new GameObject("TempAudio");
+            tempGO.transform.position = transform.position;
+
+            AudioSource tempSource = tempGO.AddComponent<AudioSource>();
+            tempSource.outputAudioMixerGroup = gameManager.instance.mixerSFX;
+            tempSource.clip = hitSound;
+            tempSource.Play();
+
+            Destroy(tempGO, hitSound.length);
         }
-        if(type == damageType.homing || type == damageType.moving)
+        if (type == damageType.homing || type == damageType.moving)
         {
             Destroy(gameObject);
         }

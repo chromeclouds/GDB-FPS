@@ -91,9 +91,12 @@ public class SkullEnemyAI : MonoBehaviour, IDamage
         if (explodeSound != null)
         {
             GameObject tempGO = new GameObject("TempExplosionSound");
+            tempGO.transform.position = transform.position;
+
             AudioSource aSource = tempGO.AddComponent<AudioSource>();
             aSource.clip = explodeSound;
-            aSource.spatialBlend = 0f; // 0 = 2D, no spatial falloff
+            aSource.outputAudioMixerGroup = gameManager.instance.mixerSFX;
+            aSource.spatialBlend = 0f; 
             aSource.volume = 2.0f;
             aSource.Play();
             Destroy(tempGO, explodeSound.length);

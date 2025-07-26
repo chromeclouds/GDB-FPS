@@ -44,6 +44,7 @@ public class DemonAI : MonoBehaviour, IDamage, IOpen
 
         if (idleSound != null && audioSource != null)
         {
+            audioSource.outputAudioMixerGroup = gameManager.instance.mixerSFX;
             audioSource.clip = idleSound;
             audioSource.loop = true;
             audioSource.Play();
@@ -143,20 +144,6 @@ public class DemonAI : MonoBehaviour, IDamage, IOpen
             gameManager.instance.increaseWallet(scoreValue);
             StartCoroutine(DeathSequence());
         }
-        /*
-        HP -= amount;
-       
-        if (HP <= 0)
-        {
-            Destroy(gameObject);
-            gameManager.instance.updateGameGoal(-1);
-            gameManager.instance.increaseWallet(scoreValue);
-        }
-        else
-        {
-            StartCoroutine(flashRed());
-        }
-        */
     }
 
     IEnumerator DeathSequence()
@@ -169,6 +156,11 @@ public class DemonAI : MonoBehaviour, IDamage, IOpen
         if (deathVisual != null)
         {
             GameObject vfx = Instantiate(deathVisual, vfxSpawn.position, Quaternion.identity);
+            AudioSource fxAudio = vfx.GetComponent<AudioSource>();
+            if (fxAudio != null)
+            {
+                fxAudio.outputAudioMixerGroup = gameManager.instance.mixerSFX;
+            }
             Destroy(vfx, 1f);
         }
         if (model != null)
