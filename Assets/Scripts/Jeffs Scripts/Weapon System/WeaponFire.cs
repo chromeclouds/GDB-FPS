@@ -31,6 +31,7 @@ public class WeaponFire : MonoBehaviour
         if (audioSource == null)
         {
             audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.outputAudioMixerGroup = gameManager.instance.mixerSFX;
             audioSource.spatialBlend = 1f; 
         }
     }
@@ -63,6 +64,7 @@ public class WeaponFire : MonoBehaviour
 
     void Update()
     {
+        if (Time.timeScale == 0f) return;
         if (isReloading || isOverheated) return;
         if (GetComponentInParent<unifiedPlayerController>() == null) return;
 
@@ -231,8 +233,11 @@ public class WeaponFire : MonoBehaviour
     {
         isReloading = true;
 
-        if(weaponData.ReloadStartSound != null)
+        if (weaponData.ReloadStartSound != null)
+        {
+            audioSource.Stop();
             PlaySound(weaponData.ReloadStartSound);
+        }
 
         yield return new WaitForSeconds(weaponData.ReloadTime);
 
@@ -248,6 +253,12 @@ public class WeaponFire : MonoBehaviour
 
         }
 
+        if (audioSource.isPlaying && audioSource.clip == weaponData.ReloadStartSound)
+        {
+            audioSource.Stop();
+            audioSource.clip = null;
+        }
+
         if (weaponData.ReloadEndSound != null)
             PlaySound(weaponData.ReloadEndSound);
 
@@ -261,4 +272,15 @@ public class WeaponFire : MonoBehaviour
             audioSource.PlayOneShot(clip);
         }
     }
+
+    private void PlaySoundLoop(AudioClip clip)
+    {
+        if (clip != null && audioSource != null)
+        {
+            audioSource.clip = clip;
+            audioSource.loop = false;
+            audioSource.Play();
+        }
+    }
+
 }

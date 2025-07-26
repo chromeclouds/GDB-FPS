@@ -52,12 +52,14 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
     bool isSprinting;
     int remainingDamage;
     public bool hasTorch;
+    int speedOrig;
 
     private GameObject currentMeleeWeapon;
 
     void Start()
     {
         HPOrig = HP;
+        speedOrig = speed;
         armorValue = armor;
         spawnPlayer();
         hasTorch = false;
@@ -126,7 +128,7 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         }
         else if (Input.GetButtonUp("Sprint"))
         {
-            speed /= sprintMod;
+            speed = speedOrig;
             isSprinting = false;
         }
     }
@@ -310,6 +312,11 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
         HP = HPOrig;
         updatePlayerUI();
     }
+
+    public void resetSpeed()
+    {
+        speed = speedOrig;
+    }
     IEnumerator damageFlash()
     {
         gameManager.instance.playerDamageScreen.SetActive(true);
@@ -379,6 +386,7 @@ public class unifiedPlayerController : MonoBehaviour, IDamage, IPickup, IOpen
     {
         controller.transform.position = gameManager.instance.playerSpawnPos.transform.position;
         HP = HPOrig;
+        speed = speedOrig;
         updatePlayerUI();
     }
 
