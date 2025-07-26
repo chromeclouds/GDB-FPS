@@ -111659,15 +111659,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4042964028668021906, guid: ecd458ecb6a72fe40ab94d34198af4c4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -136.96
+      value: -141.9
       objectReference: {fileID: 0}
     - target: {fileID: 4042964028668021906, guid: ecd458ecb6a72fe40ab94d34198af4c4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.37
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4042964028668021906, guid: ecd458ecb6a72fe40ab94d34198af4c4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -206.49
+      value: -280.8
       objectReference: {fileID: 0}
     - target: {fileID: 4042964028668021906, guid: ecd458ecb6a72fe40ab94d34198af4c4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -116206,6 +116206,9 @@ MonoBehaviour:
   damageRate: 5
   speed: 0
   destroyTime: 0
+  audioSource: {fileID: 0}
+  shootSound: {fileID: 0}
+  hitSound: {fileID: 0}
 --- !u!114 &9050016859197290932
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116245,3 +116248,6 @@ SceneRoots:
   - {fileID: 1722707447}
   - {fileID: 966233911}
   - {fileID: 827045036}
+  - {fileID: 1670313760}
+  - {fileID: 1505659575}
+  - {fileID: 681743429}
