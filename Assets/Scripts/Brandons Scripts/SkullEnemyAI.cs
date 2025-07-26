@@ -31,7 +31,7 @@ public class SkullEnemyAI : MonoBehaviour, IDamage
         agent = GetComponent<NavMeshAgent>();
         currentHealth = maxHealth;
 
-        if (model != null)
+        if (Application.isPlaying && model != null)
         {
             colorOrig = model.material.color;
         }
@@ -116,15 +116,24 @@ public class SkullEnemyAI : MonoBehaviour, IDamage
         {
             Explode();
         }
-        //else
-        //{
-        //    StartCoroutine(flashRed());
-        //}
+        else
+        {
+            StartCoroutine(flashRed());
+        }
     }
     IEnumerator flashRed()
     {
-        model.material.color = Color.red;
+        Material[] mats = model.materials;
+        foreach (Material mat in mats)
+        {
+            mat.color = Color.red;
+        }
+
         yield return new WaitForSeconds(0.1f);
-        model.material.color = colorOrig;
+
+        foreach (Material mat in mats)
+        {
+            mat.color = colorOrig;
+        }
     }
 }
