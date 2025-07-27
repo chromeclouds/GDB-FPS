@@ -13,8 +13,9 @@ public class GrappleSystem : MonoBehaviour
     public float grappleSpeed;
     public float speed;
     public CharacterController controller;
+    [SerializeField] float grappleRate;
 
-
+    float grappleTime;
 
 
 
@@ -60,22 +61,30 @@ public class GrappleSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Grapple"))
-        {
-            StartGrapple();
-        }
-       
+        grappleTime += Time.deltaTime;
 
-        if (Input.GetButtonUp("Grapple"))
+        if(grappleTime >= grappleRate || isGrappling)
         {
-            StopGrapple();
-        }
-       
+            if (Input.GetButtonDown("Grapple"))
+            {
+                StartGrapple();
+                grappleTime = 0f;
+            }
 
-        if (isGrappling)
-        {
-            grappleRope.SetPositions(new Vector3[] { grappleStart.position, anchorPoint });
-            UpdateGrapple();
+
+            if (Input.GetButtonUp("Grapple"))
+            {
+                StopGrapple();
+                grappleTime = 0f;
+            }
+
+
+            if (isGrappling)
+            {
+                grappleRope.SetPositions(new Vector3[] { grappleStart.position, anchorPoint });
+                UpdateGrapple();
+                grappleTime = 0f;
+            }
         }
     }
 }
